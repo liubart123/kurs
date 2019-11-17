@@ -1,0 +1,14 @@
+main;
+{
+	declare integer z = 123;
+	declare string s = "asd"τττ;
+	s = z + 123;
+ 	return z; ττ
+};
+string function asd(integer s){
+	declare string sa ;
+	declare integer integerbvalue ;
+	integerbvalue = 123 - 54 + s;
+	s = "dsa";
+	return s;
+};

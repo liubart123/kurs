@@ -1,0 +1,53 @@
+іфіывoўasd-----Date: 17.11.2019 12:20:17-----
+-----PARAMETRS-----
+Input file: inFile.txt
+Output file: inFile.txt.out.txt
+Log file: logFile.txt
+-----Исходные данные-----
+Amount of symbols: 234
+Amount of ignored symbols: 5
+Amount of lines: 14
+0: m;
+1: {
+2: dti=l;
+3: dti=l;
+4: i=ivl;
+5: ri;
+6: };
+7: tfi(ti){
+8: dti;
+9: dti;
+10: i=lvlvi;
+11: i=l;
+12: ri;
+13: };
+
+
+ID Table
+l:	literal,	integer,	123,	
+l:	literal,	string,	"asd",	
+l:	literal,	integer,	123,	
+l:	literal,	integer,	123,	
+l:	literal,	integer,	54,	
+l:	literal,	string,	"dsa",	
+z:	variable,	integer,	123,	
+s:	variable,	string,	"asd",	
+asd:	function,	string,	,	
+s:	parametr,	integer,	0,	asd
+sa:	variable,	string,	,	asd
+integerbva:	variable,	integer,	0,	asd
+
+
+.const
+lit0 dd 123
+
+lit1 db "asd", 0
+
+lit2 dd 123
+
+lit3 dd 123
+
+lit4 dd 54
+
+lit5 db "dsa", 0
+

@@ -1,0 +1,36 @@
+inFile.txt.log.txttestasd-----Date: 12.10.2019 14:35:53-----
+-----PARAMETRS-----
+Input file: inFile.txt
+Output file: inFile.txt.out.txt
+Log file: inFile.txt.log.txt
+-----Исходные данные-----
+Amount of symbols: 234
+Amount of ignored symbols: 0
+Amount of lines: -1
+inFile.txt.log.txt0: inFile.txt.log.txtminFile.txt.log.txtinFile.txt.log.txtinFile.txt.log.txt
+inFile.txt.log.txt1: inFile.txt.log.txt{inFile.txt.log.txt
+inFile.txt.log.txt2: inFile.txt.log.txtinFile.txt.log.txtdinFile.txt.log.txtinFile.txt.log.txttinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt;inFile.txt.log.txt
+inFile.txt.log.txt3: inFile.txt.log.txtinFile.txt.log.txtdinFile.txt.log.txtinFile.txt.log.txttinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt;inFile.txt.log.txt
+inFile.txt.log.txt4: inFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txtinFile.txt.log.txt=inFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txtinFile.txt.log.txtvinFile.txt.log.txtinFile.txt.log.txtlinFile.txt.log.txt;inFile.txt.log.txt
+inFile.txt.log.txt5: inFile.txt.log.txtinFile.txt.log.txtinFile.txt.log.txtrinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt;inFile.txt.log.txt
+inFile.txt.log.txt6: inFile.txt.log.txt}inFile.txt.log.txt;inFile.txt.log.txt
+inFile.txt.log.txt7: inFile.txt.log.txttinFile.txt.log.txtinFile.txt.log.txtfinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt(inFile.txt.log.txttinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt)inFile.txt.log.txt{inFile.txt.log.txt
+inFile.txt.log.txt8: inFile.txt.log.txtinFile.txt.log.txtdinFile.txt.log.txtinFile.txt.log.txttinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txtinFile.txt.log.txt;inFile.txt.log.txt
+inFile.txt.log.txt9: inFile.txt.log.txtinFile.txt.log.txtdinFile.txt.log.txtinFile.txt.log.txttinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt;inFile.txt.log.txt
+inFile.txt.log.txt10: inFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txtinFile.txt.log.txt=inFile.txt.log.txtinFile.txt.log.txtlinFile.txt.log.txtinFile.txt.log.txtvinFile.txt.log.txtinFile.txt.log.txtlinFile.txt.log.txtinFile.txt.log.txtvinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt;inFile.txt.log.txt;inFile.txt.log.txt
+inFile.txt.log.txt11: inFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txtinFile.txt.log.txt=inFile.txt.log.txtinFile.txt.log.txtlinFile.txt.log.txtinFile.txt.log.txtvinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt(inFile.txt.log.txtiinFile.txt.log.txt)inFile.txt.log.txt;inFile.txt.log.txt
+inFile.txt.log.txt12: inFile.txt.log.txtinFile.txt.log.txtrinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt;inFile.txt.log.txt
+inFile.txt.log.txt13: inFile.txt.log.txt}inFile.txt.log.txt;inFile.txt.log.txt
+
+
+ID Table
+l:	literal,	integer,	123,	
+l:	literal,	integer,	123,	
+l:	literal,	integer,	54,	
+l:	literal,	string,	"ds   asd  a",	
+z:	variable,	integer,	0,	
+s:	variable,	string,	,	
+asd:	function,	string,	,	
+s:	parametr,	integer,	0,	asd
+itegerbval:	variable,	integer,	0,	asd
+
