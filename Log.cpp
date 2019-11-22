@@ -157,7 +157,7 @@ namespace Log
 					//positionInLine++;
 				}
 				LT::Add(lexTable, sepSymbol, pos + startPos, NumberOfLine);
-				//раздз€л€льны с≥мвал = аперацы€
+				//раздз€л€льны с≥мвал == аперацы€
 				if (sepSymbol[0] == 'v') {
 					lexTable.table[lexTable.size-1].idxTI = int (in.text[pos + startPos]);
 				}
@@ -182,6 +182,7 @@ namespace Log
 		CheckStrForId((char*)in.text, idTable,lexTable);
 		std::string str = IT::PrintTable(idTable);
 		*log.stream << "\n" << str << endl;
+		std::cout << "\n" << str << endl;
 		std::cout << "\n" << LT::PrintTable(lexTable) << endl;
 		
 		lexTable.table[lexTable.size++]='$';

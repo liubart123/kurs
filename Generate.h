@@ -39,4 +39,7 @@ namespace GEN {
 		std::string Generate(IT::IdTable it, LT::LexTable lt);	//атрымаць асм файл
 		Generator();
 	};
+
+	std::string DeclarationToAssembler(IT::Entry lex, std::string name);	//запісаць дыклярацыю пераменнай у асэмблер
+	std::string DeclarationToAssembler(IT::Entry lex);	//запісаць дыклярацыю пераменнай у асэмблер
 }

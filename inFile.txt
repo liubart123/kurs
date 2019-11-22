@@ -1,14 +1,14 @@
-main;
+main
 {
-	declare integer z = 123;
-	declare string s = "asd"τττ;
-	s = z + 123;
- 	return z; ττ
+	declare integer intv = 123;
+	declare string strv = "asd"τττ;
+	strv  =intv  + 123;
+ 	return strv  ; ττ
 };
-string function asd(integer s){
-	declare string sa ;
+string function asd(integer strp){
+	declare string strv;
 	declare integer integerbvalue ;
-	integerbvalue = 123 - 54 + s;
-	s = "dsa";
-	return s;
+	integerbvalue = 123 - 54 + strp;
+	strv = "dsa";
+	return strv ;
 };

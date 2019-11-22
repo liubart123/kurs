@@ -1,26 +1,25 @@
-³ô³ûâo¢asd-----Date: 17.11.2019 12:20:17-----
+³ô³ûâo¢asd-----Date: 22.11.2019 11:23:38-----
 -----PARAMETRS-----
 Input file: inFile.txt
 Output file: inFile.txt.out.txt
 Log file: logFile.txt
 -----Èñõîäíûå äàííûå-----
-Amount of symbols: 234
+Amount of symbols: 265
 Amount of ignored symbols: 5
 Amount of lines: 14
-0: m;
-1: {
+0: m{
+1: dti=l;
 2: dti=l;
-3: dti=l;
-4: i=ivl;
-5: ri;
-6: };
-7: tfi(ti){
+3: i=ivl;
+4: ri;
+5: };
+6: tfi(ti){
+7: dti;
 8: dti;
-9: dti;
-10: i=lvlvi;
-11: i=l;
-12: ri;
-13: };
+9: i=lvlvi;
+10: i=l;
+11: ri;
+12: };
 
 
 ID Table
@@ -30,13 +29,15 @@ l:	literal,	integer,	123,
 l:	literal,	integer,	123,	
 l:	literal,	integer,	54,	
 l:	literal,	string,	"dsa",	
-z:	variable,	integer,	123,	
-s:	variable,	string,	"asd",	
+intv:	variable,	integer,	123,	
+strv:	variable,	string,	"asd",	
 asd:	function,	string,	,	
-s:	parametr,	integer,	0,	asd
-sa:	variable,	string,	,	asd
-integerbva:	variable,	integer,	0,	asd
+strp:	parametr,	integer,	0,	
+strv:	variable,	string,	,	
+integerbva:	variable,	integer,	0,	
 
+function: main, returning type is: string,	, count of locals is: 2, count of parametors is: 0
+function: asd, returning type is: string,	, count of locals is: 2, count of parametors is: 1
 
 .const
 lit0 dd 123
@@ -50,4 +51,22 @@ lit3 dd 123
 lit4 dd 54
 
 lit5 db "dsa", 0
+
+
+;------------------------------------------Function: main
+;------------------------------------------parametars
+;------------------------------------------locals
+intv dd 123
+
+strv db "asd", 0
+
+;------------------------------------------Function: asd
+;------------------------------------------parametars
+strp dd 0
+
+;------------------------------------------locals
+strv db , 0
+
+integerbva dd 0
+
 

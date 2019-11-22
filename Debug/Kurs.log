@@ -1,15 +1,2 @@
-﻿  Error.cpp
-  FST.cpp
-d:\univer\jap\kurs\kurs\fst.cpp(41): warning C4267: 'initializing': conversion from 'size_t' to 'short', possible loss of data
-  Generate.cpp
-  GRB.cpp
-  In.cpp
-  IT.cpp
-  Lap.cpp
-  Log.cpp
-  LT.cpp
-  MFST.cpp
-  Parm.cpp
-  WORDS.cpp
-  Generating Code...
+﻿  Generate.cpp
   Kurs.vcxproj -> D:\Univer\jap\Kurs\Debug\Kurs.exe

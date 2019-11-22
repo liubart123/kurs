@@ -9,6 +9,7 @@ namespace IT {
 	//стварыць табл≥цу
 	IdTable CreateTable(int size){
 		IdTable *table = new IdTable();
+		table->funcs = new FuncDefenition*[FUNCS_COUNT];
 		table->size=0;
 		table->maxsize=size;
 		table->table = new Entry[size];
@@ -23,7 +24,6 @@ namespace IT {
 		Entry *entry = new Entry();
 		WORDS::StringCopy(entry->id, id);
 		entry->idxfirstLE=idxfirstLE;
-		entry->funcId[0]='\0';
 		idtable.table[idtable.size++] = *entry;
 		delete entry;
 	}
@@ -61,6 +61,7 @@ namespace IT {
 			}
 		}
 
+		FuncDefenition *curFunc=NULL;	//ц€куча€ функцы€
 		//≥дэнтыф≥катары
 		std::string parent = "";
 		for (int i = 0; i < lexTable.size; i++) {
@@ -69,18 +70,20 @@ namespace IT {
 			if (lex == LEX_ID) {
 				char* id = WORDS::GetWord(text, entry->sn);
 				WORDS::CutWord(id, ID_MAXSIZE);
-
-				if (IsId(idTable, id, function) == TI_NULLIDX) {
+				if (IsId(idTable, id, curFunc) == TI_NULLIDX) {
 					if (i > 1) {
 						//дыкл€рацы€ пераменнай/параметра
 						if (LT::GetEntry(lexTable, i - 1)->lexema[0] == 't') {
 							Add(idTable, i, id);
-							WORDS::StringCopy(GetEntry(idTable, idTable.size - 1)->funcId, function);
+							GetEntry(idTable, idTable.size - 1)->funcId=curFunc;
+							//WORDS::StringCopy(GetEntry(idTable, idTable.size - 1)->funcId, function);
 							if (LT::GetEntry(lexTable, i - 2)->lexema[0] == 'd') {
 								GetEntry(idTable, idTable.size - 1)->idtype = IT::IDTYPE::V;
+								AddVal(idTable,*curFunc,idTable.size-1);
 							} 
 							else if ((LT::GetEntry(lexTable, i - 2)->lexema[0] == ',' && LT::GetEntry(lexTable, i - 3)->lexema[0] == 'i') || LT::GetEntry(lexTable, i - 2)->lexema[0] == '(') {
 								GetEntry(idTable, idTable.size - 1)->idtype = IT::IDTYPE::P;
+								AddParm(idTable, *curFunc, idTable.size-1);
 							}
 							else {
 								throw(Error::geterrortext(202, text, LT::GetEntry(lexTable, i)->sn));
@@ -154,7 +157,7 @@ namespace IT {
 								GetEntry(idTable, idTable.size - 2)->iddatatype = STR;
 								*(GetEntry(idTable, idTable.size - 1)->value.vstr.str) = TI_STR_DEFAULT;
 							}
-
+							curFunc = AddFuncDef(idTable, *(GetEntry(idTable, idTable.size - 1)));
 							//наданне значэнн€ ≥д-ру
 							if (i < lexTable.size - 2) {
 								if (LT::GetEntry(lexTable, i + 1)->lexema[0] == '='
@@ -182,7 +185,7 @@ namespace IT {
 						//IsId(idTable, id, function);
 						throw(Error::geterrortext(209, text, LT::GetEntry(lexTable, i)->sn));//паҐторна€ дыкл€рацы€
 					}
-					entry->idxTI = IsId(idTable, id, function);
+					entry->idxTI = IsId(idTable, id, curFunc);
 				}
 			}
 			else if (lex==LEX_FUNCTION){
@@ -192,16 +195,18 @@ namespace IT {
 				function[0]='\0';
 				parent="";
 			}
+			else if (lex == LEX_MAIN) {
+				curFunc = AddFuncDefMain(idTable);
+			}
 		}
 	}
 
 	//ц≥ Єсць так≥ ≥дэнтыф≥катар у табл≥цы?
-	int IsId(IdTable& idtable, char *id, std::string func) {
+	int IsId(IdTable& idtable, char *id, FuncDefenition *func) {
 		int pos = TI_NULLIDX;
 		for (int i = 0; i < idtable.size; i++) {
 			if (WORDS::StringCompare(id, idtable.table[i].id) == true) {
-				if (WORDS::StringCompare(func, idtable.table[i].funcId) == true
-				|| idtable.table[i].idtype == IT::IDTYPE::F) {
+				if (func == idtable.table[i].funcId || idtable.table[i].idtype == IT::IDTYPE::F) {
 					pos = i;
 					break;
 				}
@@ -242,9 +247,52 @@ namespace IT {
 				str.append(GetEntry(idTable, i)->value.vstr.str);
 			}
 			str.append(",\t");
-			str.append(GetEntry(idTable, i)->funcId);
+			//str.append(GetEntry(idTable, i)->funcId);
 			str.append("\n");
 		}
+		//вывад функцый
+		for (int i = 0; i < idTable.funcCount; i++) {
+			str.append("\n");
+			str.append("function: ");
+			str.append(idTable.funcs[i]->name);
+			str.append(", returning type is: ");
+			if (idTable.funcs[i]->returnType == INT) {
+				str.append("integer");
+				str.append(",\t");
+			}
+			else {
+				str.append("string");
+				str.append(",\t");
+			}
+			str.append(", count of locals is: ");
+			str.append(std::to_string(idTable.funcs[i]->curLocals));
+			str.append(", count of parametors is: ");
+			str.append(std::to_string(idTable.funcs[i]->curParams));
+		}
 		return str;
+	}
+
+	FuncDefenition *AddFuncDef(IdTable& idTable, Entry& lex) {
+		FuncDefenition *funcDef = new FuncDefenition();
+		funcDef->name=lex.id;
+		funcDef->returnType=lex.iddatatype;
+		idTable.funcs[idTable.funcCount++] = funcDef;
+		lex.funcId=funcDef;
+		return funcDef;
+	}	//дабавц≥ь вызначэнне функцы≥
+
+	FuncDefenition *AddFuncDefMain(IdTable& idTable){
+		FuncDefenition *funcDef=new FuncDefenition();
+		funcDef->name = "main";
+		idTable.funcs[idTable.funcCount++] = funcDef;
+		return funcDef;
+	}//дабавц≥ь вызначэнне функцы≥
+	//дабав≥ць параметр у функцы≥ю
+	void AddParm(IdTable& idTable, FuncDefenition& f, int index) {
+		f.params[f.curParams++]=index;
+	}	
+	//дабав≥ць пераменуюу у функцы≥ю
+	void AddVal(IdTable& idTable, FuncDefenition& f, int index) {
+		f.locals[f.curLocals++] = index;
 	}
 }
