@@ -5,10 +5,10 @@ main
 	strv  =intv  + 123;
  	return strv  ; ττ
 };
-string function asd(integer strp){
+string function asd(integer intp){
 	declare string strv;
 	declare integer integerbvalue ;
-	integerbvalue = 123 - 54 + strp;
+	integerbvalue = 123 - 54 + intp;
 	strv = "dsa";
 	return strv ;
 };

@@ -2,7 +2,19 @@
 #include "WORDS.h"
 
 namespace WORDS {
-
+	//скапіраваць радок без кавычак
+	void StringIDCopy(char *dest, char *res) {
+		int i = 0;//res
+		int j = 0;//dest
+		while (*(res + i) != '\0') {
+			if (*(res + i) != '\"') {
+				*(dest + j) = *(res + i);
+				j++;
+			}
+			i++;
+		}
+		*(dest + j) = '\0';
+	}
 	//скапіраваць радок
 	void StringCopy(char *dest, char *res) {
 		int i=0;

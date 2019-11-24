@@ -2,6 +2,7 @@
 #include "IT.h"
 #include "LT.h"
 #include <string>
+#include "Poland.h"
 
 #define START_OF_ASM "\
 .586\
@@ -36,7 +37,7 @@ start :\
 
 namespace GEN {
 	struct Generator {
-		std::string Generate(IT::IdTable it, LT::LexTable lt);	//אענûלאצü אסל פאיכ
+		std::string Generate(IT::IdTable &it, LT::LexTable &lt, char *text);	//אענûלאצü אסל פאיכ
 		Generator();
 	};
 

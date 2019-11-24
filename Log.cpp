@@ -185,15 +185,17 @@ namespace Log
 		std::cout << "\n" << str << endl;
 		std::cout << "\n" << LT::PrintTable(lexTable) << endl;
 		
-		lexTable.table[lexTable.size++]='$';
-		MFST::Mfst *automatos = new MFST::Mfst(lexTable, GRB::getGreibach());
+		//lexTable.table[lexTable.size++]='$';
+		//MFST::Mfst *automatos = new MFST::Mfst(lexTable, GRB::getGreibach());
 		//automatos->start();
 
 		GEN::Generator generator;
-		string gen = generator.Generate(idTable,lexTable);
+		string gen = generator.Generate(idTable,lexTable, (char*)in.text);
 
 		*log.stream << "\n" << gen << endl;
 		std::cout << "\n" << gen << endl;
+
+		cout << LT::PrintTable(lexTable);
 
 		/*int pos2 = 36;
 		bool v = Poland::PolishNotation(&pos2, &lexTable, &idTable, (char*)in.text);
@@ -232,7 +234,7 @@ namespace Log
 		char *str;
 		str = new char[LEXEMA_FIXSIZE];
 		if (strcmp(word, "integer") == 0) {
-			str[0]=LEX_INTEGER;
+			str[0] = LEX_INTEGER;
 		}
 		else if (strcmp(word, "string") == 0) {
 			str[0] = LEX_STRING;
@@ -271,7 +273,7 @@ namespace Log
 
 	char* GetSepSymb(char c) {
 		char *str;
-		if (c == '+' || c == '-' || c == '/' || c == '*' || c == '%') {
+		if (c == '+' || c == '-' || c == '/' || c == '*' || c == '%' || c == '=') {
 			str = new char[2];
 			str[0] = 'v';
 			str[1] = '\0';

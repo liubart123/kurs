@@ -52,7 +52,7 @@ namespace IT {
 				} else {
 					GetEntry(idTable, idTable.size - 1)->iddatatype = STR;
 					GetEntry(idTable, idTable.size - 1)->value.vstr.len = WORDS::LengthWord(id);
-					WORDS::StringCopy(GetEntry(idTable, idTable.size - 1)->value.vstr.str,id);
+					WORDS::StringIDCopy(GetEntry(idTable, idTable.size - 1)->value.vstr.str,id);
 				}
 				entry->idxTI = idTable.size - 1;
 			}
