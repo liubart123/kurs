@@ -41,7 +41,7 @@ namespace Poland {
 					polandStr.push_back(*str.begin());
 				}
 			}
-			else if (str.begin()->lexema[0] == 'v' || str.begin()->lexema[0] == '('
+			else if (str.begin()->lexema[0] == 'v' || str.begin()->lexema[0] == '=' || str.begin()->lexema[0] == '('
 				|| str.begin()->lexema[0] == ')'
 				|| str.begin()->lexema[0] == '['
 				|| str.begin()->lexema[0] == ']'
@@ -132,6 +132,7 @@ namespace Poland {
 		}
 
 		if (steck.empty() == true) {
+			*(lexTable_pos)+=i;
 			return true;
 		}
 		else { return false; }

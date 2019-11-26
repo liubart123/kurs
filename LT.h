@@ -21,6 +21,7 @@
 #define	LEX_MINUS		'v'
 #define	LEX_STAR		'v'
 #define	LEX_DIRSLASH	'v'
+#define	LEX_EQUALS		'v'
 #define	LEX_ERROR		'e'
 #define	LEX_SEMICOLON	';'
 //#include "IT.h"

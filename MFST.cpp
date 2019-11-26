@@ -17,6 +17,11 @@ namespace MFST {
 				st.pop();
 				return Mfst::ENUM_STEP::TS_OK;
 			}
+			else if (st.top() == EMPTY) {
+				//lenta_position++;
+				st.pop();
+				return Mfst::ENUM_STEP::TS_OK;
+			}
 			else {
 				//pushNewDiagnosis(Mfst::ENUM_STEP::NS_NORULECHAIN);
 				return Mfst::ENUM_STEP::TS_NOK;

@@ -1,14 +1,11 @@
+string function functiona(integer funcp){
+	funcp=funcp-2;
+	return funcp;
+};
 main
 {
-	declare integer intv = 123;
+	functiona(123+32/4);
 	declare string strv = "asd"τττ;
-	strv  =intv  + 123;
+	strv = functiona(123+32/4)+3-strv-functiona(functiona(123+32/4));
  	return strv  ; ττ
-};
-string function asd(integer intp){
-	declare string strv;
-	declare integer integerbvalue ;
-	integerbvalue = 123 - 54 + intp;
-	strv = "dsa";
-	return strv ;
 };

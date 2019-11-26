@@ -1,28 +1,2 @@
-﻿  Error.cpp
-  FST.cpp
-d:\univer\jap\kurs\kurs\fst.cpp(41): warning C4267: 'initializing': conversion from 'size_t' to 'short', possible loss of data
-  Generate.cpp
-d:\univer\jap\kurs\kurs\lt.h(25): warning C4005: 'LEX_SEMICOLON': macro redefinition
-  d:\univer\jap\kurs\kurs\lt.h(14): note: see previous definition of 'LEX_SEMICOLON'
-  GRB.cpp
-  In.cpp
-  IT.cpp
-d:\univer\jap\kurs\kurs\lt.h(25): warning C4005: 'LEX_SEMICOLON': macro redefinition
-  d:\univer\jap\kurs\kurs\lt.h(14): note: see previous definition of 'LEX_SEMICOLON'
-  Lap.cpp
-  Log.cpp
-d:\univer\jap\kurs\kurs\lt.h(25): warning C4005: 'LEX_SEMICOLON': macro redefinition
-  d:\univer\jap\kurs\kurs\lt.h(14): note: see previous definition of 'LEX_SEMICOLON'
-  LT.cpp
-d:\univer\jap\kurs\kurs\lt.h(25): warning C4005: 'LEX_SEMICOLON': macro redefinition
-  d:\univer\jap\kurs\kurs\lt.h(14): note: see previous definition of 'LEX_SEMICOLON'
-  MFST.cpp
-d:\univer\jap\kurs\kurs\lt.h(25): warning C4005: 'LEX_SEMICOLON': macro redefinition
-  d:\univer\jap\kurs\kurs\lt.h(14): note: see previous definition of 'LEX_SEMICOLON'
-  Parm.cpp
-  Poland.cpp
-d:\univer\jap\kurs\kurs\lt.h(25): warning C4005: 'LEX_SEMICOLON': macro redefinition
-  d:\univer\jap\kurs\kurs\lt.h(14): note: see previous definition of 'LEX_SEMICOLON'
-  WORDS.cpp
-  Generating Code...
+﻿  GRB.cpp
   Kurs.vcxproj -> D:\Univer\jap\Kurs\Debug\Kurs.exe

@@ -1,5 +1,6 @@
 #pragma once
 #include "Error.h"
+#define EMPTY '#'
 typedef short GRBHALPHABET;	//сімвалы альфабэта
 namespace GRB {
 	struct Rule {	//правіла у граматыцы

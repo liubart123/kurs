@@ -11,9 +11,9 @@ namespace GEN {
 		int i;
 		//секцы€ канстант
 		for (i = 0; i < it.size; i++) {
-			if (it.table[i].idtype!=IT::IDTYPE::L)
+			if (IT::GetEntry(it, i)->idtype!=IT::IDTYPE::L)
 				break;
-			resultStr+=DeclarationToAssembler(it.table[i], CONST_NAME + to_string(i));
+			resultStr+=DeclarationToAssembler(*IT::GetEntry(it, i), CONST_NAME + to_string(i));
 			resultStr += "\n";
 		}	 
 
@@ -38,7 +38,7 @@ namespace GEN {
 			//параметры функцы≥
 			for (int j = 0; j < it.funcs[i]->curParams; j++) {
 				resultStr += it.funcs[i]->name + "_";
-				resultStr += DeclarationToAssembler(it.table[it.funcs[i]->params[j]]);
+				resultStr += DeclarationToAssembler(*IT::GetEntry(it, it.funcs[i]->params[j]));
 				//resultStr += "\n";
 			}
 
@@ -52,7 +52,7 @@ namespace GEN {
 			//лакальны€ пераменны€
 			for (int j = 0; j < it.funcs[i]->curLocals; j++) {
 				resultStr += it.funcs[i]->name + "_";
-				resultStr += DeclarationToAssembler(it.table[it.funcs[i]->locals[j]]);
+				resultStr += DeclarationToAssembler(*IT::GetEntry(it,it.funcs[i]->locals[j]));
 				//resultStr += "\n";
 			}
 			resultStr += "\n";
@@ -60,13 +60,10 @@ namespace GEN {
 
 
 		//польска€ натацы€
-		for (i = 0; i < lt.size; i++) {
-			if (LT::GetEntry(lt, i)->lexema[0] == LEX_SEMICOLON || LT::GetEntry(lt, i)->lexema[0] == LEX_LEFTBRACE) {
-				i++;
-				if (i >= lt.size) {
-					break;
-				}
-				int pos = LT::GetEntry(lt, i)->sn;
+		for (i = 1; i < lt.size; i++) {
+			if ((LT::GetEntry(lt, i)->lexema[0] == LEX_EQUALS && LT::GetEntry(lt, i)->idxTI==(int)('=')) ||
+				(LT::GetEntry(lt, i)->lexema[0] == LEX_ID && LT::GetEntry(lt, i-1)->lexema[0] != LEX_FUNCTION && IT::GetEntry(it, LT::GetEntry(lt, i)->idxTI)->idtype==IT::IDTYPE::F)
+			) {
 				Poland::PolishNotation(&i, &lt, &it, text);
 			}
 		}

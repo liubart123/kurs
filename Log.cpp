@@ -185,9 +185,9 @@ namespace Log
 		std::cout << "\n" << str << endl;
 		std::cout << "\n" << LT::PrintTable(lexTable) << endl;
 		
-		//lexTable.table[lexTable.size++]='$';
-		//MFST::Mfst *automatos = new MFST::Mfst(lexTable, GRB::getGreibach());
-		//automatos->start();
+		lexTable.table[lexTable.size++]='$';
+		MFST::Mfst *automatos = new MFST::Mfst(lexTable, GRB::getGreibach());
+		automatos->start();
 
 		GEN::Generator generator;
 		string gen = generator.Generate(idTable,lexTable, (char*)in.text);
@@ -273,9 +273,15 @@ namespace Log
 
 	char* GetSepSymb(char c) {
 		char *str;
-		if (c == '+' || c == '-' || c == '/' || c == '*' || c == '%' || c == '=') {
+		if (c == '+' || c == '-' || c == '/' || c == '*' || c == '%') {
 			str = new char[2];
 			str[0] = 'v';
+			str[1] = '\0';
+			return str;
+		}
+		else if (c == '=') {
+			str = new char[2];
+			str[0] = '=';
 			str[1] = '\0';
 			return str;
 		}
