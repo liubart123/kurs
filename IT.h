@@ -21,6 +21,7 @@ namespace IT
 		std::string name;
 		short curLocals=0;	//індэкс апошняй пераменнай
 		short curParams=0;	//індэкс апошняга параметра
+		short startOfFunc = -1;	//лексема, з якой пачынаецца апісанне функцыі
 	};		//структура для захоўвання функцый
 	
 
@@ -31,6 +32,7 @@ namespace IT
 		IDDATATYPE iddatatype;	//тып дадзеных	
 		IDTYPE idtype;		//тып ідэнтыфікатара
 		FuncDefenition *funcId;//функцыя, у якой вызначаны ід
+		std::string AssemblerName;
 		union
 		{
 			int vint;
@@ -59,7 +61,7 @@ namespace IT
 	void CheckStrForId(char* text, IdTable& idTable, LT::LexTable& lexTable);	//праверыць тэкст на ід-ы
 
 	FuncDefenition *AddFuncDef(IdTable& idTable,Entry& lex);//дабавціь вызначэнне функцыі
-	FuncDefenition *AddFuncDefMain(IdTable& idTable);//дабавціь вызначэнне функцыі
+	FuncDefenition *AddFuncDefMain(IdTable& idTable,int index);//дабавціь вызначэнне функцыі
 
 
 	void AddParm(IdTable& idTable, FuncDefenition& f, int index);

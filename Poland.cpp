@@ -1,6 +1,6 @@
 #include "Poland.h"
 namespace Poland {
-	char operations_chars[NUM_OF_PRIR_LEVEL][NUM_OF_OPER_IN_LEVEL] = { {'='}, {'(', ')'} , {'[',']'}, {'/' ,'*'},{'+' ,'-'}, {','} };
+	char operations_chars[NUM_OF_PRIR_LEVEL][NUM_OF_OPER_IN_LEVEL] = {  {'(', ')'} , {'[',']'}, {'/' ,'*'},{'+' ,'-'}, {','},{'='} };
 
 	//в€рнуць пры€рытэт аперацы≥, альбо -1, кал≥ аперацы€ не знойдзена
 	int GetPriorityOfOperation(LT::Entry c) {
@@ -95,7 +95,7 @@ namespace Poland {
 							polandStr.push_back(steck.top());
 							steck.pop();
 						}
-						steck.push(str.begin()->lexema[0]);
+						steck.push(*str.begin());
 					}
 				}
 			}

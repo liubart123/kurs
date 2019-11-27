@@ -1,6 +1,10 @@
 string function functiona(integer funcp){
 	funcp=funcp-2;
 	return funcp;
+};string function functionb(integer funcp){
+	declare integer intva=67*funcp;
+	funcp=funcp-2;
+	return funcp;
 };
 main
 {

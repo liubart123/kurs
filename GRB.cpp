@@ -88,7 +88,7 @@ namespace GRB {
 				Rule::Chain(4, TS('d'), TS('t'), TS('i'), TS(';')),
 				Rule::Chain(5, TS('d'), TS('t'), TS('i'), TS(';'), NS('N')),
 				Rule::Chain(6, TS('d'), TS('t'), TS('i'), TS('='), NS('E'), TS(';')),
-				Rule::Chain(7, TS('d'), TS('t'), TS('i'), TS('='), NS('E'), TS(';'), NS('N')),
+				Rule::Chain(7, TS('d'), TS('t'), TS('i'), TS('='), NS('E'), TS(';'), NS('N')),//нельга ≥н≥цы€л≥заваць функцы€й
 				Rule::Chain(4, TS('i'), TS('='), NS('E'), TS(';')),
 				Rule::Chain(5, TS('i'), TS('='), NS('E'), TS(';'), NS('N')),
 				Rule::Chain(4, TS('i'), TS('('), TS(')'), TS(';')),

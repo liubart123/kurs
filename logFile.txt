@@ -1,25 +1,31 @@
-≥Ù≥˚‚o¢asd-----Date: 26.11.2019 21:01:44-----
+≥Ù≥˚‚o¢asd-----Date: 27.11.2019 11:51:49-----
 -----PARAMETRS-----
 Input file: inFile.txt
 Output file: inFile.txt.out.txt
 Log file: logFile.txt
 -----»ÒıÓ‰Ì˚Â ‰‡ÌÌ˚Â-----
-Amount of symbols: 223
+Amount of symbols: 331
 Amount of ignored symbols: 5
-Amount of lines: 11
+Amount of lines: 15
 0: tfi(ti){
 1: i=ivl;
 2: ri;
-3: };
-4: m{
-5: i(lvlvl);
-6: dti=l;
-7: i=i(lvlvl)vlvivi(i(lvlvl));
-8: ri;
-9: };
+3: };tfi(ti){
+4: dti=lvi;
+5: i=ivl;
+6: ri;
+7: };
+8: m{
+9: i(lvlvl);
+10: dti=l;
+11: i=i(lvlvl)vlvivi(i(lvlvl));
+12: ri;
+13: };
 
 
 ID Table
+l:	literal,	integer,	2,	
+l:	literal,	integer,	67,	
 l:	literal,	integer,	2,	
 l:	literal,	integer,	123,	
 l:	literal,	integer,	32,	
@@ -33,32 +39,45 @@ l:	literal,	integer,	123,
 l:	literal,	integer,	32,	
 l:	literal,	string,	,	
 functiona:	function,	string,	,	
+funcp:	parametr,	string,	,	
+functionb:	function,	string,	,	
 funcp:	parametr,	integer,	0,	
+intva:	variable,	integer,	0,	
 strv:	variable,	string,	asd,	
 
 function: functiona, returning type is: string,	, count of locals is: 0, count of parametors is: 1
+function: functionb, returning type is: string,	, count of locals is: 1, count of parametors is: 1
 function: main, returning type is: string,	, count of locals is: 1, count of parametors is: 0
 
 .const
 lit0 dd 2
-lit1 dd 123
-lit2 dd 32
-lit3 dd 4
-lit4 db "asd", 0
-lit5 dd 123
-lit6 dd 32
-lit7 dd 4
-lit8 dd 3
-lit9 dd 123
-lit10 dd 32
-lit11 db "", 0
+lit1 dd 67
+lit2 dd 2
+lit3 dd 123
+lit4 dd 32
+lit5 dd 4
+lit6 db "asd", 0
+lit7 dd 123
+lit8 dd 32
+lit9 dd 4
+lit10 dd 3
+lit11 dd 123
+lit12 dd 32
+lit13 db "", 0
 .data
 
 ;------------------------------------------Function: functiona
 ;------------------------------------------parametars
-functiona_funcp dd 0
+functiona_funcp db "", 0
 
 ;------------------------------------------locals
+
+;------------------------------------------Function: functionb
+;------------------------------------------parametars
+functionb_funcp dd 0
+
+;------------------------------------------locals
+functionb_intva dd 0
 
 ;------------------------------------------Function: main
 ;------------------------------------------parametars
@@ -66,4 +85,139 @@ functiona_funcp dd 0
 ;------------------------------------------locals
 main_strv db "asd", 0
 
+.code
+;--------function--------functiona
+functiona	proc;
+;iil-=
+push	funcp
+push	funcp
+push	lit0
+pop	eax
+pop	ebx
+sub	eax, ebx
+push	eax
 
+pop	funcp
+pop	ebx
+;
+;i
+push	funcp
+
+functiona	endp
+;--------function--------functionb
+functionb	proc;
+;ili*=
+push	intva
+push	lit1
+push	funcp
+pop	eax
+pop	ebx
+imul	eax, ebx
+push	eax
+
+pop	intva
+pop	ebx
+;
+;iil-=
+push	funcp
+push	funcp
+push	lit2
+pop	eax
+pop	ebx
+sub	eax, ebx
+push	eax
+
+pop	funcp
+pop	ebx
+;
+;i
+push	funcp
+
+functionb	endp
+;--------function--------main
+main	proc;
+;ll+l/@##
+push	lit3
+push	lit4
+pop	eax
+pop	ebx
+add	eax, ebx
+push	eax
+
+push	lit5
+pop	eax
+pop	ebx
+idiv	eax, ebx
+push	eax
+
+call	functiona
+
+
+;
+;il=
+push	strv
+push	lit6
+pop	strv
+pop	ebx
+;
+;ill+l/@l+i-ll+l/@@-=######
+push	strv
+push	lit7
+push	lit8
+pop	eax
+pop	ebx
+add	eax, ebx
+push	eax
+
+push	lit9
+pop	eax
+pop	ebx
+idiv	eax, ebx
+push	eax
+
+call	functiona
+push	lit10
+pop	eax
+pop	ebx
+add	eax, ebx
+push	eax
+
+push	strv
+pop	eax
+pop	ebx
+sub	eax, ebx
+push	eax
+
+push	lit11
+push	lit12
+pop	eax
+pop	ebx
+add	eax, ebx
+push	eax
+
+push	lit13
+pop	eax
+pop	ebx
+idiv	eax, ebx
+push	eax
+
+call	functiona
+call	functiona
+pop	eax
+pop	ebx
+sub	eax, ebx
+push	eax
+
+pop	strv
+pop	ebx
+
+
+
+
+
+
+;
+;i
+push	strv
+
+main	endp

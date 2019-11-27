@@ -196,7 +196,7 @@ namespace IT {
 				parent="";
 			}
 			else if (lex == LEX_MAIN) {
-				curFunc = AddFuncDefMain(idTable);
+				curFunc = AddFuncDefMain(idTable, i);
 			}
 		}
 	}
@@ -278,13 +278,15 @@ namespace IT {
 		funcDef->returnType=lex.iddatatype;
 		idTable.funcs[idTable.funcCount++] = funcDef;
 		lex.funcId=funcDef;
+		funcDef->startOfFunc = lex.idxfirstLE;
 		return funcDef;
 	}	//дабавціь вызначэнне функцыі
 
-	FuncDefenition *AddFuncDefMain(IdTable& idTable){
+	FuncDefenition *AddFuncDefMain(IdTable& idTable, int index){
 		FuncDefenition *funcDef=new FuncDefenition();
 		funcDef->name = "main";
 		idTable.funcs[idTable.funcCount++] = funcDef;
+		funcDef->startOfFunc = index;
 		return funcDef;
 	}//дабавціь вызначэнне функцыі
 	//дабавіць параметр у функцыію
