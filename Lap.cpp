@@ -56,6 +56,9 @@ int _tmain(int argc, _TCHAR* argv[])
 			e.pop_front();
 		}
 	}
+	catch(exception e) {
+		cout << e.what();
+	}
 	//system("pause");
 	_getch();
 	return 0;

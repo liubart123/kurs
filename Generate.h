@@ -3,6 +3,7 @@
 #include "LT.h"
 #include <string>
 #include "Poland.h"
+#include <stack>
 
 #define START_OF_ASM "\
 .586\
@@ -37,6 +38,7 @@ start :\
 #define INT_TYPE "dd"
 #define STR_TYPE "db"
 #define END_OF_STR ", 0"
+#define LOCALS "local"
 
 //для секці кода
 #define EXPR_INT "push	"		//i
@@ -45,8 +47,12 @@ start :\
 #define EXPR_IMUL "pop	eax\npop	ebx\nimul	eax, ebx\npush	eax\n"	//*
 #define EXPR_SUB "pop	eax\npop	ebx\nsub	eax, ebx\npush	eax\n"	// -
 #define EXPR_DIV "pop	eax\npop	ebx\nidiv	eax, ebx\npush	eax\n"	// /
-#define EXPR_CALL "call	"		//@
 #define EXPR_CLEAR_STACK "pop	ebx"
+
+//выклікі функцыі
+#define EXPR_END_OF_FUNCTION "ret"
+#define EXPR_CALL "call	"		//@
+#define EXPR_PUSH_EAX "push	eax"	//запушыць еах у стэк(пасля выкліка функцыі)
 
 
 namespace GEN {
@@ -55,7 +61,15 @@ namespace GEN {
 		Generator();
 	};
 
+	std::string NameToAssemblerName(IT::Entry &id);		//імя пераменнай у асэмблернае імя
 	std::string DeclarationToAssembler(IT::Entry &lex, std::string name);	//запісаць дыклярацыю пераменнай у асэмблер
 	std::string DeclarationToAssembler(IT::Entry &lex);	//запісаць дыклярацыю пераменнай у асэмблер
-	std::string FunctionToAssembler(LT::LexTable &lexTable, IT::IdTable &idTable, int index, IT::FuncDefenition &func);	//генерацыя функцыі ў асэмблер
+	
+	std::string FunctionToAssembler(LT::LexTable &lexTable, IT::IdTable &idTable, int index, IT::FuncDefenition &func);	//генерацыя функцыі ў 
+
+
+
+
+
+
 }

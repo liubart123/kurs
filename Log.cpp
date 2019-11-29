@@ -192,11 +192,11 @@ namespace Log
 		GEN::Generator generator;
 		string gen = generator.Generate(idTable,lexTable, (char*)in.text);
 
-		*log.stream << "\n" << gen << endl;
+		//*log.stream << "\n" << gen << endl;
 		std::cout << "\n" << gen << endl;
 
-		cout << LT::PrintTable(lexTable);
 
+		cout << LT::PrintTable(lexTable);
 		/*int pos2 = 36;
 		bool v = Poland::PolishNotation(&pos2, &lexTable, &idTable, (char*)in.text);
 		cout << "\n" << LT::PrintTable(lexTable) << endl;
