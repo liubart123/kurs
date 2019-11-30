@@ -1,15 +1,12 @@
-string function functiona(integer funcp){
-	funcp=funcp-2;
-	return funcp;
-};string function functionb(integer funcp){
-	declare integer intva=67*funcp;
-	funcp=funcp-2;
-	return funcp;
-};
 main
 {
-	functiona(123+32/4);
-	declare string strv = "asd"τττ;
-	strv = functiona(123+32/4)+3-strv-functiona(functiona(123+32/4));
- 	return strv  ; ττ
+	declare integer a;
+	declare integer b;
+	if ((a>b)&(a>b-1)){
+	}else if (a>b){
+		a=a+b;
+	}else if (a>b){
+		a=a+b;
+	}
+	return a;
 };

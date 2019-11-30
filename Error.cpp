@@ -83,7 +83,7 @@ namespace Error
 		ERROR_ENTRY(603,"error in expression"),
 		ERROR_ENTRY(604,"error in function's parametors"),
 		ERROR_ENTRY(605,"error in executed function's parametors"),
-		ERROR_ENTRY_NODEF(606),
+		ERROR_ENTRY(606,"error in condition structure"),
 		ERROR_ENTRY_NODEF(607),
 		ERROR_ENTRY_NODEF(608),
 		ERROR_ENTRY_NODEF(609),

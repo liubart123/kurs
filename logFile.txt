@@ -1,50 +1,29 @@
-³ô³ûâo¢asd-----Date: 28.11.2019 23:14:37-----
+³ô³ûâo¢asd-----Date: 30.11.2019 12:26:54-----
 -----PARAMETRS-----
 Input file: inFile.txt
 Output file: inFile.txt.out.txt
 Log file: logFile.txt
 -----Èñõîäíûå äàííûå-----
-Amount of symbols: 331
-Amount of ignored symbols: 5
-Amount of lines: 15
-0: tfi(ti){
-1: i=ivl;
-2: ri;
-3: };tfi(ti){
-4: dti=lvi;
-5: i=ivl;
-6: ri;
-7: };
-8: m{
-9: i(lvlvl);
-10: dti=l;
-11: i=i(lvlvl)vlvivi(i(lvlvl));
-12: ri;
-13: };
+Amount of symbols: 137
+Amount of ignored symbols: 0
+Amount of lines: 12
+1: m
+2: {
+3: dti;
+4: dti;
+5: k((ivi)v(ivivl)){
+6: }ak(ivi){
+7: i=ivi;
+8: }ak(ivi){
+9: i=ivi;
+10: }
+11: ri;
+12: };
 
 
 ID Table
-l:	literal,	integer,	2,	
-l:	literal,	integer,	67,	
-l:	literal,	integer,	2,	
-l:	literal,	integer,	123,	
-l:	literal,	integer,	32,	
-l:	literal,	integer,	4,	
-l:	literal,	string,	asd,	
-l:	literal,	integer,	123,	
-l:	literal,	integer,	32,	
-l:	literal,	integer,	4,	
-l:	literal,	integer,	3,	
-l:	literal,	integer,	123,	
-l:	literal,	integer,	32,	
-l:	literal,	string,	,	
-functiona:	function,	string,	,	
-funcp:	parametr,	string,	,	
-functionb:	function,	string,	,	
-funcp:	parametr,	integer,	0,	
-intva:	variable,	integer,	0,	
-strv:	variable,	string,	asd,	
+l:	literal,	integer,	1,	
+a:	variable,	integer,	0,	
+b:	variable,	integer,	0,	
 
-function: functiona, returning type is: string,	, count of locals is: 0, count of parametors is: 1
-function: functionb, returning type is: string,	, count of locals is: 1, count of parametors is: 1
-function: main, returning type is: string,	, count of locals is: 1, count of parametors is: 0
+function: main, returning type is: string,	, count of locals is: 2, count of parametors is: 0

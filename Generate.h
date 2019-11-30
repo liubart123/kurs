@@ -15,12 +15,12 @@ ExitProcess PROTO : DWORD;\
 #define CODE_SECTION "\
 .code\
 "
-#define MAIN_ASM_FUNC "\
-start :\
-	call svv\
-	push 0\
-	call  ExitProcess\
-	end start\
+#define MAIN_ASM_FUNC "\n\
+start :\n\
+	call main\n\
+	push 0\n\
+	call  ExitProcess\n\
+	end start\n\
 "
 
 #define DATA_SECTION "\
@@ -54,12 +54,96 @@ start :\
 #define EXPR_CALL "call	"		//@
 #define EXPR_PUSH_EAX "push	eax"	//запушыць еах у стэк(пасля выкліка функцыі)
 
+//if
+#define IF_METKA "if"		//метка для if
+#define ELSE_METKA "else"	//метка для else/else if
+#define FINALLY "finally"	//метка для кода пасля блёка
+#define MOVE_TO_IF "push	eax\n\
+imul	eax,	1\n\
+je	"//пераход, калі ўмова у стэку не выконваецца
+#define MOVE_TO "jmp	"	//перайсці да меткі
+#define METKA ":"
+//a>b
+#define IF_LESS "pop	eax\n\
+pop	ebx\n\
+cmp	eax,ebx\n\
+LAHF\n\
+shr	ah, 7\n\
+mov	cl, ah\n\
+and	ecx,1\n\
+push	ecx\n\
+"
+//a<b
+#define IF_LARGER "pop	ebx\n\
+pop	eax\n\
+cmp	eax,ebx\n\
+LAHF\n\
+shr	ah, 7\n\
+mov	cl, ah\n\
+and	ecx,1\n\
+push	ecx\n\
+"
+//a==b
+#define IF_EQUALS "pop	ebx\n\
+pop	eax\n\
+cmp	eax,ebx\n\
+LAHF\n\
+shr ah, 6\n\
+mov	cl, ah\n\
+and	ecx,1\n\
+push	ecx\n\
+"
+#define IF_NOT_EQUALS "pop	ebx\n\
+pop	eax\n\
+cmp	eax,ebx\n\
+LAHF\n\
+shr	ah, 6\n\
+mov	cl, ah\n\
+not cl\n\
+and	ecx,1\n\
+push	ecx\n\
+"
+//&
+#define IF_AND "pop	ebx\n\
+pop	eax\n\
+and	eax,ebx\n\
+and	eax,1\n\
+push	eax\n\
+"
+//|
+#define IF_OR "pop	ebx\n\
+pop	eax\n\
+or	eax,ebx\n\
+and	eax,1\n\
+push	eax\n\
+"
+
 
 namespace GEN {
 	struct Generator {
 		std::string Generate(IT::IdTable &it, LT::LexTable &lt, char *text);	//атрымаць асм файл
 		Generator();
 	};
+
+	//struct Block {
+	//	TYPE_OF_BLOCK  type;
+	//	bool isOpened = false;	//ці была адкрываючая дужка
+	//	bool isClosed = false;	//ці была закрываючая дужка
+	//};	//структура для блёка
+	//struct Blocks {
+	//	int count = 0;
+	//	stack<Block> stack;
+	//	string funcName;
+	//	void OpenBlock(Block bl);
+	//	void CloseBlock();
+	//	bool isClosedBlock();
+	//};	//стэк з блёкамі
+	//enum TYPE_OF_BLOCK {
+	//	_if=0,
+	//	_else_if,
+	//	_else,
+	//	cycle
+	//};	 //тып пблёка
 
 	std::string NameToAssemblerName(IT::Entry &id);		//імя пераменнай у асэмблернае імя
 	std::string DeclarationToAssembler(IT::Entry &lex, std::string name);	//запісаць дыклярацыю пераменнай у асэмблер

@@ -71,6 +71,9 @@ namespace GEN {
 			) {
 				Poland::PolishNotation(&i, &lt, &it, text);
 			}
+			else if (i>2 && LT::GetEntry(lt, i - 1)->lexema[0] == LEX_RIGHTHESIS && LT::GetEntry(lt, i - 2)->lexema[0] == LEX_CONDITION) {
+				Poland::PolishNotation(&i, &lt, &it, text);
+			}
 		}
 
 		cout << LT::PrintTable(lt);
@@ -81,7 +84,8 @@ namespace GEN {
 			//std::cout << FunctionToAssembler(lt, it, i, *(it.funcs[i]));
 		}
 		//std::cout << resultStr;
-
+		resultStr+="\n";
+		resultStr+= MAIN_ASM_FUNC;
 		return resultStr;
 	}	//атрмаць радок асм файла
 	Generator::Generator() {
@@ -143,6 +147,11 @@ namespace GEN {
 		return resultStr;
 	}//зап≥саць дыкл€рацыю пераменнай у асэмблер
 
+	struct Block {
+		string name = "";
+		int countOfElses= 0;
+	};
+
 	std::string FunctionToAssembler(LT::LexTable &lexTable, IT::IdTable &idTable, int index, IT::FuncDefenition &func){
 		std::string str = "\n";
 		str += COMMENT;
@@ -170,9 +179,9 @@ namespace GEN {
 		//лакальны€ пераменный функцы≥
 		for (int i = 0; i < func.curLocals; i++) {
 			str+=LOCALS;
-			str=="	";
+			str +="	";
 			str += IT::GetEntry(idTable, func.locals[i])->AssemblerName;
-			str+=" : ";
+			str +=" : ";
 			switch (IT::GetEntry(idTable, func.locals[i])->iddatatype) {
 			case IT::IDDATATYPE::INT:str += INT_TYPE; break;
 			case IT::IDDATATYPE::STR:str += STR_TYPE; break;
@@ -184,23 +193,40 @@ namespace GEN {
 		std::string curLine = "";	//радок кода, €к≥ зараз перакладаецца на асэмблер
 		std::string translatedText = "";	//пераклдадзены кот
 		stack<string> NamesOfVarsToEqual;	//≥мЄны пераменных, €к≥м парысвайваецца значэнне
-		do {
-			curLine="\n";
-			curLine+=COMMENT;
-			translatedText="\n";
+
+		stack<Block> Blocks;		//стэк з if-ам≥
+		int countOfConditions = 0;//колькасць if-aҐ
+		//генерацы€ кода
+		i++;
+		while (LT::GetEntry(lexTable, i)->lexema[0] != 'f' 
+				&& LT::GetEntry(lexTable, i)->lexema[0] != 'm' 
+				&& i < lexTable.size) 
+		{
+			curLine = "\n";
+			curLine += COMMENT;
+			translatedText = "\n";
 			//пачатак разбору радка
 			if (LT::GetEntry(lexTable, i - 1)->lexema[0] == LEX_RETURN) {
 
 			}
-			else if ((LT::GetEntry(lexTable, i)->lexema[0] == 'i' 
+			else if ((LT::GetEntry(lexTable, i)->lexema[0] == 'i'	//(i||l)&&(i||l||@)||@
 			|| LT::GetEntry(lexTable, i)->lexema[0] == 'l')	//пачатак выразу €к≥ трэба разабраць
 			&& (LT::GetEntry(lexTable, i + 1)->lexema[0] == 'l'
-				|| LT::GetEntry(lexTable, i + 1)->lexema[0] == 'i'
-				|| LT::GetEntry(lexTable, i + 1)->lexema[0] == SPEC_SUMBOL)
-			|| LT::GetEntry(lexTable, i)->lexema[0] == SPEC_SUMBOL) {
-			NamesOfVarsToEqual.push(IT::GetEntry(idTable, (LT::GetEntry(lexTable, i)->idxTI))->AssemblerName);
-				do {
-					//cout << "\ncomment\n";
+			|| LT::GetEntry(lexTable, i + 1)->lexema[0] == 'i'
+			|| LT::GetEntry(lexTable, i + 1)->lexema[0] == SPEC_SUMBOL)
+			|| LT::GetEntry(lexTable, i)->lexema[0] == SPEC_SUMBOL
+			|| LT::GetEntry(lexTable, i)->lexema[0] == LEX_RIGHTHESIS)
+			{
+				if (LT::GetEntry(lexTable, i)->lexema[0] == 'i'){
+					NamesOfVarsToEqual.push(IT::GetEntry(idTable, (LT::GetEntry(lexTable, i)->idxTI))->AssemblerName);
+				}
+				while (LT::GetEntry(lexTable, i)->lexema[0] != ';'
+					&& LT::GetEntry(lexTable, i)->lexema[0] != 'f'
+					&& LT::GetEntry(lexTable, i)->lexema[0] != 'm'
+					&& LT::GetEntry(lexTable, i)->lexema[0] != FILL_SYMBOL
+					&& LT::GetEntry(lexTable, i)->lexema[0] != LEX_LEFTBRACE
+					&& i < lexTable.size)
+				{
 					//зап≥с лексем выразу, дл€ каментары€
 					if (LT::GetEntry(lexTable, i)->lexema[0] == 'v') {
 						curLine += char(LT::GetEntry(lexTable, i)->idxTI);
@@ -208,26 +234,25 @@ namespace GEN {
 					else {
 						curLine += LT::GetEntry(lexTable, i)->lexema[0];
 					}
-					//curLine+="\n";
-					
-					//cout << curLine;
-					//cout << "\ngener " << to_string(debugC++);
 					//апрацоҐка лексемы
 					if (LT::GetEntry(lexTable, i)->lexema[0] == 'v') {
 						switch (LT::GetEntry(lexTable, i)->idxTI) {
 							case (int)('+') : translatedText += EXPR_SUM; break;
-								case (int)('-') : translatedText += EXPR_SUB; break;
-									case (int)('*') : translatedText += EXPR_IMUL; break;
-										case (int)('/') : translatedText += EXPR_DIV; break;
+							case (int)('-') : translatedText += EXPR_SUB; break;
+							case (int)('*') : translatedText += EXPR_IMUL; break;
+							case (int)('/') : translatedText += EXPR_DIV; break;
+							case (int)('>') : translatedText += IF_LARGER; break;
+							case (int)('<') : translatedText += IF_LESS; break;
+							case (int)('?') : translatedText += IF_EQUALS; break;
+							case (int)('!') : translatedText += IF_NOT_EQUALS; break;
+							case (int)('&') : translatedText += IF_AND; break;
+							case (int)('|') : translatedText += IF_OR; break;
 						}
 					}
 					else if (LT::GetEntry(lexTable, i)->lexema[0] == '=') {
 						translatedText += EXPR_EQU;
-						//translatedText += NameOfVarTOEqual;
 						translatedText += NamesOfVarsToEqual.top();
 						NamesOfVarsToEqual.pop();
-						//translatedText += "\n";
-						//translatedText += EXPR_CLEAR_STACK;
 					}
 					else if (LT::GetEntry(lexTable, i)->lexema[0] == 'i') {
 						translatedText += EXPR_INT;
@@ -245,21 +270,69 @@ namespace GEN {
 					}
 					else {
 					}
-					translatedText+="\n";
+					translatedText += "\n";
 					i++;
-				} 
-				while (LT::GetEntry(lexTable, i)->lexema[0] != ';' 
-					&& LT::GetEntry(lexTable, i)->lexema[0] != 'f' 
-					&& LT::GetEntry(lexTable, i)->lexema[0] != 'm' 
-					&& LT::GetEntry(lexTable, i)->lexema[0] != FILL_SYMBOL 
-					&& i < lexTable.size);
+				}
 				str += COMMENT;
 				str += curLine;
 				str += translatedText;
 			}
+			else if (LT::GetEntry(lexTable, i)->lexema[0] == LEX_CONDITION	//...if
+			&& LT::GetEntry(lexTable, i - 1)->lexema[0] != LEX_ELSE) {
+				Block bl = Block();
+				bl.name=IF_METKA;
+				bl.name+=to_string(countOfConditions++);
+				Blocks.push(bl);
+			}
+			else if (LT::GetEntry(lexTable, i)->lexema[0] == LEX_ELSE
+			&& LT::GetEntry(lexTable, i+1)->lexema[0] == LEX_CONDITION) {	//else if...
+				str += Blocks.top().name;
+				str += ELSE_METKA;
+				str += to_string(Blocks.top().countOfElses++);
+				str += METKA;
+				str += "\n";
+			}
+			else if (LT::GetEntry(lexTable, i)->lexema[0] == LEX_ELSE) {	//else...
+				str += Blocks.top().name;
+				str += ELSE_METKA;
+				str += to_string(Blocks.top().countOfElses++);
+				str += METKA;
+				str += "\n";
+			}
+			else if (LT::GetEntry(lexTable, i)->lexema[0] == LEX_LEFTBRACE		//...{
+			&&	!Blocks.empty()) {
+				str += MOVE_TO_IF;
+				str += Blocks.top().name;
+				str += ELSE_METKA;
+				str += to_string(Blocks.top().countOfElses);
+				str += "\n";
+			}
+			else if (LT::GetEntry(lexTable, i)->lexema[0] == LEX_BRACELET	//}else
+				&& LT::GetEntry(lexTable, i + 1)->lexema[0] == LEX_ELSE) {
+				str += MOVE_TO;
+				str += Blocks.top().name;
+				str += FINALLY;
+				//str += to_string(Blocks.top().countOfElses);
+				str += "\n";
+			}
+			else if (LT::GetEntry(lexTable, i)->lexema[0] == LEX_BRACELET	//}...
+				&& LT::GetEntry(lexTable, i + 1)->lexema[0] != LEX_ELSE) {
+				if (Blocks.empty()) {
+					break;
+				}
+				str += Blocks.top().name;
+				str += FINALLY;
+				str += METKA;
+				str+="\n";
+				str += Blocks.top().name;
+				str += ELSE_METKA;
+				str += to_string(Blocks.top().countOfElses);
+				str += METKA;
+				str += "\n";
+				Blocks.pop();
+			}
 			i++;
-		} 
-		while (LT::GetEntry(lexTable, i)->lexema[0] != 'f' && LT::GetEntry(lexTable, i)->lexema[0] != 'm' && i < lexTable.size);
+		}
 		str += "\n";
 		str += EXPR_END_OF_FUNCTION;
 		str += "\n";

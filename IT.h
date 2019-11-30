@@ -9,11 +9,24 @@
 #define FUNCS_COUNT		10	//колькасць функцый
 #include "LT.h"
 #include <string>
+#include <stack>
 
 namespace IT
 {
 	enum IDDATATYPE{INT=1,STR=2,VOID=3};
 	enum IDTYPE	{V=1,F=2,P=3,L=4};		//пераменная, функцыя, параметр, літэрал
+	enum BLOCK_TYPE
+	{
+		_if = 1,
+		_else_if,
+		_else,
+		cycle
+	};	//тыпы блёкаў: цыкл, ўмова
+	struct BlockDefenition {
+		BLOCK_TYPE type;	//тып блёка
+		int startIndex;		//індэкс лексемы, з якой блёк пачынаецца
+		int countOfElseIf = 0;
+	};	//структура, для захавання блёка
 	struct FuncDefenition {
 		IDDATATYPE returnType;
 		int params[PARMS_MAX_COUNT];
@@ -22,9 +35,9 @@ namespace IT
 		short curLocals=0;	//індэкс апошняй пераменнай
 		short curParams=0;	//індэкс апошняга параметра
 		short startOfFunc = -1;	//лексема, з якой пачынаецца апісанне функцыі
+		std::stack<BlockDefenition*> Blocks;	//часовая зменная для падліка блёкаў у функцыі
+		std::stack<BlockDefenition*> BlocksP;	//стэк з блёкамі ў функцыі
 	};		//структура для захоўвання функцый
-	
-
 
 	struct Entry {
 		int idxfirstLE;		//індэкс у табліцы лексем

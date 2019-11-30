@@ -1,6 +1,6 @@
 #include "Poland.h"
 namespace Poland {
-	char operations_chars[NUM_OF_PRIR_LEVEL][NUM_OF_OPER_IN_LEVEL] = {  {'(', ')'} , {'[',']'}, {'/' ,'*'},{'+' ,'-'}, {','},{'='} };
+	char operations_chars[NUM_OF_PRIR_LEVEL][NUM_OF_OPER_IN_LEVEL] = {  {'(', ')', ' '} , {'[',']', ' '}, {'/' ,'*', ' '}, {'+' ,'-', ' '}, {'>' ,'<', '!'},{'&' ,'|', ' '},{',', ' ', ' '}, {'=', ' ', ' '} };
 
 	//в€рнуць пры€рытэт аперацы≥, альбо -1, кал≥ аперацы€ не знойдзена
 	int GetPriorityOfOperation(LT::Entry c) {
@@ -28,7 +28,10 @@ namespace Poland {
 		int i = 0;
 		do {
 			str.push_back(*LT::GetEntry(*lexTable, *(lexTable_pos)+i));
-		} while (LT::GetEntry(*lexTable, *(lexTable_pos)+(++i))->lexema[0] != ';' );
+		} while (LT::GetEntry(*lexTable, *(lexTable_pos)+(++i))->lexema[0] != ';' && LT::GetEntry(*lexTable, *(lexTable_pos)+(i))->lexema[0] != '{');
+		if (LT::GetEntry(*lexTable, *(lexTable_pos)+(i--))->lexema[0] == '{') {
+			str.pop_back();
+		}
 		int positionOfLexem = 0;	//паз≥цы€ ц€кучай лексемы, дл€ памылак
 		//зап≥с натацы≥ у радок
 		while (str.empty() == false) {
@@ -45,7 +48,8 @@ namespace Poland {
 				|| str.begin()->lexema[0] == ')'
 				|| str.begin()->lexema[0] == '['
 				|| str.begin()->lexema[0] == ']'
-				|| str.begin()->lexema[0] == ',')
+				|| str.begin()->lexema[0] == ','
+				|| str.begin()->lexema[0] == '!')
 			{
 				int oper = GetPriorityOfOperation(*str.begin());
 				if (oper == -1) {
@@ -71,11 +75,15 @@ namespace Poland {
 						}
 						if (steck.top().lexema[0] == '(') {
 							steck.pop();
-							LT::Entry temp = steck.top();
-							if (steck.top().lexema[0] == SPEC_SUMBOL && IT::GetEntry(*idTable, steck.top().idxTI)->idtype == IT::IDTYPE::F) {
-								//steck.top().lexema[0]= SPEC_SUMBOL;
-								polandStr.push_back(steck.top());
-								steck.pop();
+							if (steck.empty()) {
+
+							}else{
+								LT::Entry temp = steck.top();
+								if (steck.top().lexema[0] == SPEC_SUMBOL && IT::GetEntry(*idTable, steck.top().idxTI)->idtype == IT::IDTYPE::F) {
+									//steck.top().lexema[0]= SPEC_SUMBOL;
+									polandStr.push_back(steck.top());
+									steck.pop();
+								}
 							}
 						}
 						else {

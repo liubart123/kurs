@@ -191,9 +191,24 @@ namespace IT {
 			else if (lex==LEX_FUNCTION){
 				parent.append(WORDS::GetWord(text, LT::GetEntry(lexTable, i)->sn));
 			}
+			else if (lex == LEX_CONDITION && LT::GetEntry(lexTable, i - 1)->lexema[0] != LEX_ELSE) {
+				BlockDefenition *bl = new BlockDefenition();
+				curFunc->Blocks.push(bl);
+				curFunc->BlocksP.push(bl);
+			}
+			else if (lex == LEX_ELSE) {
+				curFunc->Blocks.top()->countOfElseIf++;
+			}
 			else if (lex == LEX_BRACELET) {
-				function[0]='\0';
-				parent="";
+				if (i < lexTable.size - 1 && LT::GetEntry(lexTable, i+1)->lexema[0] == LEX_ELSE) 
+				{
+					//curFunc->Blocks.top().countOfElseIf++;
+				}
+				else {
+					if (!curFunc->Blocks.empty()){
+						curFunc->Blocks.pop();
+					}
+				}
 			}
 			else if (lex == LEX_MAIN) {
 				curFunc = AddFuncDefMain(idTable, i);

@@ -124,10 +124,10 @@ namespace Log
 				}
 				tempString[pos] = '\0';	
 				if (newLine) {		//новы радок
+					NumberOfLine++;
 					string numOfLine = "";
 					numOfLine = to_string((int)NumberOfLine);
 					WriteLine(log, &(numOfLine[0]), ": ", "");
-					NumberOfLine++;
 					positionInLine=0;
 				}
 				if (pos != 0) {		//кал≥ ц€кучае слова не с≥мвал пропуска
@@ -152,7 +152,7 @@ namespace Log
 					WriteLine(log, result, "");
 				}
 				char* sepSymbol = GetSepSymb(in.text[pos + startPos]);
-				if (sepSymbol[0] != '\n' || newLine == false || IsNewLinePossible(lastChar) == true){
+				if (sepSymbol[0] != '\n' || newLine == false || IsNewLinePossible(lastChar) == true || sepSymbol[0] == '\n'){
 					WriteLine(log, sepSymbol, "");
 					//positionInLine++;
 				}
@@ -162,7 +162,7 @@ namespace Log
 					lexTable.table[lexTable.size-1].idxTI = int (in.text[pos + startPos]);
 				}
 				//есць пераход на новы радок
-				if ((sepSymbol[0] == '\n' || sepSymbol[1] == '\n') && newLine == false){
+				if ((sepSymbol[0] == '\n' || sepSymbol[1] == '\n') && newLine == false || sepSymbol[0] == '\n'){
 					newLine = true;
 				}
 				else {
@@ -186,7 +186,7 @@ namespace Log
 		std::cout << "\n" << LT::PrintTable(lexTable) << endl;
 		
 		lexTable.table[lexTable.size++]='$';
-		//MFST::Mfst *automatos = new MFST::Mfst(lexTable, GRB::getGreibach());
+		MFST::Mfst *automatos = new MFST::Mfst(lexTable, GRB::getGreibach());
 		//automatos->start();
 
 		GEN::Generator generator;
@@ -253,7 +253,17 @@ namespace Log
 		}
 		else if (strcmp(word, "print") == 0) {
 			str[0] = LEX_PRINT;
-		} else {
+		}
+		else if (strcmp(word, "if") == 0) {
+			str[0] = LEX_CONDITION;
+		}
+		else if (strcmp(word, "else") == 0) {
+			str[0] = LEX_ELSE;
+		}
+		else if (strcmp(word, "while") == 0) {
+			str[0] = LEX_CYCLE;
+		}
+		else {
 			str[0] = LEX_ERROR;
 		}
 
@@ -264,7 +274,8 @@ namespace Log
 
 	bool CheckSepSymb(char c) {
 		if (c == ' ' || c == ',' || c == '.' || c == ';' || c == '\n' || c == '+' || 
-		c == '-' || c == '=' || c == '/' || c == '*' || c == '\t' || c == '{' || c == '}' || c == '(' || c == ')') {
+		c == '-' || c == '=' || c == '/' || c == '*' || c == '\t' || c == '{' || c == '}' || c == '(' || c == ')'
+			|| c == '&' || c == '|' || c == '>' || c == '<' || c == '!' || c == '?') {
 			return true;
 		}
 		return false;
@@ -273,31 +284,40 @@ namespace Log
 
 	char* GetSepSymb(char c) {
 		char *str;
-		if (c == '+' || c == '-' || c == '/' || c == '*' || c == '%') {
+		if (c == '+' || c == '-' || c == '/' || c == '*' || c == '%'
+			|| c == '>' || c == '<' || c == '|' || c == '&' || c == '!' || c == '=') {
 			str = new char[2];
-			str[0] = 'v';
+			switch (c) {
+				case '+':str[0] = LEX_PLUS; break;
+				case '-':str[0] = LEX_MINUS; break;
+				case '\\':str[0] = LEX_DIRSLASH; break;
+				case '*':str[0] = LEX_STAR; break;
+				case '>':str[0] = LEX_GREATER; break;
+				case '<':str[0] = LEX_LESS; break;
+				case '|':str[0] = LEX_OR; break;
+				case '&':str[0] = LEX_AND; break;
+				case '!':str[0] = LEX_NOT_EQUAL; break;
+				case '?':str[0] = LEX_EQUALS; break;
+				case '%':str[0] = LEX_PROCENT; break;
+				case '=':str[0] = LEX_EQUALS; break;
+			}
+			//str[0] = 'v';
 			str[1] = '\0';
 			return str;
 		}
-		else if (c == '=') {
+		/*else if (c == '=') {
 			str = new char[2];
 			str[0] = '=';
 			str[1] = '\0';
 			return str;
-		}
+		}*/
 		else if (c != ' ' /*&& c != ';'*/ && c != '\n' && c != '\t'/* && c != '{' && c != '}'*/) {
 			str = new char[2];
 			str[0] = c;
 			str[1] = '\0';
 			return str;
 		}
-		/*else if (c == ';' || c == '{' || c == '}') {
-			str = new char[3];
-			str[0] = c;
-			str[1] = '\n';
-			str[2] = '\0';
-			return str;
-		}*/
+		
 		else if (c == '\n') {
 			str = new char[2];
 			str[0] = '\n';

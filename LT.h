@@ -17,13 +17,26 @@
 #define	LEX_BRACELET	'}'
 #define	LEX_LEFTHESIS	')'
 #define	LEX_RIGHTHESIS	'('
-#define	LEX_PLUS		'v'
-#define	LEX_MINUS		'v'
-#define	LEX_STAR		'v'
-#define	LEX_DIRSLASH	'v'
+//арыфметычны€
+#define	LEX_PLUS		'v'	//+
+#define	LEX_MINUS		'v'	//-
+#define	LEX_STAR		'v'	//*
+#define	LEX_DIRSLASH	'v'	// /
+#define	LEX_PROCENT		'v'	// %
+//лаг≥чны€
+#define	LEX_LESS		'v'	//<
+#define	LEX_GREATER		'v'	//>
+#define	LEX_OR			'v' //|
+#define	LEX_AND			'v'	//&
+#define	LEX_LOG_EQUALS	'v'	//equ ?
+#define	LEX_NOT_EQUAL	'v'	//!
+
 #define	LEX_EQUALS		'='
 #define	LEX_ERROR		'e'
 #define	LEX_SEMICOLON	';'
+#define	LEX_CYCLE		'c'	//while
+#define	LEX_CONDITION	'k'	//if
+#define	LEX_ELSE		'a'	//else
 //#include "IT.h"
 namespace LT
 {
