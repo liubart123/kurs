@@ -285,7 +285,7 @@ namespace Log
 	char* GetSepSymb(char c) {
 		char *str;
 		if (c == '+' || c == '-' || c == '/' || c == '*' || c == '%'
-			|| c == '>' || c == '<' || c == '|' || c == '&' || c == '!' || c == '=') {
+			|| c == '>' || c == '<' || c == '|' || c == '&' || c == '!' || c == '=' || c == '?') {
 			str = new char[2];
 			switch (c) {
 				case '+':str[0] = LEX_PLUS; break;
@@ -297,7 +297,7 @@ namespace Log
 				case '|':str[0] = LEX_OR; break;
 				case '&':str[0] = LEX_AND; break;
 				case '!':str[0] = LEX_NOT_EQUAL; break;
-				case '?':str[0] = LEX_EQUALS; break;
+				case '?':str[0] = LEX_LOG_EQUALS; break;
 				case '%':str[0] = LEX_PROCENT; break;
 				case '=':str[0] = LEX_EQUALS; break;
 			}

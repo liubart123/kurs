@@ -66,7 +66,7 @@ namespace Error
 		ERROR_ENTRY_NODEF10(190),
 		ERROR_ENTRY(200,"maximum number of lexem"),	//lex
 		ERROR_ENTRY(201,"maximum number of id"),	//lex
-		ERROR_ENTRY(202,"id syntax error"),	//lex
+		ERROR_ENTRY(202,"id syntax error"),	//id
 		ERROR_ENTRY(203,"id must be declarated"),	//id
 		ERROR_ENTRY(204,"lexic error"),	//lex
 		ERROR_ENTRY(205,"must be closing bracket"),	//poland

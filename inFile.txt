@@ -2,11 +2,18 @@ main
 {
 	declare integer a;
 	declare integer b;
-	if ((a>b)&(a>b-1)){
+	a=12;
+	b=15;
+	if ((a>b)&(a>b*2)){
+		a=5;
 	}else if (a>b){
-		a=a+b;
-	}else if (a>b){
-		a=a+b;
+		a=4;
+	}else if (a<b|a?b){
+		if (a?b-3){
+			a=6;
+		}else {
+			a=3;
+		}
 	}
-	return a;
+	return a*2;
 };

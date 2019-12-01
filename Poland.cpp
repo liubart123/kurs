@@ -1,6 +1,14 @@
 #include "Poland.h"
 namespace Poland {
-	char operations_chars[NUM_OF_PRIR_LEVEL][NUM_OF_OPER_IN_LEVEL] = {  {'(', ')', ' '} , {'[',']', ' '}, {'/' ,'*', ' '}, {'+' ,'-', ' '}, {'>' ,'<', '!'},{'&' ,'|', ' '},{',', ' ', ' '}, {'=', ' ', ' '} };
+	char operations_chars[NUM_OF_PRIR_LEVEL][NUM_OF_OPER_IN_LEVEL] = {  
+			{'(', ')', ' ', ' '}, 
+			{'[', ']', ' ', ' '}, 
+			{'/' ,'*', ' ', ' '}, 
+			{'+' ,'-', ' ', ' '}, 
+			{'>' ,'<', '!', '?'},
+			{'&' ,'|', ' ', ' '},
+			{',', ' ', ' ', ' '}, 
+			{'=', LEX_RETURN, ' ', ' '} };
 
 	//в€рнуць пры€рытэт аперацы≥, альбо -1, кал≥ аперацы€ не знойдзена
 	int GetPriorityOfOperation(LT::Entry c) {
@@ -29,14 +37,16 @@ namespace Poland {
 		do {
 			str.push_back(*LT::GetEntry(*lexTable, *(lexTable_pos)+i));
 		} while (LT::GetEntry(*lexTable, *(lexTable_pos)+(++i))->lexema[0] != ';' && LT::GetEntry(*lexTable, *(lexTable_pos)+(i))->lexema[0] != '{');
-		if (LT::GetEntry(*lexTable, *(lexTable_pos)+(i--))->lexema[0] == '{') {
+		if (LT::GetEntry(*lexTable, *(lexTable_pos)+(i))->lexema[0] == '{') {
 			str.pop_back();
+			i--;
 		}
 		int positionOfLexem = 0;	//паз≥цы€ ц€кучай лексемы, дл€ памылак
 		//зап≥с натацы≥ у радок
 		while (str.empty() == false) {
-			if (str.begin()->lexema[0] == 'i' || str.begin()->lexema[0] == 'l') {
-				if (str.begin()->lexema[0] == 'i' && IT::GetEntry(*idTable, str.begin()->idxTI)->idtype == IT::IDTYPE::F) {
+			char lex = str.begin()->lexema[0];
+			if (lex == 'i' || lex == 'l') {
+				if (lex == 'i' && IT::GetEntry(*idTable, str.begin()->idxTI)->idtype == IT::IDTYPE::F) {
 					steck.push(*str.begin());
 					steck.top().lexema[0] = SPEC_SUMBOL;
 				}
@@ -44,12 +54,13 @@ namespace Poland {
 					polandStr.push_back(*str.begin());
 				}
 			}
-			else if (str.begin()->lexema[0] == 'v' || str.begin()->lexema[0] == '=' || str.begin()->lexema[0] == '('
-				|| str.begin()->lexema[0] == ')'
-				|| str.begin()->lexema[0] == '['
-				|| str.begin()->lexema[0] == ']'
-				|| str.begin()->lexema[0] == ','
-				|| str.begin()->lexema[0] == '!')
+			else if (lex == 'v' || lex == '=' || lex == '('
+				|| lex == ')'
+				|| lex == '['
+				|| lex == ']'
+				|| lex == ','
+				|| lex == '!'
+				|| lex == LEX_RETURN)
 			{
 				int oper = GetPriorityOfOperation(*str.begin());
 				if (oper == -1) {
@@ -58,17 +69,17 @@ namespace Poland {
 					//throw(Error::geterrortext(108, text, *lexTable_pos + positionOfLexem));
 				}
 				else {
-					if (str.begin()->lexema[0] == ',') {
+					if (lex == ',') {
 						while (steck.empty() == false && steck.top().lexema[0] != '(') {
 							polandStr.push_back(steck.top());
 							steck.pop();
 						}
 						//steck.push(*str.begin());
 					}
-					else if (str.begin()->lexema[0] == '(' || str.begin()->lexema[0] == '[') {
+					else if (lex == '(' || lex == '[') {
 						steck.push(*str.begin());
 					}
-					else if (str.begin()->lexema[0] == ')') {
+					else if (lex == ')') {
 						while (steck.empty() == false && steck.top().lexema[0] != '(') {
 							polandStr.push_back(steck.top());
 							steck.pop();
@@ -90,7 +101,7 @@ namespace Poland {
 							throw Error::geterror(205);
 						}
 					}
-					else if (str.begin()->lexema[0] == ']') {
+					else if (lex == ']') {
 						while (steck.empty() == false && steck.top().lexema[0] != '[') {
 							polandStr.push_back(steck.top());
 							steck.pop();
@@ -99,7 +110,7 @@ namespace Poland {
 					}
 					else {
 						while (steck.empty() == false && steck.top().lexema[0] != '(' && steck.top().lexema[0] != '['
-							&& oper >= GetPriorityOfOperation(steck.top().lexema[0])) {
+							&& oper >= GetPriorityOfOperation(steck.top())) {
 							polandStr.push_back(steck.top());
 							steck.pop();
 						}
@@ -107,12 +118,12 @@ namespace Poland {
 					}
 				}
 			}
-			else if (str.begin()->lexema[0] == '\n') {
+			else if (lex == '\n') {
 				
 
 			}
-			else if (str.begin()->lexema[0] == LEX_SEMICOLON || str.begin()->lexema[0] == LEX_BRACELET || str.begin()->lexema[0] == LEX_DECLARE
-				|| str.begin()->lexema[0] == LEX_RETURN || str.begin()->lexema[0] == LEX_STRING || str.begin()->lexema[0] == LEX_INTEGER) {
+			else if (lex == LEX_SEMICOLON || lex == LEX_BRACELET || lex == LEX_DECLARE
+				|| lex == LEX_RETURN || lex == LEX_STRING || lex == LEX_INTEGER) {
 				return false;
 			}
 			else {

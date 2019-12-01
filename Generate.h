@@ -6,10 +6,10 @@
 #include <stack>
 
 #define START_OF_ASM "\
-.586\
-.MODEL FLAT, STDCALL;	\
-includelib kernel32.lib;\
-ExitProcess PROTO : DWORD;\
+.586\n\
+.MODEL FLAT, STDCALL;	\n\
+includelib kernel32.lib;\n\
+ExitProcess PROTO : DWORD;\n\
 "
 
 #define CODE_SECTION "\
@@ -35,8 +35,8 @@ start :\n\
 #define PROC_END "	endp"
 //імёны для секцыі дадзеных
 #define CONST_NAME "lit"
-#define INT_TYPE "dd"
-#define STR_TYPE "db"
+#define INT_TYPE "dword"
+#define STR_TYPE "byte"
 #define END_OF_STR ", 0"
 #define LOCALS "local"
 
@@ -45,9 +45,11 @@ start :\n\
 #define EXPR_EQU "pop	"		//=
 #define EXPR_SUM "pop	eax\npop	ebx\nadd	eax, ebx\npush	eax\n"	//+
 #define EXPR_IMUL "pop	eax\npop	ebx\nimul	eax, ebx\npush	eax\n"	//*
-#define EXPR_SUB "pop	eax\npop	ebx\nsub	eax, ebx\npush	eax\n"	// -
-#define EXPR_DIV "pop	eax\npop	ebx\nidiv	eax, ebx\npush	eax\n"	// /
+#define EXPR_SUB "pop	eax\npop	ebx\nsub	ebx, eax\npush	ebx\n"	// -
+#define EXPR_DIV "pop	eax\npop	ebx\nidiv	ebx, eax\npush	ebx\n"	// /
 #define EXPR_CLEAR_STACK "pop	ebx"
+#define EXPR_RETURN "pop	eax\n\
+ret\n"	//return
 
 //выклікі функцыі
 #define EXPR_END_OF_FUNCTION "ret"
@@ -58,24 +60,24 @@ start :\n\
 #define IF_METKA "if"		//метка для if
 #define ELSE_METKA "else"	//метка для else/else if
 #define FINALLY "finally"	//метка для кода пасля блёка
-#define MOVE_TO_IF "push	eax\n\
-imul	eax,	1\n\
+#define MOVE_TO_IF "pop	eax\n\
+cmp	eax, 0\n\
 je	"//пераход, калі ўмова у стэку не выконваецца
 #define MOVE_TO "jmp	"	//перайсці да меткі
-#define METKA ":"
-//a>b
+#define METKA ":;------------------------------"
+//a<b
 #define IF_LESS "pop	eax\n\
 pop	ebx\n\
-cmp	eax,ebx\n\
+cmp	ebx,eax\n\
 LAHF\n\
 shr	ah, 7\n\
 mov	cl, ah\n\
 and	ecx,1\n\
 push	ecx\n\
 "
-//a<b
-#define IF_LARGER "pop	ebx\n\
-pop	eax\n\
+//a>b
+#define IF_LARGER "pop	eax\n\
+pop	ebx\n\
 cmp	eax,ebx\n\
 LAHF\n\
 shr	ah, 7\n\
