@@ -84,7 +84,7 @@ namespace GRB {
 				Rule::Chain(13, TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';'))
 			),
 		Rule(NS('N'), GRB_ERROR_SERIES + 1,		//цела цункцыі
-				20,
+				24,
 				Rule::Chain(4, TS('d'), TS('t'), TS('i'), TS(';')),
 				Rule::Chain(5, TS('d'), TS('t'), TS('i'), TS(';'), NS('N')),
 				Rule::Chain(6, TS('d'), TS('t'), TS('i'), TS('='), NS('E'), TS(';')),
@@ -104,7 +104,13 @@ namespace GRB {
 				Rule::Chain(6, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), TS('}')),	//if(){}
 				Rule::Chain(7, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), TS('}'), NS('N')),	//if(){}...
 				Rule::Chain(7, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), TS('}'), NS('C')),	//if(){}else...
-				Rule::Chain(8, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), TS('}'), NS('C'), NS('N')) //if(){}else...
+				Rule::Chain(8, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), TS('}'), NS('C'), NS('N')), //if(){}else...
+
+
+				Rule::Chain(2, TS('b'), TS(';')),
+				Rule::Chain(3, TS('b'), TS(';'), NS('N')),
+				Rule::Chain(7, TS('w'), TS('('), NS('E'), TS(')'), TS('{'), NS('N'), TS('}')),	//while(){}
+				Rule::Chain(8, TS('w'), TS('('), NS('E'), TS(')'), TS('{'), NS('N'), TS('}'), NS('N'))	//while(){}...
 			),
 		Rule(NS('E'), GRB_ERROR_SERIES + 2,		//выраз
 				13,

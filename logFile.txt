@@ -1,43 +1,34 @@
-³ô³ûâo¢asd-----Date: 01.12.2019 00:08:40-----
+³ô³ûâo¢asd-----Date: 01.12.2019 15:54:37-----
 -----PARAMETRS-----
 Input file: inFile.txt
 Output file: inFile.txt.out.txt
 Log file: logFile.txt
 -----Èñõîäíûå äàííûå-----
-Amount of symbols: 197
+Amount of symbols: 141
 Amount of ignored symbols: 0
-Amount of lines: 19
+Amount of lines: 16
 1: m
 2: {
 3: dti;
 4: dti;
 5: i=l;
 6: i=l;
-7: k((ivi)v(ivivl)){
-8: i=l;
-9: }ak(ivi){
-10: i=l;
-11: }ak(ivivivi){
-12: k(ivivl){
-13: i=l;
-14: }a{
-15: i=l;
-16: }
-17: }
-18: rivl;
-19: };
+7: w(ivl){
+8: i=ivi;
+9: i=ivl;
+10: k(ivl){
+11: i=l;
+12: b;
+13: }
+14: }
+15: ri;
+16: };
 
 
 ID Table
-l:	literal,	integer,	12,	
-l:	literal,	integer,	15,	
-l:	literal,	integer,	2,	
+l:	literal,	integer,	1,	
 l:	literal,	integer,	5,	
 l:	literal,	integer,	4,	
-l:	literal,	integer,	3,	
-l:	literal,	integer,	6,	
-l:	literal,	integer,	3,	
-l:	literal,	integer,	2,	
 a:	variable,	integer,	0,	
 b:	variable,	integer,	0,	
 

@@ -33,7 +33,15 @@ namespace IT {
 		return &idtable.table[n];
 	}
 	void DeleteTable(IdTable& idtable);
-
+	void DEleteEntry(IdTable& idTable, int id){
+		if (id < 0 || id >= idTable.size) {
+			return;
+		}
+		for (int i = id; i < idTable.size-1; i++) {
+			idTable.table[i]= idTable.table[i-1];
+		}
+		idTable.size--;
+	}	//выдалць запі
 	//праверыць тэкст на ід-ы
 	void CheckStrForId(char* text, IdTable& idTable, LT::LexTable& lexTable) {
 		//літэралы
@@ -54,7 +62,13 @@ namespace IT {
 					GetEntry(idTable, idTable.size - 1)->value.vstr.len = WORDS::LengthWord(id);
 					WORDS::StringIDCopy(GetEntry(idTable, idTable.size - 1)->value.vstr.str,id);
 				}
-				entry->idxTI = idTable.size - 1;
+				int pos = IsId(idTable, idTable.size - 1);
+				if (pos != TI_NULLIDX) {
+					entry->idxTI = pos;
+					DEleteEntry(idTable,idTable.size-1);
+				}else {
+					entry->idxTI = idTable.size - 1;
+				}
 			}
 			else {
 
@@ -229,6 +243,29 @@ namespace IT {
 		}
 		return pos;
 	}
+
+	int IsId(IdTable& idtable,int id){
+		int pos = TI_NULLIDX;
+		for (int i = 0; i < idtable.size; i++) {
+			if (i == id) {
+				continue;
+			}
+			if (GetEntry(idtable, id)->iddatatype == GetEntry(idtable,i)->iddatatype) {
+				if (GetEntry(idtable, id)->iddatatype == IT::IDDATATYPE::INT) {
+					if (GetEntry(idtable, id)->value.vint == GetEntry(idtable, i)->value.vint){
+						pos = i;
+						break;
+					}
+				}else if (GetEntry(idtable, id)->iddatatype == IT::IDDATATYPE::STR) {
+					if (WORDS::StringCompare(GetEntry(idtable, id)->value.vstr.str,GetEntry(idtable, i)->value.vstr.str)) {
+						pos = i;
+						break;
+					}
+				}
+			}
+		}
+		return pos;
+	}	//індэкс ідэнтыфікатара з дадзеным значэннем
 
 	//вывесці табліцу
 	std::string PrintTable(IdTable& idTable) {

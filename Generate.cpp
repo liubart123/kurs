@@ -72,10 +72,11 @@ namespace GEN {
 			) {
 				Poland::PolishNotation(&i, &lt, &it, text);
 			}
-			else if (i>2 && LT::GetEntry(lt, i - 1)->lexema[0] == LEX_RIGHTHESIS && LT::GetEntry(lt, i - 2)->lexema[0] == LEX_CONDITION) {
+			else if (i>2 && LT::GetEntry(lt, i - 1)->lexema[0] == LEX_RIGHTHESIS
+			&& (LT::GetEntry(lt, i - 2)->lexema[0] == LEX_CONDITION || LT::GetEntry(lt, i - 2)->lexema[0] == LEX_CYCLE)) {
 				Poland::PolishNotation(&i, &lt, &it, text);
 			}
-			else if (LT::GetEntry(lt, i)->lexema[0] == LEX_RETURN && LT::GetEntry(lt, i+1)->lexema[0] != LEX_SEMICOLON) {
+			else if (LT::GetEntry(lt, i)->lexema[0] == LEX_RETURN && LT::GetEntry(lt, i+1)->lexema[0] != LEX_SEMICOLON2) {
 				Poland::PolishNotation(&i, &lt, &it, text);
 			}
 		}
@@ -198,6 +199,7 @@ namespace GEN {
 
 		stack<Block> Blocks;		//стэк з if-ам≥
 		int countOfConditions = 0;//колькасць if-aҐ
+		int countOfCycles = 0;//колькасць while-аҐ
 
 		//генерацы€ кода
 		i++;
@@ -212,8 +214,9 @@ namespace GEN {
 			if ((LT::GetEntry(lexTable, i)->lexema[0] == 'i'	//(i||l)&&(i||l||@)||@
 			|| LT::GetEntry(lexTable, i)->lexema[0] == 'l')	//пачатак выразу €к≥ трэба разабраць
 			&& (LT::GetEntry(lexTable, i + 1)->lexema[0] == 'l'
-			|| LT::GetEntry(lexTable, i + 1)->lexema[0] == 'i'
-			|| LT::GetEntry(lexTable, i + 1)->lexema[0] == SPEC_SUMBOL)
+				|| LT::GetEntry(lexTable, i + 1)->lexema[0] == 'i'
+				|| LT::GetEntry(lexTable, i + 1)->lexema[0] == SPEC_SUMBOL
+				|| LT::GetEntry(lexTable, i + 1)->lexema[0] == LEX_RETURN)
 			|| LT::GetEntry(lexTable, i)->lexema[0] == SPEC_SUMBOL
 			|| LT::GetEntry(lexTable, i)->lexema[0] == LEX_RIGHTHESIS)
 			{
@@ -286,11 +289,27 @@ namespace GEN {
 			}
 			else if (LT::GetEntry(lexTable, i)->lexema[0] == LEX_CONDITION	//...if
 			&& LT::GetEntry(lexTable, i - 1)->lexema[0] != LEX_ELSE) {
+				str+=COMMENT;
+				str+="if\n";
 				Block bl = Block();
-				bl.name=IF_METKA;
-				bl.name+=to_string(countOfConditions++);
+				bl.name = IF_METKA;
+				bl.name += func.name;
+				bl.name += to_string(countOfConditions++);
 				Blocks.push(bl);
 			}
+			else if (LT::GetEntry(lexTable, i)->lexema[0] == LEX_CYCLE) {//...while
+				str += COMMENT;
+				str += "while\n";
+				Block bl = Block();
+				bl.name = WHILE_METKA;
+				bl.name += func.name;
+				bl.name += to_string(countOfCycles++);
+				bl.countOfElses=-1;
+				str += bl.name;
+				str += METKA;
+				str += "\n";
+				Blocks.push(bl);
+			}  
 			else if (LT::GetEntry(lexTable, i)->lexema[0] == LEX_ELSE
 			&& LT::GetEntry(lexTable, i+1)->lexema[0] == LEX_CONDITION) {	//else if...
 				str += Blocks.top().name;
@@ -309,11 +328,19 @@ namespace GEN {
 			else if (LT::GetEntry(lexTable, i)->lexema[0] == LEX_LEFTBRACE		//...{
 			&& LT::GetEntry(lexTable, i - 1)->lexema[0] != LEX_ELSE
 			&&	!Blocks.empty()) {
-				str += MOVE_TO_IF;
-				str += Blocks.top().name;
-				str += ELSE_METKA;
-				str += to_string(Blocks.top().countOfElses);
-				str += "\n";
+				if (Blocks.top().countOfElses == -1)	//кал≥ ц€кучы блЄк быҐ while
+				{
+					str += MOVE_TO_IF;
+					str += Blocks.top().name;
+					str += FINALLY;
+					str += "\n";
+				}else {
+					str += MOVE_TO_IF;
+					str += Blocks.top().name;
+					str += ELSE_METKA;
+					str += to_string(Blocks.top().countOfElses);
+					str += "\n";
+				}
 			}
 			else if (LT::GetEntry(lexTable, i)->lexema[0] == LEX_BRACELET	//}else
 				&& LT::GetEntry(lexTable, i + 1)->lexema[0] == LEX_ELSE) {
@@ -328,13 +355,21 @@ namespace GEN {
 				if (Blocks.empty()) {
 					break;
 				}
+				if (Blocks.top().countOfElses != -1)	//кал≥ ц€кучы блЄк быҐ if
+				{
+					str += Blocks.top().name;
+					str += ELSE_METKA;
+					str += to_string(Blocks.top().countOfElses);
+					str += METKA;
+					str += "\n";
+				}
+				else {
+					str+=MOVE_TO;
+					str+= Blocks.top().name;
+					str += "\n";
+				}
 				str += Blocks.top().name;
 				str += FINALLY;
-				str += METKA;
-				str+="\n";
-				str += Blocks.top().name;
-				str += ELSE_METKA;
-				str += to_string(Blocks.top().countOfElses);
 				str += METKA;
 				str += "\n";
 				Blocks.pop();

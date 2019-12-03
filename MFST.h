@@ -3,6 +3,7 @@
 #include <stack>
 #include "GRB.h"
 #include "LT.h"
+#define MFST_SHOW_DETAILS false
 #define MFST_DAIGN_NUMBER 10	//колькасць ды€гностык
 typedef std::stack<short> MFSTSTACK;
 namespace MFST {

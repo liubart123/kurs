@@ -33,8 +33,9 @@
 
 #define	LEX_EQUALS		'='
 #define	LEX_ERROR		'e'
-#define	LEX_SEMICOLON	';'
-#define	LEX_CYCLE		'c'	//while
+#define	LEX_SEMICOLON2	';'
+#define	LEX_CYCLE		'w'	//while
+#define	LEX_BREAK		'b'	//break;
 #define	LEX_CONDITION	'k'	//if
 #define	LEX_ELSE		'a'	//else
 //#include "IT.h"

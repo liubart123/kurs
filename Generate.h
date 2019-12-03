@@ -52,9 +52,13 @@ start :\n\
 ret\n"	//return
 
 //выклікі функцыі
-#define EXPR_END_OF_FUNCTION "ret"
+#define EXPR_END_OF_FUNCTION ""
 #define EXPR_CALL "call	"		//@
 #define EXPR_PUSH_EAX "push	eax"	//запушыць еах у стэк(пасля выкліка функцыі)
+
+//while
+#define WHILE_METKA "while"
+#define WHILE_FINALLY "finally_while"	//метка для кода пасля блёка
 
 //if
 #define IF_METKA "if"		//метка для if

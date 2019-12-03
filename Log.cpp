@@ -193,10 +193,10 @@ namespace Log
 		string gen = generator.Generate(idTable,lexTable, (char*)in.text);
 
 		//*log.stream << "\n" << gen << endl;
-		std::cout << "\n" << gen << endl;
+		//std::cout << "\n" << gen << endl;
 
 
-		cout << LT::PrintTable(lexTable);
+		//cout << LT::PrintTable(lexTable);
 		/*int pos2 = 36;
 		bool v = Poland::PolishNotation(&pos2, &lexTable, &idTable, (char*)in.text);
 		cout << "\n" << LT::PrintTable(lexTable) << endl;
@@ -262,6 +262,9 @@ namespace Log
 		}
 		else if (strcmp(word, "while") == 0) {
 			str[0] = LEX_CYCLE;
+		}
+		else if (strcmp(word, "break") == 0) {
+			str[0] = LEX_BREAK;
 		}
 		else {
 			str[0] = LEX_ERROR;

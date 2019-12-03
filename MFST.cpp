@@ -9,7 +9,8 @@
 namespace MFST {
 	//крок
 	Mfst::ENUM_STEP Mfst::step() {
-		StateInfo();
+		if (MFST_SHOW_DETAILS)
+			StateInfo();
 		//праверка, ц≥ знаходз≥цца у в€ршын≥  стэка тэрм≥нальны с≥мвал
 		if (GRB::Rule::Chain::isT(st.top()) == true) {
 			if (st.top() == lenta[lenta_position]) {
@@ -46,7 +47,9 @@ namespace MFST {
 			}
 			
 			if (nrulechain != -1) {
-				printRule(rule,chain);
+
+				if (MFST_SHOW_DETAILS)
+					printRule(rule,chain);
 				saveState();
 				st.pop();
 				pushChain(chain);
@@ -69,7 +72,9 @@ namespace MFST {
 	//захаваць стан
 	bool Mfst::saveState(){
 		statesStack.push(*new MFST::MfstState(lenta_position, st, nrulechain, nrule));
-		cout << "\n-------------------------------------State was saved: " << statesStack.size() << "\n";
+
+		if (MFST_SHOW_DETAILS)
+			cout << "\n-------------------------------------State was saved: " << statesStack.size() << "\n";
 		return false;	
 	}
 
@@ -83,7 +88,9 @@ namespace MFST {
 		nrulechain = state.nrulechain;
 		nrule = state.nrule;
 		st = state.st;
-		cout << "\n-------------------------------------State was reseted: " << statesStack.size() << "\n";
+
+		if (MFST_SHOW_DETAILS)
+			cout << "\n-------------------------------------State was reseted: " << statesStack.size() << "\n";
 		return true;
 	}
 
@@ -109,11 +116,13 @@ namespace MFST {
 				case MFST::Mfst::NS_OK:
 					break;
 				case MFST::Mfst::NS_NORULE:
-					printError(result);
+					if (MFST_SHOW_DETAILS)
+						printError(result);
 					cycle = false;
 					break;
 				case MFST::Mfst::NS_NORULECHAIN:
-					printError(result);
+					if (MFST_SHOW_DETAILS)
+						printError(result);
 					if (!resState()) {
 						cycle = false;
 						Syntax = false;
@@ -131,7 +140,8 @@ namespace MFST {
 					//cycle = false;
 					break;
 				case MFST::Mfst::TS_NOK:
-					printError(result);
+					if (MFST_SHOW_DETAILS)
+						printError(result);
 					if (!resState()) {
 						cycle = false;
 						Syntax = false;
@@ -147,9 +157,11 @@ namespace MFST {
 				default:
 					break;
 			}
-			countOfCycles++;
-			PrintMessage(":");
-			PrintMessage(to_string(countOfCycles));
+			if (MFST_SHOW_DETAILS){
+				countOfCycles++;
+				PrintMessage(":");
+				PrintMessage(to_string(countOfCycles));
+			}
 		}
 		if (Syntax == true) {
 			PrintMessage((char*)"\nYes!!! Count of cycles:");
@@ -250,7 +262,8 @@ namespace MFST {
 
 	//захаваць новую ды€гностыку
 	void Mfst::pushNewDiagnosis(Mfst::ENUM_STEP step, int chain, int rule) {
-		PrintMessage("\n-------------------------------------diagnosesWasSaved");
+		if (MFST_SHOW_DETAILS)
+			PrintMessage("\n-------------------------------------diagnosesWasSaved");
 		int k=0;
 		while (k < MFST_DAIGN_NUMBER && lenta_position <= diagnosis[k].lenta_position) {
 			k++;

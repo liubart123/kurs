@@ -69,7 +69,8 @@ namespace IT
 	Entry *GetEntry(IdTable& idtable, int n);		//атрымаць радок з табліцы
 	void DeleteTable(IdTable& idtable);
 	int IsId(IdTable& idtable, char *id, FuncDefenition *func);	//індэкс ідэнтыфікатара з дадзеным значэннем
-
+	int IsId(IdTable& idtable, int id);	//індэкс лексема з дадзеным значэннем
+	void DEleteEntry(IdTable& idTable, int id);	//выдалць запіс
 	std::string PrintTable(IdTable& idTable);
 	void CheckStrForId(char* text, IdTable& idTable, LT::LexTable& lexTable);	//праверыць тэкст на ід-ы
 
