@@ -4,6 +4,7 @@
 #define LT_TI_NULLIDX	0xffffffff	//н€ма элемента ≥д-а
 #define	LEX_INTEGER		't'
 #define	LEX_STRING		't'
+#define	LEX_CHAR		't'
 #define	LEX_ID			'i'
 #define	LEX_LITERAL		'l'
 #define	LEX_MAIN		'm'
@@ -17,6 +18,8 @@
 #define	LEX_BRACELET	'}'
 #define	LEX_LEFTHESIS	')'
 #define	LEX_RIGHTHESIS	'('
+#define	LEX_LEFTARR		']'
+#define	LEX_RIGHTARR	'['
 //арыфметычны€
 #define	LEX_PLUS		'v'	//+
 #define	LEX_MINUS		'v'	//-
@@ -38,6 +41,11 @@
 #define	LEX_BREAK		'b'	//break;
 #define	LEX_CONDITION	'k'	//if
 #define	LEX_ELSE		'a'	//else
+
+//мас≥вы
+#define LEX_ARRAY		't'
+#define LEX_ARRAY_STR	't'
+#define LEX_PTR			'v'
 //#include "IT.h"
 namespace LT
 {
@@ -54,6 +62,7 @@ namespace LT
 		}
 		Entry() {
 		}
+		bool isAssignedId = false;
 	};
 	struct LexTable	//табл≥ца
 	{

@@ -13,7 +13,7 @@
 
 namespace IT
 {
-	enum IDDATATYPE{INT=1,STR=2,VOID=3};
+	enum IDDATATYPE{INT=1,STR=2,VOID=3,ARRAY,ARRAY_STR, CHAR};
 	enum IDTYPE	{V=1,F=2,P=3,L=4};		//пераменная, функцыя, параметр, літэрал
 	enum BLOCK_TYPE
 	{

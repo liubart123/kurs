@@ -3,7 +3,7 @@ namespace Poland {
 	char operations_chars[NUM_OF_PRIR_LEVEL][NUM_OF_OPER_IN_LEVEL] = {  
 			{'(', ')', ' ', ' '}, 
 			{'[', ']', ' ', ' '}, 
-			{'/' ,'*', ' ', ' '}, 
+			{'/' ,'*', '^', ' '}, 
 			{'+' ,'-', ' ', ' '}, 
 			{'>' ,'<', '!', '?'},
 			{'&' ,'|', ' ', ' '},
@@ -46,11 +46,20 @@ namespace Poland {
 		while (str.empty() == false) {
 			char lex = str.begin()->lexema[0];
 			if (lex == 'i' || lex == 'l') {
+				IT::Entry *it = IT::GetEntry(*idTable, str.begin()->idxTI);
 				if (lex == 'i' && IT::GetEntry(*idTable, str.begin()->idxTI)->idtype == IT::IDTYPE::F) {
 					steck.push(*str.begin());
 					steck.top().lexema[0] = SPEC_SUMBOL;
+				} else if (lex == 'i' && (it->iddatatype == IT::IDDATATYPE::ARRAY
+				|| it->iddatatype == IT::IDDATATYPE::STR
+				|| it->iddatatype == IT::IDDATATYPE::ARRAY_STR)) {
+					steck.push(*str.begin());
+					steck.top().lexema[0] = SPEC_ARR_SUMBOL;
 				}
 				else {
+					if (positionOfLexem == 0 && lexTable->table[*lexTable_pos + 1].lexema[0] == LEX_EQUALS) {
+						str.begin()->isAssignedId=true;
+					}
 					polandStr.push_back(*str.begin());
 				}
 			}
@@ -62,6 +71,9 @@ namespace Poland {
 				|| lex == '!'
 				|| lex == LEX_RETURN)
 			{
+				/*if (lex == '=' && polandStr.empty() == false) {
+					polandStr.begin()->isAssignedId = true;
+				}*/
 				int oper = GetPriorityOfOperation(*str.begin());
 				if (oper == -1) {
 					//throw (Error::geterror(108));
@@ -84,21 +96,21 @@ namespace Poland {
 							polandStr.push_back(steck.top());
 							steck.pop();
 						}
+						if (steck.empty()) {
+							throw Error::geterror(205);
+						}
 						if (steck.top().lexema[0] == '(') {
 							steck.pop();
 							if (steck.empty()) {
 
 							}else{
 								LT::Entry temp = steck.top();
-								if (steck.top().lexema[0] == SPEC_SUMBOL && IT::GetEntry(*idTable, steck.top().idxTI)->idtype == IT::IDTYPE::F) {
+								if (temp.lexema[0] == SPEC_SUMBOL && IT::GetEntry(*idTable, steck.top().idxTI)->idtype == IT::IDTYPE::F) {
 									//steck.top().lexema[0]= SPEC_SUMBOL;
 									polandStr.push_back(steck.top());
 									steck.pop();
 								}
 							}
-						}
-						else {
-							throw Error::geterror(205);
 						}
 					}
 					else if (lex == ']') {
@@ -106,7 +118,12 @@ namespace Poland {
 							polandStr.push_back(steck.top());
 							steck.pop();
 						}
-						steck.push(*new LT::Entry(SPEC_SUMBOL));
+						if (steck.empty()==true) {
+							throw Error::geterror(205);
+						}
+						steck.pop();
+						steck.push(*new LT::Entry(SPEC_ARR_SUMBOL));
+						steck.pop();
 					}
 					else {
 						while (steck.empty() == false && steck.top().lexema[0] != '(' && steck.top().lexema[0] != '['

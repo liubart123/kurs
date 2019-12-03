@@ -106,13 +106,17 @@ namespace Log
 		IT::IdTable idTable = IT::CreateTable(TI_MAXSIZE);
 		LT::LexTable lexTable = LT::CreateTable(LT_MAXSIZE);//табліца лексем
 		bool kavichka = false;	//ці ёсць адкрываючая кавычка
+		bool kavichka2 = false;	//ці ёсць адкрываючая кавычка адзінарная
 		list<Error::ERROR> errorList;
 		//стварэнне табліцы лексем
 		while (startPos + pos < in.size) {
 			if (in.text[pos + startPos] == '\"') {
 				kavichka = !kavichka;
 			}
-			if (CheckSepSymb(in.text[pos + startPos]) && kavichka == false) {
+			if (in.text[pos + startPos] == '\'') {
+				kavichka2 = !kavichka2;
+			}
+			if (CheckSepSymb(in.text[pos + startPos]) && (kavichka == false || kavichka2==false)) {
 				char lastChar = '\0';	//апошні значымы сімвал у радку
 				char *tempString = new char[pos + 1];
 				int posTemp = 0;
@@ -140,9 +144,12 @@ namespace Log
 							if (result[0] == LEX_ERROR) {
 								result = IntLiKA(tempString);//праверка на літэрал лічбавы
 								if (result[0] == LEX_ERROR) {
-									//throw(Error::geterrorin(101, NumberOfLine, positionInLine));
-									errorList.push_back(Error::geterrorin(204, NumberOfLine, positionInLine));
-									//WriteError(log,Error::geterrorin(101,NumberOfLine,positionInLine));
+									result = ChrLiKA(tempString);//праверка на літэрал сімвала
+									if (result[0] == LEX_ERROR) {
+										//throw(Error::geterrorin(101, NumberOfLine, positionInLine));
+										errorList.push_back(Error::geterrorin(204, NumberOfLine, positionInLine));
+										//WriteError(log,Error::geterrorin(101,NumberOfLine,positionInLine));
+									}
 								}
 							}
 						}
@@ -193,7 +200,7 @@ namespace Log
 		string gen = generator.Generate(idTable,lexTable, (char*)in.text);
 
 		//*log.stream << "\n" << gen << endl;
-		//std::cout << "\n" << gen << endl;
+		std::cout << "\n" << gen << endl;
 
 
 		//cout << LT::PrintTable(lexTable);
@@ -266,6 +273,15 @@ namespace Log
 		else if (strcmp(word, "break") == 0) {
 			str[0] = LEX_BREAK;
 		}
+		else if (strcmp(word, "array") == 0) {
+			str[0] = LEX_ARRAY;
+		}
+		else if (strcmp(word, "sarray") == 0) {
+			str[0] = LEX_ARRAY_STR;
+		}
+		else if (strcmp(word, "char") == 0) {
+			str[0] = LEX_CHAR;
+		}
 		else {
 			str[0] = LEX_ERROR;
 		}
@@ -278,7 +294,8 @@ namespace Log
 	bool CheckSepSymb(char c) {
 		if (c == ' ' || c == ',' || c == '.' || c == ';' || c == '\n' || c == '+' || 
 		c == '-' || c == '=' || c == '/' || c == '*' || c == '\t' || c == '{' || c == '}' || c == '(' || c == ')'
-			|| c == '&' || c == '|' || c == '>' || c == '<' || c == '!' || c == '?') {
+			|| c == '&' || c == '|' || c == '>' || c == '<' || c == '!' || c == '?'
+			|| c == '[' || c == ']' || c == '^') {
 			return true;
 		}
 		return false;
@@ -288,7 +305,8 @@ namespace Log
 	char* GetSepSymb(char c) {
 		char *str;
 		if (c == '+' || c == '-' || c == '/' || c == '*' || c == '%'
-			|| c == '>' || c == '<' || c == '|' || c == '&' || c == '!' || c == '=' || c == '?') {
+			|| c == '>' || c == '<' || c == '|' || c == '&' || c == '^' || c == '!' || c == '=' || c == '?'
+			|| c == '[' || c == ']') {
 			str = new char[2];
 			switch (c) {
 				case '+':str[0] = LEX_PLUS; break;
@@ -303,17 +321,13 @@ namespace Log
 				case '?':str[0] = LEX_LOG_EQUALS; break;
 				case '%':str[0] = LEX_PROCENT; break;
 				case '=':str[0] = LEX_EQUALS; break;
+				case '^':str[0] = LEX_PTR; break;
+				case ']':str[0] = LEX_LEFTARR; break;
+				case '[':str[0] = LEX_RIGHTARR; break;
 			}
-			//str[0] = 'v';
 			str[1] = '\0';
 			return str;
 		}
-		/*else if (c == '=') {
-			str = new char[2];
-			str[0] = '=';
-			str[1] = '\0';
-			return str;
-		}*/
 		else if (c != ' ' /*&& c != ';'*/ && c != '\n' && c != '\t'/* && c != '{' && c != '}'*/) {
 			str = new char[2];
 			str[0] = c;
@@ -485,6 +499,33 @@ namespace Log
 		str[LEXEMA_FIXSIZE] = '\0';
 		return str;
 	}	
+	//праверыць слова, на аўтамаце для літэрала радка
+
+	char* ChrLiKA(char* word) {
+		bool result = false;
+		if (word[0] == '\'') {
+			if (word[1] == '\\') {
+				if (word[4] == '\'') {
+					result = true;
+				}
+			}
+			else {
+				if (word[2] == '\'') {
+					result = true;
+				}
+			}
+		}
+		char *str;
+		str = new char[LEXEMA_FIXSIZE];
+		if (result == true) {
+			str[0] = LEX_LITERAL;
+		}
+		else {
+			str[0] = LEX_ERROR;
+		}
+		str[LEXEMA_FIXSIZE] = '\0';
+		return str;
+	}
 	//праверыць слова, на аўтамаце для літэрала радка
 
 

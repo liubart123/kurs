@@ -35,25 +35,29 @@ start :\n\
 #define PROC_END "	endp"
 //імёны для секцыі дадзеных
 #define CONST_NAME "lit"
-#define INT_TYPE "dword"
+#define INT_TYPE "word"
 #define STR_TYPE "byte"
 #define END_OF_STR ", 0"
 #define LOCALS "local"
 
 //для секці кода
 #define EXPR_INT "push	"		//i
-#define EXPR_EQU "pop	"		//=
-#define EXPR_SUM "pop	eax\npop	ebx\nadd	eax, ebx\npush	eax\n"	//+
-#define EXPR_IMUL "pop	eax\npop	ebx\nimul	eax, ebx\npush	eax\n"	//*
-#define EXPR_SUB "pop	eax\npop	ebx\nsub	ebx, eax\npush	ebx\n"	// -
-#define EXPR_DIV "pop	eax\npop	ebx\nidiv	ebx, eax\npush	ebx\n"	// /
-#define EXPR_CLEAR_STACK "pop	ebx"
-#define EXPR_RETURN "pop	eax\n\
+#define EXPR_EQU "pop	ax\n\
+pop	ebx\n\
+mov	[ebx], ax\n"		//=
+#define EXPR_SUM "pop	ax\npop	bx\nadd	ax, bx\npush	ax\n"	//+
+#define EXPR_IMUL "pop	ax\npop	bx\nimul	ax, bx\npush	ax\n"	//*
+#define EXPR_SUB "pop	ax\npop	bx\nsub	bx, ax\npush	bx\n"	// -
+#define EXPR_DIV "pop	ax\npop	bx\nidiv	bx, ax\npush	bx\n"	// /
+#define EXPR_CLEAR_STACK "pop	bx"
+#define EXPR_RETURN "pop	ax\n\
 ret\n"	//return
+
 
 //выклікі функцыі
 #define EXPR_END_OF_FUNCTION ""
 #define EXPR_CALL "call	"		//@
+#define EXPR_PUSH_AX "push	ax"	//запушыць еах у стэк(пасля выкліка функцыі)
 #define EXPR_PUSH_EAX "push	eax"	//запушыць еах у стэк(пасля выкліка функцыі)
 
 //while
@@ -64,66 +68,81 @@ ret\n"	//return
 #define IF_METKA "if"		//метка для if
 #define ELSE_METKA "else"	//метка для else/else if
 #define FINALLY "finally"	//метка для кода пасля блёка
-#define MOVE_TO_IF "pop	eax\n\
-cmp	eax, 0\n\
+#define MOVE_TO_IF "pop	ax\n\
+cmp	ax, 0\n\
 je	"//пераход, калі ўмова у стэку не выконваецца
 #define MOVE_TO "jmp	"	//перайсці да меткі
 #define METKA ":;------------------------------"
 //a<b
-#define IF_LESS "pop	eax\n\
-pop	ebx\n\
-cmp	ebx,eax\n\
+#define IF_LESS "pop	ax\n\
+pop	bx\n\
+cmp	bx,ax\n\
 LAHF\n\
 shr	ah, 7\n\
+xor	cx, cx\n\
 mov	cl, ah\n\
-and	ecx,1\n\
-push	ecx\n\
+and	cl,1\n\
+push	cx\n\
 "
 //a>b
-#define IF_LARGER "pop	eax\n\
-pop	ebx\n\
-cmp	eax,ebx\n\
+#define IF_LARGER "pop	ax\n\
+pop	bx\n\
+cmp	ax,bx\n\
 LAHF\n\
 shr	ah, 7\n\
+xor	cx, cx\n\
 mov	cl, ah\n\
-and	ecx,1\n\
-push	ecx\n\
+and	cl,1\n\
+push	cx\n\
 "
 //a==b
-#define IF_EQUALS "pop	ebx\n\
-pop	eax\n\
-cmp	eax,ebx\n\
+#define IF_EQUALS "pop	bx\n\
+pop	ax\n\
+cmp	ax,bx\n\
 LAHF\n\
-shr ah, 6\n\
+shr ah,	6\n\
+xor	cx, cx\n\
 mov	cl, ah\n\
-and	ecx,1\n\
-push	ecx\n\
+and	cl,1\n\
+push	cx\n\
 "
-#define IF_NOT_EQUALS "pop	ebx\n\
-pop	eax\n\
-cmp	eax,ebx\n\
+//a!b
+#define IF_NOT_EQUALS "pop	bx\n\
+pop	ax\n\
+cmp	ax,bx\n\
 LAHF\n\
 shr	ah, 6\n\
+xor	cx, cx\n\
 mov	cl, ah\n\
-not cl\n\
-and	ecx,1\n\
-push	ecx\n\
+not cx\n\
+and	cl,1\n\
+push	cx\n\
 "
 //&
-#define IF_AND "pop	ebx\n\
-pop	eax\n\
-and	eax,ebx\n\
-and	eax,1\n\
-push	eax\n\
+#define IF_AND "pop	bx\n\
+pop	ax\n\
+and	ax,bx\n\
+and	ax,1\n\
+push	ax\n\
 "
 //|
-#define IF_OR "pop	ebx\n\
-pop	eax\n\
-or	eax,ebx\n\
-and	eax,1\n\
-push	eax\n\
+#define IF_OR "pop	bx\n\
+pop	ax\n\
+or	ax,bx\n\
+and	ax,1\n\
+push	ax\n\
 "
-
+//масівы
+#define ARRAY1 "["		//пачатак дыкларацыі масіва
+#define ARRAY2 "]"		//канец дэкларацыі масіва
+#define ARRAY_NAME  "arr"	//радок, які пішацца пасля назвы масіва
+#define PTR	"ptr"	//указальнік у асэмблеры
+#define LEA "lea	eax,"	//ў еах адрас зменнай
+#define ADDR_TO_PTR "mov	"	//прысвоіць адрас масіва ўказальніку
+#define PUSH_ADDR "push	"
+#define PUSH_VALUE	"pop	eax\n\
+mov	bx, [eax]\n\
+push	bx\n"	//атрымаць значэнне па адрасе ў стэку і запушыць яго
 
 namespace GEN {
 	struct Generator {
@@ -157,6 +176,7 @@ namespace GEN {
 	
 	std::string FunctionToAssembler(LT::LexTable &lexTable, IT::IdTable &idTable, int index, IT::FuncDefenition &func);	//генерацыя функцыі ў 
 
+	bool DoesExprHaveEquals(LT::LexTable &lexTable, IT::IdTable &idTable, int index);	//ці мае выраз аперацыю прысвойвання
 
 
 

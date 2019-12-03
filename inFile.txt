@@ -1,16 +1,11 @@
 main
 {
-	declare integer a;
-	declare integer b;
-	a=1;
-	b=1;
-	while(b<5){
-		a=a*b;
-		b=b+1;
-		if (a?4){
-			a=5;
-			break;
-		}
+	declare char ch = '2';
+	declare array arr = 5;
+	declare integer res = 1;
+	while(res<5){
+		arr[res]=res;
+		res=res+1;
 	}
-	return a;
+	return res;
 };

@@ -57,7 +57,12 @@ namespace IT {
 				if (id[0] >= '0' && id[0] <= '9') {
 					GetEntry(idTable, idTable.size - 1)->iddatatype = INT;
 					GetEntry(idTable, idTable.size - 1)->value.vint = atoi(id);
-				} else {
+				}
+				else if(id[0] == '\'') {
+					GetEntry(idTable, idTable.size - 1)->iddatatype = CHAR;
+					GetEntry(idTable, idTable.size - 1)->value.vint = atoi(id);
+				}
+				else {
 					GetEntry(idTable, idTable.size - 1)->iddatatype = STR;
 					GetEntry(idTable, idTable.size - 1)->value.vstr.len = WORDS::LengthWord(id);
 					WORDS::StringIDCopy(GetEntry(idTable, idTable.size - 1)->value.vstr.str,id);
@@ -109,6 +114,15 @@ namespace IT {
 								GetEntry(idTable, idTable.size - 1)->iddatatype = INT;
 								GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
 							}
+							else if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 1)->sn)[0] == 'a') {
+								GetEntry(idTable, idTable.size - 1)->iddatatype = ARRAY;
+								GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
+							}
+							else if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 1)->sn)[0] == 's' &&
+									WORDS::GetWord(text, LT::GetEntry(lexTable, i - 1)->sn)[1] == 'a') {
+								GetEntry(idTable, idTable.size - 1)->iddatatype = ARRAY_STR;
+								GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
+							}
 							else {
 								GetEntry(idTable, idTable.size - 1)->iddatatype = STR;
 								*(GetEntry(idTable, idTable.size - 1)->value.vstr.str) = TI_STR_DEFAULT;
@@ -121,11 +135,13 @@ namespace IT {
 									&& LT::GetEntry(lexTable, i + 3)->lexema[0] == ';') {
 									//пасля '=' няма мінуса
 									IDDATATYPE dt = GetEntry(idTable, LT::GetEntry(lexTable, i + 2)->idxTI)->iddatatype;
-									if (dt != GetEntry(idTable, idTable.size - 1)->iddatatype) {
+									if (dt != GetEntry(idTable, idTable.size - 1)->iddatatype
+									&& GetEntry(idTable, idTable.size - 1)->iddatatype != IT::IDDATATYPE::ARRAY
+									&& GetEntry(idTable, idTable.size - 1)->iddatatype != IT::IDDATATYPE::ARRAY_STR) {
 										throw(Error::geterrortext(208, text, LT::GetEntry(lexTable, i + 2)->sn));
 									}
-									GetEntry(idTable, idTable.size - 1)->iddatatype =
-										dt;
+									/*GetEntry(idTable, idTable.size - 1)->iddatatype =
+										dt;*/
 									GetEntry(idTable, idTable.size - 1)->value =
 										GetEntry(idTable, LT::GetEntry(lexTable, i + 2)->idxTI)->value;
 								} else if (i < lexTable.size - 4

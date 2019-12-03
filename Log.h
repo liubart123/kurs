@@ -29,4 +29,5 @@ namespace Log
 	char *IntLiKA(char* word);
 	char *CheckWord(char* word);
 	bool IsNewLinePossible(char str);
+	char* ChrLiKA(char* word);
 }
