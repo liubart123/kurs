@@ -1,23 +1,41 @@
-³ô³ûâo¢asd-----Date: 04.12.2019 02:03:13-----
+³ô³ûâo¢asd-----Date: 04.12.2019 23:55:52-----
 -----PARAMETRS-----
 Input file: inFile.txt
 Output file: inFile.txt.out.txt
 Log file: logFile.txt
 -----Èñõîäíûå äàííûå-----
-Amount of symbols: 144
+Amount of symbols: 235
 Amount of ignored symbols: 0
-Amount of lines: 11
+Amount of lines: 17
 1: m
 2: {
 3: dti=l;
 4: dti=l;
 5: dti=l;
-6: w(ivl){
-7: i[i]=i;
-8: i=ivl;
-9: }
-10: ri;
-11: };
+6: dti=l;
+7: w(ivl){
+8: vi=l;
+9: w(ivl){
+10: i[ivlvi]=ivivivl;
+11: i=ivl;
+12: }
+13: i=ivl;
+14: }
+15: i=vi[l]vl;
+16: ri;
+17: };
 
------Error-----
-Error 208: wrong type of literal (line 3, column 20)
+
+ID Table
+l:	literal,	integer,	0,	
+l:	literal,	integer,	256,	
+l:	literal,	integer,	16,	
+l:	literal,	integer,	1,	
+l:	literal,	integer,	254,	
+l:	literal,	integer,	10,	
+ch:	variable,	string,	,	
+str:	variable,	string,	,	
+w:	variable,	integer,	0,	
+h:	variable,	integer,	0,	
+
+function: main, returning type is: string,	, count of locals is: 4, count of parametors is: 0

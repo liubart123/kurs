@@ -194,13 +194,13 @@ namespace Log
 		
 		lexTable.table[lexTable.size++]='$';
 		MFST::Mfst *automatos = new MFST::Mfst(lexTable, GRB::getGreibach());
-		//automatos->start();
+		automatos->start();
 
 		GEN::Generator generator;
-		string gen = generator.Generate(idTable,lexTable, (char*)in.text);
+		//string gen = generator.Generate(idTable,lexTable, (char*)in.text);
 
 		//*log.stream << "\n" << gen << endl;
-		std::cout << "\n" << gen << endl;
+		//std::cout << "\n" << gen << endl;
 
 
 		//cout << LT::PrintTable(lexTable);

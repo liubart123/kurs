@@ -123,6 +123,12 @@ namespace GEN {
 			resultStr += " ";
 			resultStr += to_string(lex.value.vint);
 			break;
+		case IT::IDDATATYPE::CHAR:
+			resultStr += STR_TYPE;
+			resultStr += " \'";
+			resultStr += lex.value.cint;
+			resultStr +="\'";
+			break;
 		case IT::IDDATATYPE::STR:
 			resultStr += STR_TYPE;
 			resultStr += " ";
@@ -188,7 +194,10 @@ namespace GEN {
 			str += ": ";
 			switch (IT::GetEntry(idTable, func.params[i])->iddatatype) {
 				case IT::IDDATATYPE::INT:str += INT_TYPE; break;
+				case IT::IDDATATYPE::CHAR:str += STR_TYPE; break;
 				case IT::IDDATATYPE::STR:str += STR_TYPE; break;
+				case IT::IDDATATYPE::ARRAY:str+=PTR; str += STR_TYPE; break;
+				case IT::IDDATATYPE::ARRAY_STR:str += PTR; str += STR_TYPE; break;
 			}
 		}
 		str+="\n";
@@ -202,6 +211,9 @@ namespace GEN {
 			case IT::IDDATATYPE::INT:
 				str += " : "; 
 				str += INT_TYPE; break;
+			case IT::IDDATATYPE::CHAR:
+				str += " : ";
+				str += STR_TYPE; break;
 			case IT::IDDATATYPE::STR:
 				//дыклярацыя масіва
 				str += ARRAY_NAME;
@@ -308,6 +320,8 @@ namespace GEN {
 			|| LT::GetEntry(lexTable, i)->lexema[0] == LEX_RIGHTHESIS)
 			{
 				LT::Entry *lex = LT::GetEntry(lexTable, i);
+				IT::Entry *lastAssigned = NULL;	//спіс апошніх выклікаемых масіваў, каб ведаць, ў які тып пераўтвараць адрас
+				stack<IT::Entry*> lastArrays;
 				bool firstSymb = true;
 				while (lex->lexema[0] != ';'
 					&& lex->lexema[0] != 'f'
@@ -340,28 +354,75 @@ namespace GEN {
 							case (int)('!') : translatedText += IF_NOT_EQUALS; break;
 							case (int)('&') : translatedText += IF_AND; break;
 							case (int)('|') : translatedText += IF_OR; break;
-							case (int)('^') : translatedText += PUSH_VALUE; break;
+							case (int)('^') :{
+								if (lastArrays.top()->iddatatype == IT::ARRAY) {
+									translatedText += PUSH_VALUE; break;
+								} else if (lastArrays.top()->iddatatype == IT::STR) {
+									translatedText += PUSH_VALUE; break;
+								}
+								lastArrays.pop();
+							}
 						}
 					}
 					else if (lex->lexema[0] == 'i') {
 						//калі ід-ару прысвойваецца значэнне, у стэк памяшчаецца яго адрас
 						if (lex->isAssignedId) {
+							lastAssigned = IT::GetEntry(idTable, lex->idxTI);
 							translatedText += LEA;
 							translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
 							translatedText += "\n";
 							translatedText += EXPR_PUSH_EAX;
-						}
+						}//інакш ў стэк памяшчаецца яго значэнне
 						else {
+							if (IT::GetEntry(idTable, lex->idxTI)->iddatatype == IT::INT) {
+								translatedText += EXPR_INT;
+								translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
+							} else if (IT::GetEntry(idTable, lex->idxTI)->iddatatype == IT::CHAR) {
+								translatedText += "xor	ax,ax\nmovzx	ax, ";
+								translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
+								translatedText += "\npush	ax";
+							}
+						}
+					}
+					else if (lex->lexema[0] == 'l') {
+						if ((IT::GetEntry(idTable, lex->idxTI))->iddatatype == IT::IDDATATYPE::CHAR) {
+							translatedText += "movzx	ax, ";
+							translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
+							translatedText += "\npush	ax";
+						}else {
 							translatedText += EXPR_INT;
 							translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
 						}
 					}
-					else if (lex->lexema[0] == 'l') {
-						translatedText += EXPR_INT;
-						translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
-					}
 					else if (lex->lexema[0] == LEX_EQUALS) {
-						translatedText += EXPR_EQU;
+						if (lastAssigned!=NULL){
+							if (lastAssigned->iddatatype == IT::IDDATATYPE::INT) {
+								translatedText += EXPR_EQU;
+							}
+							else if (lastAssigned->iddatatype == IT::IDDATATYPE::ARRAY) {
+								translatedText += EXPR_EQU;
+							}
+							else if (lastAssigned->iddatatype == IT::IDDATATYPE::STR) {
+								translatedText += EXPR_EQU_STR;
+							}
+							else if (lastAssigned->iddatatype == IT::IDDATATYPE::CHAR) {
+								translatedText += EXPR_EQU_STR;
+							}
+						}
+						else if (lastArrays.empty() == false) {
+							if (lastArrays.top()->iddatatype == IT::IDDATATYPE::INT) {
+								translatedText += EXPR_EQU;
+							}
+							else if (lastArrays.top()->iddatatype == IT::IDDATATYPE::ARRAY) {
+								translatedText += EXPR_EQU;
+							}
+							else if (lastArrays.top()->iddatatype == IT::IDDATATYPE::STR) {
+								translatedText += EXPR_EQU_STR;
+							}
+							else if (lastArrays.top()->iddatatype == IT::IDDATATYPE::CHAR) {
+								translatedText += EXPR_EQU_STR;
+							}
+						}
 						//translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
 					}
 					else if (lex->lexema[0] == LEX_RETURN) {
@@ -373,7 +434,11 @@ namespace GEN {
 						translatedText += "\n";
 						translatedText += EXPR_PUSH_EAX;
 					}
-					else if (lex->lexema[0] == SPEC_ARR_SUMBOL) {	//пушым адрас масіва з ўлікам індэкса 
+					else if (lex->lexema[0] == SPEC_ARR_SUMBOL) {	//пуш адрас масіва з ўлікам індэкса 
+						if (lex->isAssignedId) {
+							lastAssigned = IT::GetEntry(idTable, lex->idxTI);
+						}
+						lastArrays.push(IT::GetEntry(idTable, lex->idxTI));
 						translatedText += "xor	eax, eax\n";
 						translatedText += "pop	ax\n";
 						translatedText += "imul	ax,";
@@ -404,6 +469,9 @@ namespace GEN {
 					firstSymb=false;
 				}
 				str += COMMENT;
+				if (lex->lexema[0] == LEX_LEFTHESIS) {
+					curLine+=')';
+				}
 				str += curLine;
 				str += translatedText;
 			}

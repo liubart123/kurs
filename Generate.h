@@ -45,6 +45,9 @@ start :\n\
 #define EXPR_EQU "pop	ax\n\
 pop	ebx\n\
 mov	[ebx], ax\n"		//=
+#define EXPR_EQU_STR "pop	ax\n\
+pop	ebx\n\
+mov	[ebx], al\n"		//=
 #define EXPR_SUM "pop	ax\npop	bx\nadd	ax, bx\npush	ax\n"	//+
 #define EXPR_IMUL "pop	ax\npop	bx\nimul	ax, bx\npush	ax\n"	//*
 #define EXPR_SUB "pop	ax\npop	bx\nsub	bx, ax\npush	bx\n"	// -
@@ -142,6 +145,10 @@ push	ax\n\
 #define PUSH_ADDR "push	"
 #define PUSH_VALUE	"pop	eax\n\
 mov	bx, [eax]\n\
+push	bx\n"	//атрымаць значэнне па адрасе ў стэку і запушыць яго
+#define PUSH_VALUE_STR	"pop	eax\n\
+xor	ebx, ebx\n\
+mov	bl, [eax]\n\
 push	bx\n"	//атрымаць значэнне па адрасе ў стэку і запушыць яго
 
 namespace GEN {

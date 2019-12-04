@@ -60,7 +60,7 @@ namespace IT {
 				}
 				else if(id[0] == '\'') {
 					GetEntry(idTable, idTable.size - 1)->iddatatype = CHAR;
-					GetEntry(idTable, idTable.size - 1)->value.vint = atoi(id);
+					GetEntry(idTable, idTable.size - 1)->value.cint = (id[1]);
 				}
 				else {
 					GetEntry(idTable, idTable.size - 1)->iddatatype = STR;
@@ -112,20 +112,24 @@ namespace IT {
 							//задаецца тып ід-а
 							if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 1)->sn)[0] == 'i') {
 								GetEntry(idTable, idTable.size - 1)->iddatatype = INT;
-								GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
+								//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
 							}
 							else if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 1)->sn)[0] == 'a') {
 								GetEntry(idTable, idTable.size - 1)->iddatatype = ARRAY;
-								GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
+								//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
 							}
 							else if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 1)->sn)[0] == 's' &&
 									WORDS::GetWord(text, LT::GetEntry(lexTable, i - 1)->sn)[1] == 'a') {
 								GetEntry(idTable, idTable.size - 1)->iddatatype = ARRAY_STR;
-								GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
+								//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
+							}
+							else if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 1)->sn)[0] == 'c') {
+								GetEntry(idTable, idTable.size - 1)->iddatatype = CHAR;
+								//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
 							}
 							else {
 								GetEntry(idTable, idTable.size - 1)->iddatatype = STR;
-								*(GetEntry(idTable, idTable.size - 1)->value.vstr.str) = TI_STR_DEFAULT;
+								//*(GetEntry(idTable, idTable.size - 1)->value.vstr.str) = TI_STR_DEFAULT;
 							}
 
 							//наданне значэння ід-ру
@@ -135,15 +139,15 @@ namespace IT {
 									&& LT::GetEntry(lexTable, i + 3)->lexema[0] == ';') {
 									//пасля '=' няма мінуса
 									IDDATATYPE dt = GetEntry(idTable, LT::GetEntry(lexTable, i + 2)->idxTI)->iddatatype;
-									if (dt != GetEntry(idTable, idTable.size - 1)->iddatatype
-									&& GetEntry(idTable, idTable.size - 1)->iddatatype != IT::IDDATATYPE::ARRAY
-									&& GetEntry(idTable, idTable.size - 1)->iddatatype != IT::IDDATATYPE::ARRAY_STR) {
-										throw(Error::geterrortext(208, text, LT::GetEntry(lexTable, i + 2)->sn));
+									if (dt == IT::IDDATATYPE::INT
+									&& GetEntry(idTable, idTable.size - 1)->iddatatype == IT::IDDATATYPE::ARRAY
+									|| GetEntry(idTable, idTable.size - 1)->iddatatype == IT::IDDATATYPE::ARRAY_STR) {
+										//наданне масіву памера
+										GetEntry(idTable, idTable.size - 1)->value =
+											GetEntry(idTable, LT::GetEntry(lexTable, i + 2)->idxTI)->value;
 									}
 									/*GetEntry(idTable, idTable.size - 1)->iddatatype =
 										dt;*/
-									GetEntry(idTable, idTable.size - 1)->value =
-										GetEntry(idTable, LT::GetEntry(lexTable, i + 2)->idxTI)->value;
 								} else if (i < lexTable.size - 4
 									&& LT::GetEntry(lexTable, i + 1)->lexema[0] == '='
 									&& LT::GetEntry(lexTable, i + 2)->lexema[0] == '-'
@@ -156,8 +160,8 @@ namespace IT {
 									if (dt == IT::IDDATATYPE::STR) {
 										throw (Error::geterrortext(208,text, LT::GetEntry(lexTable, i + 2)->sn));
 									}
-									GetEntry(idTable, idTable.size - 1)->value.vint =
-										-GetEntry(idTable, LT::GetEntry(lexTable, i + 3)->idxTI)->value.vint;
+									/*GetEntry(idTable, idTable.size - 1)->value.vint =
+										-GetEntry(idTable, LT::GetEntry(lexTable, i + 3)->idxTI)->value.vint;*/
 								}
 							}
 						}
@@ -181,11 +185,11 @@ namespace IT {
 							//задаецца тып ід-а
 							if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 2)->sn)[0] == 'i') {
 								GetEntry(idTable, idTable.size - 1)->iddatatype = INT;
-								GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
+								//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
 							}
 							else {
 								GetEntry(idTable, idTable.size - 2)->iddatatype = STR;
-								*(GetEntry(idTable, idTable.size - 1)->value.vstr.str) = TI_STR_DEFAULT;
+								//*(GetEntry(idTable, idTable.size - 1)->value.vstr.str) = TI_STR_DEFAULT;
 							}
 							curFunc = AddFuncDef(idTable, *(GetEntry(idTable, idTable.size - 1)));
 							//наданне значэння ід-ру
@@ -197,8 +201,8 @@ namespace IT {
 										dt;
 									GetEntry(idTable, idTable.size - 1)->idtype =
 										GetEntry(idTable, LT::GetEntry(lexTable, i + 2)->idxTI)->idtype;
-									GetEntry(idTable, idTable.size - 1)->value =
-										GetEntry(idTable, LT::GetEntry(lexTable, i + 2)->idxTI)->value;
+									/*GetEntry(idTable, idTable.size - 1)->value =
+										GetEntry(idTable, LT::GetEntry(lexTable, i + 2)->idxTI)->value;*/
 								}
 							}
 						}

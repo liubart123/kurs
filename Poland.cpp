@@ -3,7 +3,7 @@ namespace Poland {
 	char operations_chars[NUM_OF_PRIR_LEVEL][NUM_OF_OPER_IN_LEVEL] = {  
 			{'(', ')', ' ', ' '}, 
 			{'[', ']', ' ', ' '}, 
-			{'/' ,'*', '^', ' '}, 
+			{'/' ,'*', '^', ':'}, 
 			{'+' ,'-', ' ', ' '}, 
 			{'>' ,'<', '!', '?'},
 			{'&' ,'|', ' ', ' '},
@@ -54,10 +54,13 @@ namespace Poland {
 				|| it->iddatatype == IT::IDDATATYPE::STR
 				|| it->iddatatype == IT::IDDATATYPE::ARRAY_STR)) {
 					steck.push(*str.begin());
+					if (positionOfLexem == 0) {
+						steck.top().isAssignedId = true;
+					}
 					steck.top().lexema[0] = SPEC_ARR_SUMBOL;
 				}
 				else {
-					if (positionOfLexem == 0 && lexTable->table[*lexTable_pos + 1].lexema[0] == LEX_EQUALS) {
+					if (positionOfLexem == 0 && LT::GetEntry(*lexTable, *lexTable_pos + 1)->lexema[0] == LEX_EQUALS) {
 						str.begin()->isAssignedId=true;
 					}
 					polandStr.push_back(*str.begin());

@@ -49,6 +49,7 @@ namespace IT
 		union
 		{
 			int vint;
+			char cint;
 			struct
 			{
 				char len;

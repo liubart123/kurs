@@ -84,7 +84,7 @@ namespace GRB {
 				Rule::Chain(13, TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';'))
 			),
 		Rule(NS('N'), GRB_ERROR_SERIES + 1,		//цела цункцыі
-				24,
+				26,
 				Rule::Chain(4, TS('d'), TS('t'), TS('i'), TS(';')),
 				Rule::Chain(5, TS('d'), TS('t'), TS('i'), TS(';'), NS('N')),
 				Rule::Chain(6, TS('d'), TS('t'), TS('i'), TS('='), NS('E'), TS(';')),
@@ -107,13 +107,17 @@ namespace GRB {
 				Rule::Chain(8, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), TS('}'), NS('C'), NS('N')), //if(){}else...
 
 
-				Rule::Chain(2, TS('b'), TS(';')),
-				Rule::Chain(3, TS('b'), TS(';'), NS('N')),
+				Rule::Chain(2, TS('b'), TS(';')),		//break
+				Rule::Chain(3, TS('b'), TS(';'), NS('N')),	//break
 				Rule::Chain(7, TS('w'), TS('('), NS('E'), TS(')'), TS('{'), NS('N'), TS('}')),	//while(){}
-				Rule::Chain(8, TS('w'), TS('('), NS('E'), TS(')'), TS('{'), NS('N'), TS('}'), NS('N'))	//while(){}...
+				Rule::Chain(8, TS('w'), TS('('), NS('E'), TS(')'), TS('{'), NS('N'), TS('}'), NS('N')),	//while(){}...
+
+
+				Rule::Chain(7, TS('i'), TS('['), NS('E'), TS(']'), TS('='), NS('E'), TS(';')),
+				Rule::Chain(8, TS('i'), TS('['), NS('E'), TS(']'), TS('='), NS('E'), TS(';'), NS('N'))
 			),
 		Rule(NS('E'), GRB_ERROR_SERIES + 2,		//выраз
-				13,
+				16,
 				Rule::Chain(1, TS('i')),
 				Rule::Chain(1, TS('l')),
 				Rule::Chain(3, TS('('), NS('E'), TS(')')),
@@ -126,7 +130,11 @@ namespace GRB {
 				Rule::Chain(5, TS('i'), TS('('), NS('E'), TS(')'), NS('M')),
 				Rule::Chain(5, TS('i'), TS('('), NS('E'), NS('W'), TS(')')),
 				Rule::Chain(6, TS('i'), TS('('), NS('E'), NS('W'), TS(')'), NS('M')),
-				Rule::Chain(2, TS('!'), NS('E'))
+
+				Rule::Chain(4, TS('i'), TS('['), NS('E'), TS(']')),	//arr[...]
+				Rule::Chain(5, TS('v'), TS('i'), TS('['), NS('E'), TS(']')),	//^arr[...]
+				Rule::Chain(5, TS('i'), TS('['), NS('E'), TS(']'), NS('M')),	//arr[...]...
+				Rule::Chain(6, TS('v'), TS('i'), TS('['), NS('E'), TS(']'), NS('M'))	//^arr[...]...
 			),
 		Rule(NS('M'), GRB_ERROR_SERIES + 3,		//выраз
 			2,
