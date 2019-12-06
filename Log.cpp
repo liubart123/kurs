@@ -116,7 +116,7 @@ namespace Log
 			if (in.text[pos + startPos] == '\'') {
 				kavichka2 = !kavichka2;
 			}
-			if (CheckSepSymb(in.text[pos + startPos]) && (kavichka == false || kavichka2==false)) {
+			if (CheckSepSymb(in.text[pos + startPos]) && (kavichka == false && kavichka2==false)) {
 				char lastChar = '\0';	//апошні значымы сімвал у радку
 				char *tempString = new char[pos + 1];
 				int posTemp = 0;
@@ -194,13 +194,13 @@ namespace Log
 		
 		lexTable.table[lexTable.size++]='$';
 		MFST::Mfst *automatos = new MFST::Mfst(lexTable, GRB::getGreibach());
-		automatos->start();
+		//automatos->start();
 
 		GEN::Generator generator;
-		//string gen = generator.Generate(idTable,lexTable, (char*)in.text);
+		string gen = generator.Generate(idTable,lexTable, (char*)in.text);
 
 		//*log.stream << "\n" << gen << endl;
-		//std::cout << "\n" << gen << endl;
+		std::cout << "\n" << gen << endl;
 
 
 		//cout << LT::PrintTable(lexTable);
@@ -258,9 +258,6 @@ namespace Log
 		else if (strcmp(word, "main") == 0) {
 			str[0] = LEX_MAIN;
 		}
-		else if (strcmp(word, "print") == 0) {
-			str[0] = LEX_PRINT;
-		}
 		else if (strcmp(word, "if") == 0) {
 			str[0] = LEX_CONDITION;
 		}
@@ -281,6 +278,24 @@ namespace Log
 		}
 		else if (strcmp(word, "char") == 0) {
 			str[0] = LEX_CHAR;
+		}
+		else if (strcmp(word, SF1) == 0) {
+			str[0] = LEX_ID;
+		}
+		else if (strcmp(word, SF2) == 0) {
+			str[0] = LEX_ID;
+		}
+		else if (strcmp(word, SF3) == 0) {
+			str[0] = LEX_ID;
+		}
+		else if (strcmp(word, SF4) == 0) {
+			str[0] = LEX_ID;
+		}
+		else if (strcmp(word, SF5) == 0) {
+			str[0] = LEX_ID;
+		}
+		else if (strcmp(word, SF6) == 0) {
+			str[0] = LEX_ID;
 		}
 		else {
 			str[0] = LEX_ERROR;
@@ -444,7 +459,7 @@ namespace Log
 			word,
 			3,
 			FSTN::NODE(1, FSTN::RELATION('"', 1)),
-			FSTN::NODE(38,
+			FSTN::NODE(39,
 				FSTN::RELATION('1', 1),
 				FSTN::RELATION('2', 1),
 				FSTN::RELATION('3', 1),
@@ -482,6 +497,7 @@ namespace Log
 				FSTN::RELATION('y', 1),
 				FSTN::RELATION('z', 1),
 				FSTN::RELATION(' ', 1),
+				FSTN::RELATION(',', 1),
 				FSTN::RELATION('"', 2)
 			)
 		);

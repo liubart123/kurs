@@ -10,9 +10,10 @@ namespace IT {
 	IdTable CreateTable(int size){
 		IdTable *table = new IdTable();
 		table->funcs = new FuncDefenition*[FUNCS_COUNT];
-		table->size=0;
+		table->size=table->countOfStandartFuncs;
 		table->maxsize=size;
 		table->table = new Entry[size];
+		AddStandartFuncs(*table);
 		return *table;
 	}
 
@@ -253,6 +254,24 @@ namespace IT {
 	//ц≥ Єсць так≥ ≥дэнтыф≥катар у табл≥цы?
 	int IsId(IdTable& idtable, char *id, FuncDefenition *func) {
 		int pos = TI_NULLIDX;
+		if (WORDS::StringCompare(id, SF1)) {
+			return 0;
+		}else if (WORDS::StringCompare(id, SF2)) {
+			return 1;
+		}
+		else if (WORDS::StringCompare(id, SF3)) {
+			return 2;
+		}
+		else if (WORDS::StringCompare(id, SF4)) {
+			return 3;
+		}
+		else if (WORDS::StringCompare(id, SF5)) {
+			return 4;
+		}
+		else if (WORDS::StringCompare(id, SF6)) {
+			return 5;
+		}
+
 		for (int i = 0; i < idtable.size; i++) {
 			if (WORDS::StringCompare(id, idtable.table[i].id) == true) {
 				if (func == idtable.table[i].funcId || idtable.table[i].idtype == IT::IDTYPE::F) {
@@ -291,7 +310,7 @@ namespace IT {
 	std::string PrintTable(IdTable& idTable) {
 		std::string str;
 		str.append("\nID Table\n");
-		for (int i = 0; i < idTable.size; i++) {
+		for (int i = idTable.countOfStandartFuncs; i < idTable.size; i++) {
 			str.append(GetEntry(idTable, i)->id);
 			str.append(":\t");
 			if (GetEntry(idTable, i)->idtype == V) {
@@ -323,7 +342,7 @@ namespace IT {
 			str.append("\n");
 		}
 		//вывад функцый
-		for (int i = 0; i < idTable.funcCount; i++) {
+		for (int i = idTable.countOfStandartFuncs; i < idTable.funcCount; i++) {
 			str.append("\n");
 			str.append("function: ");
 			str.append(idTable.funcs[i]->name);
@@ -368,5 +387,64 @@ namespace IT {
 	//дабав≥ць пераменуюу у функцы≥ю
 	void AddVal(IdTable& idTable, FuncDefenition& f, int index) {
 		f.locals[f.curLocals++] = index;
+	}
+
+	void AddStandartFuncs(IdTable& idTable)	//дабав≥ць у табл≥цу стандартны€ функцы≥
+	{
+		IT::Entry *entry = new IT::Entry;
+		entry->idtype=IT::IDTYPE::F;
+		//printStr
+		FuncDefenition *funcDef = new FuncDefenition();
+		funcDef->name = SF1;
+		funcDef->returnType = IT::IDDATATYPE::VOID;
+		idTable.funcs[idTable.funcCount++] = funcDef;
+		funcDef->curParams=1;
+		entry->funcId=funcDef;
+		idTable.table[0] = *entry;
+
+		//strCopy
+		funcDef = new FuncDefenition();
+		funcDef->name = SF2;
+		funcDef->returnType = IT::IDDATATYPE::VOID;
+		idTable.funcs[idTable.funcCount++] = funcDef;
+		funcDef->curParams = 2;
+		entry->funcId = funcDef;
+		idTable.table[1] = *entry;
+
+		//intToChar
+		funcDef = new FuncDefenition();
+		funcDef->name = SF3;
+		funcDef->returnType = IT::IDDATATYPE::STR;
+		idTable.funcs[idTable.funcCount++] = funcDef;
+		funcDef->curParams = 1;
+		entry->funcId = funcDef;
+		idTable.table[2] = *entry;
+
+		//strConcat
+		funcDef = new FuncDefenition();
+		funcDef->name = SF4;
+		funcDef->returnType = IT::IDDATATYPE::VOID;
+		idTable.funcs[idTable.funcCount++] = funcDef;
+		funcDef->curParams = 2;
+		entry->funcId = funcDef;
+		idTable.table[3] = *entry;
+
+		//readNum
+		funcDef = new FuncDefenition();
+		funcDef->name = SF5;
+		funcDef->returnType = IT::IDDATATYPE::INT;
+		idTable.funcs[idTable.funcCount++] = funcDef;
+		funcDef->curParams = 0;
+		entry->funcId = funcDef;
+		idTable.table[4] = *entry;
+
+		//readLine
+		funcDef = new FuncDefenition();
+		funcDef->name = SF6;
+		funcDef->returnType = IT::IDDATATYPE::STR;
+		idTable.funcs[idTable.funcCount++] = funcDef;
+		funcDef->curParams = 0;
+		entry->funcId = funcDef;
+		idTable.table[5] = *entry;
 	}
 }

@@ -11,10 +11,10 @@ namespace GEN {
 		resultStr += "\n";
 		int i;
 		//секцыя канстант
-		for (i = 0; i < it.size; i++) {
+		for (i = it.countOfStandartFuncs ; i < it.size; i++) {
 			if (IT::GetEntry(it, i)->idtype!=IT::IDTYPE::L)
 				break;
-			resultStr+=DeclarationToAssembler(*IT::GetEntry(it, i), CONST_NAME + to_string(i));
+			resultStr+=DeclarationToAssembler(*IT::GetEntry(it, i), CONST_NAME + to_string(i-it.countOfStandartFuncs));
 			resultStr += "\n";
 		}	 
 
@@ -23,9 +23,6 @@ namespace GEN {
 			NameToAssemblerName(*IT::GetEntry(it, i));
 		}
 
-		//resultStr += DATA_SECTION;
-
-		//resultStr += "\n\n";
 		//секцыя дадзеных
 		for (i = 0; false && i < it.funcCount; i++) {
 			resultStr += COMMENT;
@@ -97,7 +94,7 @@ namespace GEN {
 		cout << LT::PrintTable(lt);
 		resultStr+=CODE_SECTION;
 		//генерацыя секцыі кода
-		for (int i = 0; i < it.funcCount; i++) {
+		for (int i = it.countOfStandartFuncs; i < it.funcCount; i++) {
 			resultStr+=FunctionToAssembler(lt,it,i, *(it.funcs[i]));
 			//std::cout << FunctionToAssembler(lt, it, i, *(it.funcs[i]));
 		}
@@ -195,7 +192,7 @@ namespace GEN {
 			switch (IT::GetEntry(idTable, func.params[i])->iddatatype) {
 				case IT::IDDATATYPE::INT:str += INT_TYPE; break;
 				case IT::IDDATATYPE::CHAR:str += STR_TYPE; break;
-				case IT::IDDATATYPE::STR:str += STR_TYPE; break;
+				case IT::IDDATATYPE::STR:str += PTR; str += STR_TYPE; break;
 				case IT::IDDATATYPE::ARRAY:str+=PTR; str += STR_TYPE; break;
 				case IT::IDDATATYPE::ARRAY_STR:str += PTR; str += STR_TYPE; break;
 			}
@@ -291,6 +288,59 @@ namespace GEN {
 			}
 		}
 
+		//прысваенне значэнне параметрам
+		int s = 8;	//одступ ад ebp
+		for (int i = 0; i < func.curParams; i++) {
+			switch (IT::GetEntry(idTable, func.params[i])->iddatatype) {
+				case IT::IDDATATYPE::INT:
+					str += "mov	ax,	[ebp+";
+					str += to_string(s);
+					str += "]\n";
+					str += "mov	";
+					str += IT::GetEntry(idTable, func.params[i])->AssemblerName;
+					str += ", ax\n";
+					s += 4;
+					break;
+				case IT::IDDATATYPE::CHAR:
+					str += "mov	al,	[ebp+";
+					str += to_string(s);
+					str += "]\n";
+					str += "mov	";
+					str += IT::GetEntry(idTable, func.params[i])->AssemblerName;
+					str += ", al\n";
+					s += 4;
+					break;
+				case IT::IDDATATYPE::STR:
+					str += "mov	eax,	[ebp+";
+					str += to_string(s);
+					str += "]\n";
+					str += "mov	";
+					str += IT::GetEntry(idTable, func.params[i])->AssemblerName;
+					str += ", eax\n";
+					s += 4;
+					break;
+				case IT::IDDATATYPE::ARRAY:
+					str += "mov	eax,	[ebp+";
+					str += to_string(s);
+					str += "]\n";
+					str += "mov	";
+					str += IT::GetEntry(idTable, func.params[i])->AssemblerName;
+					str += ", eax\n";
+					s += 4;
+					break;
+				case IT::IDDATATYPE::ARRAY_STR:
+					str += "mov	eax,	[ebp+";
+					str += to_string(s);
+					str += "]\n";
+					str += "mov	";
+					str += IT::GetEntry(idTable, func.params[i])->AssemblerName;
+					str += ", eax\n";
+					s += 4;
+					break;
+			}
+		}
+		
+
 		int i = idTable.funcs[index]->startOfFunc;
 		std::string curLine = "";	//радок кода, які зараз перакладаецца на асэмблер
 		std::string translatedText = "";	//пераклдадзены кот
@@ -375,23 +425,31 @@ namespace GEN {
 						}//інакш ў стэк памяшчаецца яго значэнне
 						else {
 							if (IT::GetEntry(idTable, lex->idxTI)->iddatatype == IT::INT) {
-								translatedText += EXPR_INT;
+								translatedText += "movzx	eax, ";
 								translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
+								translatedText += "\npush	eax";
 							} else if (IT::GetEntry(idTable, lex->idxTI)->iddatatype == IT::CHAR) {
-								translatedText += "xor	ax,ax\nmovzx	ax, ";
+								translatedText += "xor	eax,eax\nmovzx	eax, ";
 								translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
-								translatedText += "\npush	ax";
+								translatedText += "\npush	eax";
 							}
 						}
 					}
 					else if (lex->lexema[0] == 'l') {
 						if ((IT::GetEntry(idTable, lex->idxTI))->iddatatype == IT::IDDATATYPE::CHAR) {
-							translatedText += "movzx	ax, ";
+							translatedText += "movzx	eax, ";
 							translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
-							translatedText += "\npush	ax";
-						}else {
-							translatedText += EXPR_INT;
+							translatedText += "\npush	eax";
+						}
+						else if ((IT::GetEntry(idTable, lex->idxTI))->iddatatype == IT::IDDATATYPE::STR) {
+							translatedText += "lea	eax, ";
 							translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
+							translatedText += "\npush	eax";
+						}
+						else {
+							translatedText += "movzx	eax, ";
+							translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
+							translatedText += "\npush	eax";
 						}
 					}
 					else if (lex->lexema[0] == LEX_EQUALS) {
@@ -426,7 +484,14 @@ namespace GEN {
 						//translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
 					}
 					else if (lex->lexema[0] == LEX_RETURN) {
-						translatedText += EXPR_RETURN;
+						if (func.returnType == IT::IDDATATYPE::VOID) {
+							translatedText += "ret	";
+							translatedText += to_string(func.curParams * 4);
+						}else{
+							translatedText += EXPR_RETURN;
+							translatedText += to_string(func.curParams * 4);
+						}
+						break;
 					}
 					else if (lex->lexema[0] == SPEC_SUMBOL) {
 						translatedText += EXPR_CALL;
@@ -440,8 +505,8 @@ namespace GEN {
 						}
 						lastArrays.push(IT::GetEntry(idTable, lex->idxTI));
 						translatedText += "xor	eax, eax\n";
-						translatedText += "pop	ax\n";
-						translatedText += "imul	ax,";
+						translatedText += "pop	eax\n";
+						translatedText += "imul	eax,";
 						switch ((IT::GetEntry(idTable, lex->idxTI))->iddatatype) {
 							case IT::IDDATATYPE::ARRAY: {
 								translatedText += "2";

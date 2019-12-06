@@ -10,6 +10,17 @@
 .MODEL FLAT, STDCALL;	\n\
 includelib kernel32.lib;\n\
 ExitProcess PROTO : DWORD;\n\
+includelib kernel32.lib;\n\
+includelib user32.lib;\n\
+includelib vcruntimed.lib;\n\
+includelib ucrtd.lib;\n\
+includelib ..\\Debug\\CLib.lib\n\
+printStr PROTO : ptr byte\n\
+strCopy PROTO : ptr byte, : ptr byte\n\
+intToChar PROTO : word\n\
+strConcat PROTO : ptr byte, : ptr byte\n\
+readNum PROTO\n\
+readLine PROTO\n\
 "
 
 #define CODE_SECTION "\
@@ -42,19 +53,19 @@ start :\n\
 
 //для секці кода
 #define EXPR_INT "push	"		//i
-#define EXPR_EQU "pop	ax\n\
+#define EXPR_EQU "pop	eax\n\
 pop	ebx\n\
 mov	[ebx], ax\n"		//=
-#define EXPR_EQU_STR "pop	ax\n\
+#define EXPR_EQU_STR "pop	eax\n\
 pop	ebx\n\
 mov	[ebx], al\n"		//=
-#define EXPR_SUM "pop	ax\npop	bx\nadd	ax, bx\npush	ax\n"	//+
-#define EXPR_IMUL "pop	ax\npop	bx\nimul	ax, bx\npush	ax\n"	//*
-#define EXPR_SUB "pop	ax\npop	bx\nsub	bx, ax\npush	bx\n"	// -
-#define EXPR_DIV "pop	ax\npop	bx\nidiv	bx, ax\npush	bx\n"	// /
-#define EXPR_CLEAR_STACK "pop	bx"
-#define EXPR_RETURN "pop	ax\n\
-ret\n"	//return
+#define EXPR_SUM "pop	eax\npop	ebx\nadd	ax, bx\npush	eax\n"	//+
+#define EXPR_IMUL "pop	eax\npop	ebx\nimul	ax, bx\npush	eax\n"	//*
+#define EXPR_SUB "pop	eax\npop	ebx\nsub	bx, ax\npush	ebx\n"	// -
+#define EXPR_DIV "pop	eax\npop	ebx\nidiv	bx, ax\npush	ebx\n"	// /
+#define EXPR_CLEAR_STACK "pop	ebx"
+#define EXPR_RETURN "pop	eax\n\
+ret	"	//return
 
 
 //выклікі функцыі
@@ -71,69 +82,69 @@ ret\n"	//return
 #define IF_METKA "if"		//метка для if
 #define ELSE_METKA "else"	//метка для else/else if
 #define FINALLY "finally"	//метка для кода пасля блёка
-#define MOVE_TO_IF "pop	ax\n\
-cmp	ax, 0\n\
+#define MOVE_TO_IF "pop	eax\n\
+cmp	eax, 0\n\
 je	"//пераход, калі ўмова у стэку не выконваецца
 #define MOVE_TO "jmp	"	//перайсці да меткі
 #define METKA ":;------------------------------"
 //a<b
-#define IF_LESS "pop	ax\n\
-pop	bx\n\
-cmp	bx,ax\n\
+#define IF_LESS "pop	eax\n\
+pop	ebx\n\
+cmp	ebx,eax\n\
 LAHF\n\
 shr	ah, 7\n\
-xor	cx, cx\n\
+xor	ecx, ecx\n\
 mov	cl, ah\n\
 and	cl,1\n\
-push	cx\n\
+push	ecx\n\
 "
 //a>b
-#define IF_LARGER "pop	ax\n\
-pop	bx\n\
-cmp	ax,bx\n\
+#define IF_LARGER "pop	eax\n\
+pop	ebx\n\
+cmp	eax,ebx\n\
 LAHF\n\
 shr	ah, 7\n\
-xor	cx, cx\n\
+xor	ecx, ecx\n\
 mov	cl, ah\n\
 and	cl,1\n\
-push	cx\n\
+push	ecx\n\
 "
 //a==b
-#define IF_EQUALS "pop	bx\n\
-pop	ax\n\
-cmp	ax,bx\n\
+#define IF_EQUALS "pop	ebx\n\
+pop	eax\n\
+cmp	eax,ebx\n\
 LAHF\n\
 shr ah,	6\n\
-xor	cx, cx\n\
+xor	ecx, ecx\n\
 mov	cl, ah\n\
 and	cl,1\n\
-push	cx\n\
+push	ecx\n\
 "
 //a!b
-#define IF_NOT_EQUALS "pop	bx\n\
-pop	ax\n\
-cmp	ax,bx\n\
+#define IF_NOT_EQUALS "pop	ebx\n\
+pop	eax\n\
+cmp	eax,ebx\n\
 LAHF\n\
 shr	ah, 6\n\
-xor	cx, cx\n\
+xor	ecx, ecx\n\
 mov	cl, ah\n\
 not cx\n\
 and	cl,1\n\
-push	cx\n\
+push	ecx\n\
 "
 //&
-#define IF_AND "pop	bx\n\
-pop	ax\n\
-and	ax,bx\n\
-and	ax,1\n\
-push	ax\n\
+#define IF_AND "pop	ebx\n\
+pop	eax\n\
+and	eax,ebx\n\
+and	eax,1\n\
+push	eax\n\
 "
 //|
-#define IF_OR "pop	bx\n\
-pop	ax\n\
-or	ax,bx\n\
-and	ax,1\n\
-push	ax\n\
+#define IF_OR "pop	ebx\n\
+pop	eax\n\
+or	eax,ebx\n\
+and	eax,1\n\
+push	eax\n\
 "
 //масівы
 #define ARRAY1 "["		//пачатак дыкларацыі масіва
@@ -144,12 +155,11 @@ push	ax\n\
 #define ADDR_TO_PTR "mov	"	//прысвоіць адрас масіва ўказальніку
 #define PUSH_ADDR "push	"
 #define PUSH_VALUE	"pop	eax\n\
-mov	bx, [eax]\n\
-push	bx\n"	//атрымаць значэнне па адрасе ў стэку і запушыць яго
+mov	ebx, [eax]\n\
+push	ebx\n"	//атрымаць значэнне па адрасе ў стэку і запушыць яго
 #define PUSH_VALUE_STR	"pop	eax\n\
-xor	ebx, ebx\n\
 mov	bl, [eax]\n\
-push	bx\n"	//атрымаць значэнне па адрасе ў стэку і запушыць яго
+push	ebx\n"	//атрымаць значэнне па адрасе ў стэку і запушыць яго
 
 namespace GEN {
 	struct Generator {

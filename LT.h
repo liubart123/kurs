@@ -46,6 +46,14 @@
 #define LEX_ARRAY		't'
 #define LEX_ARRAY_STR	't'
 #define LEX_PTR			'v'
+
+//стандартны€ функцы≥
+#define SF1 "printStr"
+#define SF2 "strCopy"
+#define SF3 "intToChar"
+#define SF4 "strConcat"
+#define SF5 "readNum"
+#define SF6 "readLine"
 //#include "IT.h"
 namespace LT
 {

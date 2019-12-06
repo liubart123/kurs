@@ -62,6 +62,7 @@ namespace IT
 		int maxsize;
 		int size;
 		Entry* table;
+		int countOfStandartFuncs = 6;
 		FuncDefenition **funcs;
 		int funcCount=0;
 	};
@@ -81,4 +82,6 @@ namespace IT
 
 	void AddParm(IdTable& idTable, FuncDefenition& f, int index);
 	void AddVal(IdTable& idTable, FuncDefenition& f, int index);
+
+	void AddStandartFuncs(IdTable& idTable);	//дабав≥ць у табл≥цу стандартны€ функцы≥
 }
