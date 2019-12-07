@@ -58,11 +58,12 @@
 #define SF7 "printLine"
 #define SF8 "_pow" 
 #define SF9 "rnd"
-//#include "IT.h"
 namespace LT
 {
+	enum COUNTSYSTEM { DEC=10, HEX=16, OCT=8, BIN=2 };
 	struct Entry	//запіс у ьабліцы
 	{
+		COUNTSYSTEM countSys;
 		char lexema[LEXEMA_FIXSIZE];	//лексема
 		int sn;							//нумар радка у зыходным кодзі
 		int idxTI;						//індэкс у табліцы ід

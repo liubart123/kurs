@@ -140,25 +140,39 @@ namespace Log
 				}
 				if (pos != 0) {		//калі цякучае слова не сімвал пропуска
 					char *result;
-					result = CheckWord(tempString);	//праверка на лексемы
+					LT::COUNTSYSTEM countSystem = LT::DEC;
+					result = CheckWord(tempString);	//праверка на ключавые словы
 					if (result[0] == LEX_ERROR){
 						result = ChrLiKA(tempString);//праверка на літэрал сімвала
 						if (result[0] == LEX_ERROR) {
 							result = StrLiKA(tempString);//праверка на літэрал радковы
 							if (result[0] == LEX_ERROR) {
-								result = IntLiKA(tempString);//праверка на літэрал лічбавы
+								result = IntLiKA(tempString);//праверка на літэрал лічбавы dec
 								if (result[0] == LEX_ERROR) {
-									result = IdKA(tempString);//праверка на ідынтыфікатар
+									result = IntLiKAHex(tempString);//праверка на літэрал лічбавы hex
+									countSystem = LT::HEX;
 									if (result[0] == LEX_ERROR) {
-										//throw(Error::geterrorin(101, NumberOfLine, positionInLine));
-										errorList.push_back(Error::geterrorin(204, NumberOfLine, positionInLine));
-										//WriteError(log,Error::geterrorin(101,NumberOfLine,positionInLine));
+										result = IntLiKABin(tempString);//праверка на літэрал лічбавы bin
+										countSystem = LT::BIN;
+										if (result[0] == LEX_ERROR) {
+											result = IntLiKAOct(tempString);//праверка на літэрал лічбавы oct
+											countSystem = LT::OCT;
+											if (result[0] == LEX_ERROR) {
+												result = IdKA(tempString);//праверка на ідынтыфікатар
+												if (result[0] == LEX_ERROR) {
+													//throw(Error::geterrorin(101, NumberOfLine, positionInLine));
+													errorList.push_back(Error::geterrorin(204, NumberOfLine, positionInLine));
+													//WriteError(log,Error::geterrorin(101,NumberOfLine,positionInLine));
+												}
+											}
+										}
 									}
 								}
 							}
 						}
 					}
 					LT::Add(lexTable, result, startPos, NumberOfLine);
+					LT::GetEntry(lexTable, lexTable.size - 1)->countSys = countSystem;
 					//positionInLine++;
 					WriteLine(log, result, "");
 				}
@@ -205,7 +219,7 @@ namespace Log
 
 		//*log.stream << "\n" << gen << endl;
 		std::cout << "\n" << gen << endl;
-		//*log.source_stream << gen;
+		*log.source_stream << gen;
 
 		//cout << LT::PrintTable(lexTable);
 		/*int pos2 = 36;
@@ -480,7 +494,7 @@ namespace Log
 	char *IntLiKA(char* word) {
 		FSTN::FST fst1(
 			word,
-			3,
+			2,
 			FSTN::NODE(10,
 				FSTN::RELATION('1', 1),
 				FSTN::RELATION('2', 1),
@@ -533,6 +547,102 @@ namespace Log
 		str[LEXEMA_FIXSIZE] = '\0';
 		return str;
 	}	
+
+	char *IntLiKABin(char* word) {
+		FSTN::FST fst1(
+			word,
+			2,
+			FSTN::NODE(3,
+				FSTN::RELATION('1', 0),
+				FSTN::RELATION('0', 0),
+				FSTN::RELATION('b', 1)
+			)
+		);
+
+
+		bool result = FSTN::execute(fst1);
+		char *str;
+		str = new char[LEXEMA_FIXSIZE];
+		if (result == true) {
+			str[0] = LEX_LITERAL;
+		}
+		else {
+			str[0] = LEX_ERROR;
+		}
+		str[LEXEMA_FIXSIZE] = '\0';
+		return str;
+	}
+
+	char *IntLiKAOct(char* word) {
+		FSTN::FST fst1(
+			word,
+			2,
+			FSTN::NODE(9,
+				FSTN::RELATION('1', 0),
+				FSTN::RELATION('2', 0),
+				FSTN::RELATION('3', 0),
+				FSTN::RELATION('4', 0),
+				FSTN::RELATION('5', 0),
+				FSTN::RELATION('6', 0),
+				FSTN::RELATION('7', 0),
+				FSTN::RELATION('0', 0),
+				FSTN::RELATION('o', 1)
+			)
+		);
+
+
+		bool result = FSTN::execute(fst1);
+		char *str;
+		str = new char[LEXEMA_FIXSIZE];
+		if (result == true) {
+			str[0] = LEX_LITERAL;
+		}
+		else {
+			str[0] = LEX_ERROR;
+		}
+		str[LEXEMA_FIXSIZE] = '\0';
+		return str;
+	}
+
+	char *IntLiKAHex(char* word) {
+		FSTN::FST fst1(
+			word,
+			2,
+			FSTN::NODE(17,
+				FSTN::RELATION('0', 0),
+				FSTN::RELATION('1', 0),
+				FSTN::RELATION('2', 0),
+				FSTN::RELATION('3', 0),
+				FSTN::RELATION('4', 0),
+				FSTN::RELATION('5', 0),
+				FSTN::RELATION('6', 0),
+				FSTN::RELATION('7', 0),
+				FSTN::RELATION('8', 0),
+				FSTN::RELATION('9', 0),
+				FSTN::RELATION('a', 0),
+				FSTN::RELATION('b', 0),
+				FSTN::RELATION('c', 0),
+				FSTN::RELATION('d', 0),
+				FSTN::RELATION('e', 0),
+				FSTN::RELATION('f', 0),
+				FSTN::RELATION('h', 1)
+			)
+		);
+
+
+		bool result = FSTN::execute(fst1);
+		char *str;
+		str = new char[LEXEMA_FIXSIZE];
+		if (result == true) {
+			str[0] = LEX_LITERAL;
+		}
+		else {
+			str[0] = LEX_ERROR;
+		}
+		str[LEXEMA_FIXSIZE] = '\0';
+		return str;
+	}
+
 	//праверыць слова, на аўтамаце для літэрала ліка
 
 	char* StrLiKA(char* word) {

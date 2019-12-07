@@ -30,6 +30,9 @@ namespace Log
 	char* GetSepSymb(char c);
 	char* StrLiKA(char* word);
 	char *IntLiKA(char* word);
+	char *IntLiKAHex(char* word);
+	char *IntLiKAOct(char* word);
+	char *IntLiKABin(char* word);
 	char *CheckWord(char* word);
 	bool IsNewLinePossible(char str);
 	char* ChrLiKA(char* word);

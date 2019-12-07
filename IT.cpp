@@ -25,7 +25,7 @@ namespace IT {
 		Entry *entry = new Entry();
 		WORDS::StringCopy(entry->id, id);
 		entry->idxfirstLE=idxfirstLE;
-		entry->countSystem = DEC;
+		entry->countSystem = LT::DEC;
 		idtable.table[idtable.size++] = *entry;
 		delete entry;
 	}
@@ -57,18 +57,18 @@ namespace IT {
 				GetEntry(idTable, idTable.size - 1)->idtype = IT::IDTYPE::L;
 				if (id[0] >= '0' && id[0] <= '9' || id[0] == '-') {
 					GetEntry(idTable, idTable.size - 1)->iddatatype = INT;
-					GetEntry(idTable, idTable.size - 1)->value.vint = atoi(id);
+					GetEntry(idTable, idTable.size - 1)->value.vint = strtoll(id,&id, GetEntry(idTable, idTable.size - 1)->countSystem);
 					//праверка на сістэму злічэння літэрала
 					int ind = 0;
 					while (id[ind + 1] != '\0') {
 						ind++;
 					}
 					if (id[ind] == 'b') {
-						GetEntry(idTable, idTable.size - 1)->countSystem=BIN;
+						GetEntry(idTable, idTable.size - 1)->countSystem= LT::BIN;
 					}else if (id[ind] == 'h') {
-						GetEntry(idTable, idTable.size - 1)->countSystem = HEX;
+						GetEntry(idTable, idTable.size - 1)->countSystem = LT::HEX;
 					}else if (id[ind] == 'o') {
-						GetEntry(idTable, idTable.size - 1)->countSystem = OCT;
+						GetEntry(idTable, idTable.size - 1)->countSystem = LT::OCT;
 					}
 				}
 				else if(id[0] == '\'') {
@@ -357,26 +357,30 @@ namespace IT {
 
 			if (GetEntry(idTable, i)->iddatatype == INT) {
 				str.append("integer");
-				str.append(",\t");
-				str.append(std::to_string(GetEntry(idTable, i)->value.vint));
-				if (GetEntry(idTable, i)->countSystem != DEC) {
-					switch (GetEntry(idTable, i)->countSystem)
-					{
-					case HEX:str.append("hex");break;
-					case OCT:str.append("oct"); break;
-					case BIN:str.append("bin"); break;
+				if (GetEntry(idTable, i)->idtype == L){
+					str.append(",\t");
+					str.append(std::to_string(GetEntry(idTable, i)->value.vint));
+					if (GetEntry(idTable, i)->countSystem != LT::DEC) {
+						switch (GetEntry(idTable, i)->countSystem)
+						{
+						case LT::HEX:str.append("hex"); break;
+						case LT::OCT:str.append("oct"); break;
+						case LT::BIN:str.append("bin"); break;
+						}
 					}
 				}
 			}
 			else if (GetEntry(idTable, i)->iddatatype == ARRAY) {
 				str.append("array");
 				str.append(",\t");
-				str.append(std::to_string(GetEntry(idTable, i)->value.vint));
+				if (GetEntry(idTable, i)->idtype == L)
+					str.append(std::to_string(GetEntry(idTable, i)->value.vint));
 			}
 			else if (GetEntry(idTable, i)->iddatatype == CHAR) {
 				str.append("char");
 				str.append(",\t");
-				str.append(std::to_string(GetEntry(idTable, i)->value.vint));
+				if (GetEntry(idTable, i)->idtype == L)
+					str.append(std::to_string(GetEntry(idTable, i)->value.vint));
 			}
 			else if (GetEntry(idTable, i)->iddatatype == VOID) {
 				str.append("void");
@@ -385,12 +389,14 @@ namespace IT {
 			else if (GetEntry(idTable, i)->iddatatype == ARRAY_STR) {
 				str.append("string array");
 				str.append(",\t");
-				str.append(std::to_string(GetEntry(idTable, i)->value.vint));
+				if (GetEntry(idTable, i)->idtype == L)
+					str.append(std::to_string(GetEntry(idTable, i)->value.vint));
 			}
 			else {
 				str.append("string");
 				str.append(",\t");
-				str.append(GetEntry(idTable, i)->value.vstr.str);
+				if (GetEntry(idTable, i)->idtype == L)
+					str.append(GetEntry(idTable, i)->value.vstr.str);
 			}
 			str.append(",\t");
 			//str.append(GetEntry(idTable, i)->funcId);

@@ -74,6 +74,7 @@ namespace Error
 		ERROR_ENTRY(207,"operation wasn't defined"),	//poland
 		ERROR_ENTRY(208,"wrong type of literal"),	//id
 		ERROR_ENTRY(209,"double declaration"),	//id
+		ERROR_ENTRY(210,"unexpected bracket"),	//generation
 		ERROR_ENTRY_NODEF100(300),
 		ERROR_ENTRY_NODEF100(400),
 		ERROR_ENTRY_NODEF100(500),

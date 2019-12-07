@@ -78,11 +78,11 @@ namespace GEN {
 			resultStr += INT_TYPE;
 			resultStr += " ";
 			resultStr += to_string(lex.value.vint);
-			if (lex.countSystem != IT::DEC) {
+			if (lex.countSystem != LT::DEC) {
 				switch (lex.countSystem) {
-					case IT::OCT:resultStr += 'o'; break;
-					case IT::HEX:resultStr += 'h'; break;
-					case IT::BIN:resultStr += 'b'; break;
+					case LT::OCT:resultStr += 'o'; break;
+					case LT::HEX:resultStr += 'h'; break;
+					case LT::BIN:resultStr += 'b'; break;
 				}
 			}
 			break;
@@ -134,7 +134,9 @@ namespace GEN {
 		return resultStr;
 	}//запісаць дыклярацыю пераменнай у асэмблер
 
+	enum BLOCKTYPE {WHILE,IF,ELSE};
 	struct Block {
+		BLOCKTYPE type = IF;
 		string name = "";
 		int countOfElses= 0;
 	};
@@ -191,7 +193,7 @@ namespace GEN {
 				str += LOCALS;
 				str += "	";
 				str += it->AssemblerName;
-				str += " : ";
+				str += " : ";//local asd : ptr byte
 				str += PTR;
 				str += " ";
 				str += STR_TYPE; break;
@@ -525,6 +527,7 @@ namespace GEN {
 				bl.name = WHILE_METKA;
 				bl.name += func.name;
 				bl.name += to_string(countOfCycles++);
+				bl.type = GEN::BLOCKTYPE::WHILE;
 				bl.countOfElses=-1;
 				str += bl.name;
 				str += METKA;
@@ -594,6 +597,21 @@ namespace GEN {
 				str += METKA;
 				str += "\n";
 				Blocks.pop();
+			}
+			else if (LT::GetEntry(lexTable, i)->lexema[0] == LEX_BREAK) {	//break
+			if (Blocks.empty()) {
+				//throw(Error::geterrorin(210, (LT::GetEntry(lexTable, i)->))
+				break;
+			}
+			std::stack<GEN::Block> tempBlocks = Blocks;
+			while (tempBlocks.top().type != GEN::BLOCKTYPE::WHILE) {
+				tempBlocks.pop();
+			}
+			str += MOVE_TO;
+			str += tempBlocks.top().name;
+			str += FINALLY;
+			str += "\n";
+			//Blocks.pop();
 			}
 			i++;
 		}

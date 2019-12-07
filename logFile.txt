@@ -1,35 +1,46 @@
------Date: 06.12.2019 23:35:10-----
+-----Date: 07.12.2019 15:18:34-----
 -----PARAMETRS-----
 Input file: inFile.txt
 Output file: inFile.txt.out.asm
 Log file: logFile.txt
 -----Исходные данные-----
-Amount of symbols: 171
+Amount of symbols: 260
 Amount of ignored symbols: 0
-Amount of lines: 9
+Amount of lines: 21
 1: m
 2: {
 3: dti=l;
-4: dti=l;
-5: dti=l;
-6: dti=l;
-7: dti;
-8: dti=l;
-9: 
-10: r;
-11: };
+4: i(l,i);
+5: r;
+6: };
+7: tfi(ti,ti){
+8: w(ivl){
+9: k(ivlvivl){
+10: i=l;
+11: b;
+12: }
+13: ak(ivl){
+14: i=l;
+15: b;
+16: }a{
+17: i=l;
+18: b;
+19: }
+20: i=ivl;
+21: }
+22: r;
+23: };
 
 ID Table
-l:	literal,	integer,	123,	
-l:	literal,	integer,	123bin,	
-l:	literal,	integer,	123oct,	
-l:	literal,	integer,	123hex,	
-l:	literal,	char,	37,	
-a:	variable,	integer,	0,	
-b:	variable,	integer,	0,	
-c:	variable,	integer,	0,	
-d:	variable,	integer,	0,	
-str:	variable,	string,	,	
-ch:	variable,	char,	0,	
+l:	literal,	integer,	2,	
+l:	literal,	integer,	11,	
+l:	literal,	integer,	12,	
+l:	literal,	integer,	10,	
+l:	literal,	integer,	1,	
+func:	function,	void,	,	
+res:	variable,	integer,	
+res:	parametr,	integer,	
+i:	parametr,	integer,	
 
-function: main, returning type is: void,	, count of locals is: 6, count of parametors is: 0
+function: func, returning type is: void,	, count of locals is: 0, count of parametors is: 2
+function: main, returning type is: void,	, count of locals is: 1, count of parametors is: 0

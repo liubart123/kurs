@@ -1,11 +1,23 @@
 main
 {
-	declare integer a = 123;
-	declare integer b = 123b;
-	declare integer c = 123o;
-	declare integer d = 123h;
-	declare string str;
-	declare char ch = '%';
-
+	declare integer res = 2;
+	func(11,res);
 	return;
+};
+void function func (integer res,integer i){
+	while(i<12){
+		if(i<10|i?10){
+			res=10;
+			break;
+		}
+		else if (i>10){
+			res=11;
+			break;
+		}else {
+			res = 12;
+			break;
+		}
+		i=i+1;
+	}
+	return ;
 };
