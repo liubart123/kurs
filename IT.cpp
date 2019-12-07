@@ -25,6 +25,7 @@ namespace IT {
 		Entry *entry = new Entry();
 		WORDS::StringCopy(entry->id, id);
 		entry->idxfirstLE=idxfirstLE;
+		entry->countSystem = DEC;
 		idtable.table[idtable.size++] = *entry;
 		delete entry;
 	}
@@ -46,7 +47,6 @@ namespace IT {
 	//праверыць тэкст на ≥д-ы
 	void CheckStrForId(char* text, IdTable& idTable, LT::LexTable& lexTable) {
 		//л≥тэралы
-		std::string function = "";//функцы€, у €кой знаходз≥цца ≥д-ар
 		for (int i = 0; i < lexTable.size; i++) {
 			LT::Entry *entry = LT::GetEntry(lexTable, i);	//радок лексемы
 			char lex = entry->lexema[0];	//лексема
@@ -55,9 +55,21 @@ namespace IT {
 				entry->lexema[LEXEMA_FIXSIZE]='\0';
 				Add(idTable, i, entry->lexema);
 				GetEntry(idTable, idTable.size - 1)->idtype = IT::IDTYPE::L;
-				if (id[0] >= '0' && id[0] <= '9') {
+				if (id[0] >= '0' && id[0] <= '9' || id[0] == '-') {
 					GetEntry(idTable, idTable.size - 1)->iddatatype = INT;
 					GetEntry(idTable, idTable.size - 1)->value.vint = atoi(id);
+					//праверка на с≥стэму зл≥чэнн€ л≥тэрала
+					int ind = 0;
+					while (id[ind + 1] != '\0') {
+						ind++;
+					}
+					if (id[ind] == 'b') {
+						GetEntry(idTable, idTable.size - 1)->countSystem=BIN;
+					}else if (id[ind] == 'h') {
+						GetEntry(idTable, idTable.size - 1)->countSystem = HEX;
+					}else if (id[ind] == 'o') {
+						GetEntry(idTable, idTable.size - 1)->countSystem = OCT;
+					}
 				}
 				else if(id[0] == '\'') {
 					GetEntry(idTable, idTable.size - 1)->iddatatype = CHAR;
@@ -83,7 +95,67 @@ namespace IT {
 
 		FuncDefenition *curFunc=NULL;	//ц€куча€ функцы€
 		//≥дэнтыф≥катары
-		std::string parent = "";
+
+		//ствараюцца прататыпы функцый
+		for (int i = 0; i < lexTable.size; i++) {
+			LT::Entry *entry = LT::GetEntry(lexTable, i);	//радок лексемы
+			char lex = entry->lexema[0];	//лексема
+			if (lex == LEX_ID) {
+				char* id = WORDS::GetWord(text, entry->sn);
+				WORDS::CutWord(id, ID_MAXSIZE);
+				if (IsId(idTable, id, curFunc) == TI_NULLIDX) {
+					if (i > 1) {
+						//дыкл€рацы€ функцы≥
+						if (LT::GetEntry(lexTable, i - 1)->lexema[0] == 'f') {
+							if (i > 2 && LT::GetEntry(lexTable, i - 2)->lexema[0] == 'd') {
+								throw(Error::geterrortext(204, text, entry->sn));
+							}
+							Add(idTable, i, id);
+							//GetEntry(idTable, idTable.size - 1)->funcId = (char*)(function[0]);
+							if (i >= 2 && LT::GetEntry(lexTable, i - 2)->lexema[0] == 't') {
+								GetEntry(idTable, idTable.size - 1)->idtype = IT::IDTYPE::F;
+							}
+							else {
+								throw(Error::geterrortext(202, text, LT::GetEntry(lexTable, i)->sn));
+							}
+							entry->idxTI = idTable.size - 1;
+
+
+							//задаецца тып ≥д-а
+							if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 2)->sn)[0] == 'i') {
+								GetEntry(idTable, idTable.size - 1)->iddatatype = INT;
+								//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
+							}
+							else if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 2)->sn)[0] == 'a') {
+								GetEntry(idTable, idTable.size - 1)->iddatatype = ARRAY;
+								//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
+							}
+							else if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 2)->sn)[0] == 's' &&
+								WORDS::GetWord(text, LT::GetEntry(lexTable, i - 2)->sn)[1] == 'a') {
+								GetEntry(idTable, idTable.size - 1)->iddatatype = ARRAY_STR;
+								//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
+							}
+							else if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 2)->sn)[0] == 'c') {
+								GetEntry(idTable, idTable.size - 1)->iddatatype = CHAR;
+								//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
+							}
+							else if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 2)->sn)[0] == 'v') {
+								GetEntry(idTable, idTable.size - 1)->iddatatype = VOID;
+								//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
+							}
+							else {
+								GetEntry(idTable, idTable.size - 1)->iddatatype = STR;
+								//*(GetEntry(idTable, idTable.size - 1)->value.vstr.str) = TI_STR_DEFAULT;
+							}
+							curFunc = AddFuncDef(idTable, *(GetEntry(idTable, idTable.size - 1)));
+							GetEntry(idTable, idTable.size - 1)->funcId = curFunc;
+						}
+					}
+				}
+			}
+		}
+
+		//абыход ≥д-аҐ
 		for (int i = 0; i < lexTable.size; i++) {
 			LT::Entry *entry = LT::GetEntry(lexTable, i);	//радок лексемы
 			char lex = entry->lexema[0];	//лексема
@@ -149,66 +221,11 @@ namespace IT {
 									}
 									/*GetEntry(idTable, idTable.size - 1)->iddatatype =
 										dt;*/
-								} else if (i < lexTable.size - 4
-									&& LT::GetEntry(lexTable, i + 1)->lexema[0] == '='
-									&& LT::GetEntry(lexTable, i + 2)->lexema[0] == '-'
-									&& LT::GetEntry(lexTable, i + 3)->lexema[0] == 'l'
-									&& LT::GetEntry(lexTable, i + 4)->lexema[0] == ';'
-									&& GetEntry(idTable, idTable.size - 1)->iddatatype == INT) {
-									//пасл€ '=' Єсць м≥нус
-									IDDATATYPE dt = GetEntry(idTable, LT::GetEntry(lexTable, i + 3)->idxTI)->iddatatype;
-									GetEntry(idTable, idTable.size - 1)->iddatatype = dt;
-									if (dt == IT::IDDATATYPE::STR) {
-										throw (Error::geterrortext(208,text, LT::GetEntry(lexTable, i + 2)->sn));
-									}
-									/*GetEntry(idTable, idTable.size - 1)->value.vint =
-										-GetEntry(idTable, LT::GetEntry(lexTable, i + 3)->idxTI)->value.vint;*/
-								}
-							}
-						}
-						//дыкл€рацы€ функцы≥
-						else if (LT::GetEntry(lexTable, i - 1)->lexema[0] == 'f') {
-							if (i > 2 && LT::GetEntry(lexTable, i - 2)->lexema[0] == 'd') {
-								throw(Error::geterrortext(204,text,entry->sn));
-							}
-							Add(idTable, i, id);
-							//GetEntry(idTable, idTable.size - 1)->funcId = (char*)(function[0]);
-							if (i >= 2 && LT::GetEntry(lexTable, i - 2)->lexema[0] == 't') {
-								GetEntry(idTable, idTable.size - 1)->idtype = IT::IDTYPE::F;
-							}
-							else {
-								throw(Error::geterrortext(202, text, LT::GetEntry(lexTable, i)->sn));
-							}
-							function="";
-							function.append(id);
-							entry->idxTI = idTable.size - 1;
-
-							//задаецца тып ≥д-а
-							if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 2)->sn)[0] == 'i') {
-								GetEntry(idTable, idTable.size - 1)->iddatatype = INT;
-								//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
-							}
-							else {
-								GetEntry(idTable, idTable.size - 2)->iddatatype = STR;
-								//*(GetEntry(idTable, idTable.size - 1)->value.vstr.str) = TI_STR_DEFAULT;
-							}
-							curFunc = AddFuncDef(idTable, *(GetEntry(idTable, idTable.size - 1)));
-							//наданне значэнн€ ≥д-ру
-							if (i < lexTable.size - 2) {
-								if (LT::GetEntry(lexTable, i + 1)->lexema[0] == '='
-									&& LT::GetEntry(lexTable, i + 2)->lexema[0] == 'l') {
-									IDDATATYPE dt = GetEntry(idTable, LT::GetEntry(lexTable, i + 2)->idxTI)->iddatatype;
-									GetEntry(idTable, idTable.size - 1)->iddatatype =
-										dt;
-									GetEntry(idTable, idTable.size - 1)->idtype =
-										GetEntry(idTable, LT::GetEntry(lexTable, i + 2)->idxTI)->idtype;
-									/*GetEntry(idTable, idTable.size - 1)->value =
-										GetEntry(idTable, LT::GetEntry(lexTable, i + 2)->idxTI)->value;*/
-								}
+								} 
 							}
 						}
 						else {
-							throw(Error::geterrortext(202, text, LT::GetEntry(lexTable, i)->sn));
+							throw(Error::geterrortext(203, text, LT::GetEntry(lexTable, i)->sn));
 						}
 					}
 					else {
@@ -221,10 +238,10 @@ namespace IT {
 						throw(Error::geterrortext(209, text, LT::GetEntry(lexTable, i)->sn));//паҐторна€ дыкл€рацы€
 					}
 					entry->idxTI = IsId(idTable, id, curFunc);
+					if (IT::GetEntry(idTable, entry->idxTI)->idtype == IT::F && LT::GetEntry(lexTable, i - 1)->lexema[0] == 'f') {
+						curFunc = IT::GetEntry(idTable, entry->idxTI)->funcId;
+					}
 				}
-			}
-			else if (lex==LEX_FUNCTION){
-				parent.append(WORDS::GetWord(text, LT::GetEntry(lexTable, i)->sn));
 			}
 			else if (lex == LEX_CONDITION && LT::GetEntry(lexTable, i - 1)->lexema[0] != LEX_ELSE) {
 				BlockDefenition *bl = new BlockDefenition();
@@ -271,8 +288,17 @@ namespace IT {
 		else if (WORDS::StringCompare(id, SF6)) {
 			return 5;
 		}
+		else if (WORDS::StringCompare(id, SF7)) {
+			return 6;
+		}
+		else if (WORDS::StringCompare(id, SF8)) {
+			return 7;
+		}
+		else if (WORDS::StringCompare(id, SF9)) {
+			return 8;
+		}
 
-		for (int i = 0; i < idtable.size; i++) {
+		for (int i = idtable.countOfStandartFuncs; i < idtable.size; i++) {
 			if (WORDS::StringCompare(id, idtable.table[i].id) == true) {
 				if (func == idtable.table[i].funcId || idtable.table[i].idtype == IT::IDTYPE::F) {
 					pos = i;
@@ -291,11 +317,13 @@ namespace IT {
 			}
 			if (GetEntry(idtable, id)->iddatatype == GetEntry(idtable,i)->iddatatype) {
 				if (GetEntry(idtable, id)->iddatatype == IT::IDDATATYPE::INT) {
-					if (GetEntry(idtable, id)->value.vint == GetEntry(idtable, i)->value.vint){
+					if (GetEntry(idtable, id)->value.vint == GetEntry(idtable, i)->value.vint
+					&& GetEntry(idtable, id)->countSystem == GetEntry(idtable, i)->countSystem){
 						pos = i;
 						break;
 					}
-				}else if (GetEntry(idtable, id)->iddatatype == IT::IDDATATYPE::STR) {
+				}
+				else if (GetEntry(idtable, id)->iddatatype == IT::IDDATATYPE::STR) {
 					if (WORDS::StringCompare(GetEntry(idtable, id)->value.vstr.str,GetEntry(idtable, i)->value.vstr.str)) {
 						pos = i;
 						break;
@@ -331,6 +359,33 @@ namespace IT {
 				str.append("integer");
 				str.append(",\t");
 				str.append(std::to_string(GetEntry(idTable, i)->value.vint));
+				if (GetEntry(idTable, i)->countSystem != DEC) {
+					switch (GetEntry(idTable, i)->countSystem)
+					{
+					case HEX:str.append("hex");break;
+					case OCT:str.append("oct"); break;
+					case BIN:str.append("bin"); break;
+					}
+				}
+			}
+			else if (GetEntry(idTable, i)->iddatatype == ARRAY) {
+				str.append("array");
+				str.append(",\t");
+				str.append(std::to_string(GetEntry(idTable, i)->value.vint));
+			}
+			else if (GetEntry(idTable, i)->iddatatype == CHAR) {
+				str.append("char");
+				str.append(",\t");
+				str.append(std::to_string(GetEntry(idTable, i)->value.vint));
+			}
+			else if (GetEntry(idTable, i)->iddatatype == VOID) {
+				str.append("void");
+				str.append(",\t");
+			}
+			else if (GetEntry(idTable, i)->iddatatype == ARRAY_STR) {
+				str.append("string array");
+				str.append(",\t");
+				str.append(std::to_string(GetEntry(idTable, i)->value.vint));
 			}
 			else {
 				str.append("string");
@@ -349,6 +404,22 @@ namespace IT {
 			str.append(", returning type is: ");
 			if (idTable.funcs[i]->returnType == INT) {
 				str.append("integer");
+				str.append(",\t");
+			}
+			if (idTable.funcs[i]->returnType == ARRAY_STR) {
+				str.append("string array");
+				str.append(",\t");
+			}
+			if (idTable.funcs[i]->returnType == ARRAY) {
+				str.append("array");
+				str.append(",\t");
+			}
+			if (idTable.funcs[i]->returnType == CHAR) {
+				str.append("char");
+				str.append(",\t");
+			}
+			if (idTable.funcs[i]->returnType == VOID) {
+				str.append("void");
 				str.append(",\t");
 			}
 			else {
@@ -378,6 +449,7 @@ namespace IT {
 		funcDef->name = "main";
 		idTable.funcs[idTable.funcCount++] = funcDef;
 		funcDef->startOfFunc = index;
+		funcDef->returnType = VOID;
 		return funcDef;
 	}//дабавц≥ь вызначэнне функцы≥
 	//дабав≥ць параметр у функцы≥ю
@@ -446,5 +518,32 @@ namespace IT {
 		funcDef->curParams = 0;
 		entry->funcId = funcDef;
 		idTable.table[5] = *entry;
+
+		//printLine
+		funcDef = new FuncDefenition();
+		funcDef->name = SF7;
+		funcDef->returnType = IT::IDDATATYPE::VOID;
+		idTable.funcs[idTable.funcCount++] = funcDef;
+		funcDef->curParams = 0;
+		entry->funcId = funcDef;
+		idTable.table[6] = *entry;
+
+		//_pow
+		funcDef = new FuncDefenition();
+		funcDef->name = SF8;
+		funcDef->returnType = IT::IDDATATYPE::INT;
+		idTable.funcs[idTable.funcCount++] = funcDef;
+		funcDef->curParams = 2;
+		entry->funcId = funcDef;
+		idTable.table[7] = *entry;
+
+		//rnd
+		funcDef = new FuncDefenition();
+		funcDef->name = SF9;
+		funcDef->returnType = IT::IDDATATYPE::INT;
+		idTable.funcs[idTable.funcCount++] = funcDef;
+		funcDef->curParams = 0;
+		entry->funcId = funcDef;
+		idTable.table[8] = *entry;
 	}
 }

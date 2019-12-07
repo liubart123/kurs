@@ -34,8 +34,8 @@ int _tmain(int argc, _TCHAR* argv[])
 		//}
 
 		Parm::PARM parm = Parm::getparm(argc, argv);
-		log = Log::getlog(parm.log);
-		Log::WriteLine(log, (char*)"³ô³ûâo¢", "asd","");
+		log = Log::getlog(parm.log, parm.source);
+		//Log::WriteLine(log, (char*)"³ô³ûâo¢", "asd","");
 		Log::WriteLog(log);
 		Log::WriteParm(log,parm);
 		wcout << L"in: " << parm.in << L'\n';

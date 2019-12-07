@@ -21,6 +21,9 @@ intToChar PROTO : word\n\
 strConcat PROTO : ptr byte, : ptr byte\n\
 readNum PROTO\n\
 readLine PROTO\n\
+printLine PROTO\n\
+rnd PROTO\n\
+_pow PROTO : word, : word\n\
 "
 
 #define CODE_SECTION "\
@@ -62,7 +65,8 @@ mov	[ebx], al\n"		//=
 #define EXPR_SUM "pop	eax\npop	ebx\nadd	ax, bx\npush	eax\n"	//+
 #define EXPR_IMUL "pop	eax\npop	ebx\nimul	ax, bx\npush	eax\n"	//*
 #define EXPR_SUB "pop	eax\npop	ebx\nsub	bx, ax\npush	ebx\n"	// -
-#define EXPR_DIV "pop	eax\npop	ebx\nidiv	bx, ax\npush	ebx\n"	// /
+#define EXPR_DIV "pop	ebx\npop	eax\ncwd			\nidiv	bx\npush	eax\n"	// /
+#define EXPR_MOD "pop	ebx\npop	eax\ncwd			\nidiv	bx\npush	edx\n"	// %
 #define EXPR_CLEAR_STACK "pop	ebx"
 #define EXPR_RETURN "pop	eax\n\
 ret	"	//return

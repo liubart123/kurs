@@ -77,11 +77,17 @@ namespace GRB {
 	};
 	Greibach greibach(NS('S'),TS('$'),7,
 		Rule(NS('S'),GRB_ERROR_SERIES+0,
-				4,
-				Rule::Chain(8,TS('m'),TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';')),
+				10,
+				Rule::Chain(7,TS('m'),TS('{'), NS('N'), TS('r'), TS(';'), TS('}'), TS(';')),
+				Rule::Chain(8, TS('m'), TS('{'), NS('N'), TS('r'), TS(';'), TS('}'), TS(';'), NS('S')),
 				Rule::Chain(14, TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';'), NS('S')),
-				Rule::Chain(9, TS('m'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';'), NS('S')),
-				Rule::Chain(13, TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';'))
+				Rule::Chain(13, TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';')),
+				Rule::Chain(13, TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS('{'), NS('N'), TS('r'), TS(';'), TS('}'), TS(';'), NS('S')),
+				Rule::Chain(12, TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS('{'), NS('N'), TS('r'), TS(';'), TS('}'), TS(';')),
+				Rule::Chain(13, TS('t'), TS('f'), TS('i'), TS('('), TS(')'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';'), NS('S')),
+				Rule::Chain(12, TS('t'), TS('f'), TS('i'), TS('('), TS(')'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';')),
+				Rule::Chain(12, TS('t'), TS('f'), TS('i'), TS('('), TS(')'), TS('{'), NS('N'), TS('r'), TS(';'), TS('}'), TS(';'), NS('S')),
+				Rule::Chain(11, TS('t'), TS('f'), TS('i'), TS('('), TS(')'), TS('{'), NS('N'), TS('r'), TS(';'), TS('}'), TS(';'))
 			),
 		Rule(NS('N'), GRB_ERROR_SERIES + 1,		//цела цункцы≥
 				26,
@@ -149,7 +155,7 @@ namespace GRB {
 		Rule(NS('W'), GRB_ERROR_SERIES + 5,		//параметры выкл≥каемай функцы≥
 			2,
 			Rule::Chain(2, TS(','), NS('E')),
-			Rule::Chain(4, TS(','), NS('E'), TS(','), NS('W'))
+			Rule::Chain(3, TS(','), NS('E'), NS('W'))
 		),
 		Rule(NS('C'), GRB_ERROR_SERIES + 6,		//прац€г if
 			3,

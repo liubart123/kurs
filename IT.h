@@ -15,6 +15,7 @@ namespace IT
 {
 	enum IDDATATYPE{INT=1,STR=2,VOID=3,ARRAY,ARRAY_STR, CHAR};
 	enum IDTYPE	{V=1,F=2,P=3,L=4};		//пераменная, функцыя, параметр, літэрал
+	enum COUNTSYSTEM {DEC,HEX,OCT,BIN};
 	enum BLOCK_TYPE
 	{
 		_if = 1,
@@ -42,6 +43,7 @@ namespace IT
 	struct Entry {
 		int idxfirstLE;		//індэкс у табліцы лексем
 		char id[ID_MAXSIZE];	//значэнне
+		COUNTSYSTEM countSystem;
 		IDDATATYPE iddatatype;	//тып дадзеных	
 		IDTYPE idtype;		//тып ідэнтыфікатара
 		FuncDefenition *funcId;//функцыя, у якой вызначаны ід
@@ -62,7 +64,7 @@ namespace IT
 		int maxsize;
 		int size;
 		Entry* table;
-		int countOfStandartFuncs = 6;
+		int countOfStandartFuncs = 9;
 		FuncDefenition **funcs;
 		int funcCount=0;
 	};

@@ -38,6 +38,7 @@ namespace WORDS {
 		char *dest;
 		int i=0;
 		bool kavichka = false;
+		bool kavichka2 = false;
 		while ((res[position + i] != ' ' &&
 			res[position + i] != ',' &&
 			res[position + i] != '.' &&
@@ -61,13 +62,21 @@ namespace WORDS {
 			res[position + i] != '&' &&
 			res[position + i] != '|' &&
 			res[position + i] != '?' &&
-			res[position + i] != '\0') || (kavichka==true && res[position + i] != '\"')) {
+			res[position + i] != '%' &&
+			res[position + i] != '\0') || (kavichka==true && res[position + i] != '\"') 
+			|| (kavichka2 == true && res[position + i] != '\'')) {
 			if (res[position + i] == '\"') {
 				if (kavichka == true) {
 					i++;
 					break;
 				}
 				kavichka = true;
+			}else if (res[position + i] == '\'') {
+				if (kavichka2 == true) {
+					i++;
+					break;
+				}
+				kavichka2 = true;
 			}
 			i++;
 		}

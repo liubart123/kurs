@@ -66,22 +66,22 @@ namespace Error
 		ERROR_ENTRY_NODEF10(190),
 		ERROR_ENTRY(200,"maximum number of lexem"),	//lex
 		ERROR_ENTRY(201,"maximum number of id"),	//lex
-		ERROR_ENTRY(202,"id syntax error"),	//id
+		ERROR_ENTRY(202,"incorrect id's declaration syntax"),	//id
 		ERROR_ENTRY(203,"id must be declarated"),	//id
 		ERROR_ENTRY(204,"lexic error"),	//lex
 		ERROR_ENTRY(205,"must be closing bracket"),	//poland
 		ERROR_ENTRY(206,"incorrect lexem in expression"),	//lex
-		ERROR_ENTRY(207,"operation wasn't defined"),
+		ERROR_ENTRY(207,"operation wasn't defined"),	//poland
 		ERROR_ENTRY(208,"wrong type of literal"),	//id
 		ERROR_ENTRY(209,"double declaration"),	//id
 		ERROR_ENTRY_NODEF100(300),
 		ERROR_ENTRY_NODEF100(400),
 		ERROR_ENTRY_NODEF100(500),
 		ERROR_ENTRY(600,"incorrect structure of programm"),
-		ERROR_ENTRY(601,"incorrect operator"),
+		ERROR_ENTRY(601,"error in body structure"),
 		ERROR_ENTRY(602,"error in expression"),
 		ERROR_ENTRY(603,"error in expression"),
-		ERROR_ENTRY(604,"error in function's parametors"),
+		ERROR_ENTRY(604,"error in declared function's parametors"),
 		ERROR_ENTRY(605,"error in executed function's parametors"),
 		ERROR_ENTRY(606,"error in condition structure"),
 		ERROR_ENTRY_NODEF(607),

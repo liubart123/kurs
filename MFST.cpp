@@ -173,9 +173,10 @@ namespace MFST {
 			return true;
 		}
 		else {
-			printLastDiagnosis();
+			//printLastDiagnosis();
+			throwLastDiagnosis();
 		}
-		return cycle;
+		return false;
 	}
 	
 	//вывесці радок аб правіле
@@ -296,5 +297,24 @@ namespace MFST {
 			PrintMessage((char*)(&str[0]));
 			k++;
 		}
+	}
+
+	void Mfst::throwLastDiagnosis() {
+		int k = 0;
+		list<Error::ERROR> e;
+		while (k < MFST_DAIGN_NUMBER && diagnosis[k].lenta_position != -1) {
+			if (diagnosis[k].nrule < 0 || diagnosis[k].nrulechain < -1) {
+				return;
+			}
+			if (diagnosis[k].nrulechain == -1) {
+				return;
+			}
+			Error::ERROR ee = Error::geterror(greibach.getRule(diagnosis[k].nrule).idError);
+
+			ee.inext.line= LT::GetEntry(lexTable, diagnosis[k].lenta_position)->line;
+			e.push_front(ee);
+			k++;
+		}
+		throw e;
 	}
 }

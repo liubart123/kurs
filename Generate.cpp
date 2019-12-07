@@ -22,46 +22,6 @@ namespace GEN {
 		for (; i < it.size; i++) {
 			NameToAssemblerName(*IT::GetEntry(it, i));
 		}
-
-		//секцы€ дадзеных
-		for (i = 0; false && i < it.funcCount; i++) {
-			resultStr += COMMENT;
-			resultStr += FUNC_SEPARATOR;
-			resultStr += "Function: ";
-			resultStr += it.funcs[i]->name;
-			//resultStr += FUNC_SEPARATOR;
-			resultStr += "\n";
-
-			//секцы€ параметраҐ
-			resultStr += COMMENT;
-			resultStr += FUNC_SEPARATOR;
-			resultStr += "parametars";
-			resultStr += "\n";
-			//resultStr += FUNC_SEPARATOR;
-			//параметры функцы≥
-			for (int j = 0; j < it.funcs[i]->curParams; j++) {
-				resultStr += it.funcs[i]->name + "_";
-				resultStr += DeclarationToAssembler(*IT::GetEntry(it, it.funcs[i]->params[j]));
-				//resultStr += "\n";
-			}
-
-			resultStr += "\n";
-			//секцы€ лакальных зьменных
-			resultStr += COMMENT;
-			resultStr += FUNC_SEPARATOR;
-			resultStr += "locals";
-			resultStr += "\n";
-			//resultStr += FUNC_SEPARATOR;
-			//лакальны€ пераменны€
-			for (int j = 0; j < it.funcs[i]->curLocals; j++) {
-				resultStr += it.funcs[i]->name + "_";
-				resultStr += DeclarationToAssembler(*IT::GetEntry(it,it.funcs[i]->locals[j]));
-				//resultStr += "\n";
-			}
-			resultStr += "\n";
-		}
-
-
 		//польска€ натацы€
 		for (i = 1; i < lt.size - 2; i++) {
 			//i=...
@@ -98,7 +58,6 @@ namespace GEN {
 			resultStr+=FunctionToAssembler(lt,it,i, *(it.funcs[i]));
 			//std::cout << FunctionToAssembler(lt, it, i, *(it.funcs[i]));
 		}
-		//std::cout << resultStr;
 		resultStr+="\n";
 		resultStr+= MAIN_ASM_FUNC;
 		return resultStr;
@@ -119,6 +78,13 @@ namespace GEN {
 			resultStr += INT_TYPE;
 			resultStr += " ";
 			resultStr += to_string(lex.value.vint);
+			if (lex.countSystem != IT::DEC) {
+				switch (lex.countSystem) {
+					case IT::OCT:resultStr += 'o'; break;
+					case IT::HEX:resultStr += 'h'; break;
+					case IT::BIN:resultStr += 'b'; break;
+				}
+			}
 			break;
 		case IT::IDDATATYPE::CHAR:
 			resultStr += STR_TYPE;
@@ -367,7 +333,8 @@ namespace GEN {
 				|| LT::GetEntry(lexTable, i + 1)->lexema[0] == LEX_RETURN
 				|| LT::GetEntry(lexTable, i + 1)->lexema[0] == SPEC_ARR_SUMBOL)
 			|| LT::GetEntry(lexTable, i)->lexema[0] == SPEC_SUMBOL
-			|| LT::GetEntry(lexTable, i)->lexema[0] == LEX_RIGHTHESIS)
+			|| LT::GetEntry(lexTable, i)->lexema[0] == LEX_RIGHTHESIS
+			|| LT::GetEntry(lexTable, i)->lexema[0] == LEX_RETURN)
 			{
 				LT::Entry *lex = LT::GetEntry(lexTable, i);
 				IT::Entry *lastAssigned = NULL;	//сп≥с апошн≥х выкл≥каемых мас≥ваҐ, каб ведаць, Ґ €к≥ тып пераҐтвараць адрас
@@ -404,6 +371,7 @@ namespace GEN {
 							case (int)('!') : translatedText += IF_NOT_EQUALS; break;
 							case (int)('&') : translatedText += IF_AND; break;
 							case (int)('|') : translatedText += IF_OR; break;
+							case (int)('%') : translatedText += EXPR_MOD; break;
 							case (int)('^') :{
 								if (lastArrays.top()->iddatatype == IT::ARRAY) {
 									translatedText += PUSH_VALUE; break;
@@ -425,7 +393,7 @@ namespace GEN {
 						}//≥накш Ґ стэк пам€шчаецца €го значэнне
 						else {
 							if (IT::GetEntry(idTable, lex->idxTI)->iddatatype == IT::INT) {
-								translatedText += "movzx	eax, ";
+								translatedText += "movsx	eax, ";
 								translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
 								translatedText += "\npush	eax";
 							} else if (IT::GetEntry(idTable, lex->idxTI)->iddatatype == IT::CHAR) {
@@ -447,7 +415,7 @@ namespace GEN {
 							translatedText += "\npush	eax";
 						}
 						else {
-							translatedText += "movzx	eax, ";
+							translatedText += "movsx	eax, ";
 							translatedText += (IT::GetEntry(idTable, lex->idxTI))->AssemblerName;
 							translatedText += "\npush	eax";
 						}

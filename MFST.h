@@ -3,6 +3,7 @@
 #include <stack>
 #include "GRB.h"
 #include "LT.h"
+#include <list>
 #define MFST_SHOW_DETAILS false
 #define MFST_DAIGN_NUMBER 10	//колькасць ды€гностык
 typedef std::stack<short> MFSTSTACK;
@@ -79,6 +80,7 @@ namespace MFST {
 
 		void pushNewDiagnosis(Mfst::ENUM_STEP step, int chain, int rule);
 		void printLastDiagnosis();
+		void throwLastDiagnosis();
 	};
 	//вывесц≥ прав≥ла у кансоль
 	void printRule(GRB::Rule rule, GRB::Rule::Chain chain);

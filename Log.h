@@ -1,5 +1,6 @@
 #pragma once
 #include <fstream>
+#include <string>
 #include "In.h"
 #include "Parm.h"
 #include "Error.h"
@@ -13,9 +14,11 @@ namespace Log
 	{
 		wchar_t logfile[PARM_MAX_SIZE] = L"\0";
 		std::ofstream* stream = NULL;
+		wchar_t outfile[PARM_MAX_SIZE] = L"\0";
+		std::ofstream* source_stream = NULL;
 	};
 	static const LOG INITLOG;
-	LOG getlog(wchar_t logfile[]);
+	LOG getlog(wchar_t logfile[], wchar_t outfile[]);
 	void WriteLine(LOG log, char* c, ...);
 	//void WriteLine(LOG log, wchar_t* c, ...);
 	char* IdKA(char* word);

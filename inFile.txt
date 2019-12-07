@@ -1,13 +1,11 @@
 main
 {
-	declare integer result = 4;
-	declare string entry;
-	declare string res;
-	strCopy("hello, world", entry[0] );
-	printStr(entry[0]);
-	strCopy(readLine(),res[0]);
-	strConcat(intToChar(142),res[0]);
-	printStr(res[0]);	
-	readNum();
-	return result;
+	declare integer a = 123;
+	declare integer b = 123b;
+	declare integer c = 123o;
+	declare integer d = 123h;
+	declare string str;
+	declare char ch = '%';
+
+	return;
 };

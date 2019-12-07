@@ -4,6 +4,7 @@
 #define LT_TI_NULLIDX	0xffffffff	//няма элемента ід-а
 #define	LEX_INTEGER		't'
 #define	LEX_STRING		't'
+#define	LEX_VOID		't'
 #define	LEX_CHAR		't'
 #define	LEX_ID			'i'
 #define	LEX_LITERAL		'l'
@@ -54,6 +55,9 @@
 #define SF4 "strConcat"
 #define SF5 "readNum"
 #define SF6 "readLine"
+#define SF7 "printLine"
+#define SF8 "_pow" 
+#define SF9 "rnd"
 //#include "IT.h"
 namespace LT
 {

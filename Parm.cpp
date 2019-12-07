@@ -76,6 +76,8 @@ namespace Parm
 			wcscpy_s(p.log, p.in);
 			wcscat_s(p.log, PARM_LOG_DEFAULT_EXT);
 		}
+		wcscpy_s(p.source, p.in);
+		wcscat_s(p.source, PARM_OUT_SOURCE_DEFAULT_EXT);
 		return p;
 	}
 }
