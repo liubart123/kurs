@@ -34,7 +34,7 @@ namespace Error
 		//ERROR_ENTRY(102,"id must be declarated"),	//id
 		ERROR_ENTRY_NODEF(103),
 		//ERROR_ENTRY(103,"не правільны тып літэрала"),	//id
-		ERROR_ENTRY(104,"previshena length vhodnogo parametra"),
+		ERROR_ENTRY(104,"too long parametr"),
 		ERROR_ENTRY_NODEF(105),
 		//ERROR_ENTRY(105,"maximum number of lexem"),	//lex
 		ERROR_ENTRY_NODEF(106),
@@ -45,11 +45,10 @@ namespace Error
 		//ERROR_ENTRY(108,"operation wasn't defined"),	
 		ERROR_ENTRY_NODEF(109),
 		//ERROR_ENTRY(109,"павінна быць закрываючая дужка"),	//poland
-		ERROR_ENTRY(110,"oshibka pri otkritii faile -in"),	//log
-		ERROR_ENTRY(111,"nedopustimiy simvol v -in faile"),	//lex
-		ERROR_ENTRY(112,"oshibka pri sozdanii -log faila"),	//log
+		ERROR_ENTRY(110,"error opening -in fail"),	//log
+		ERROR_ENTRY(111,"forbidden symbol -in fail"),	//lex
+		ERROR_ENTRY(112,"error opening -log fail"),	//log
 		ERROR_ENTRY_NODEF(113),
-		//ERROR_ENTRY(113,"incorrect lexem in expression"),	//lexk
 		ERROR_ENTRY_NODEF(114),
 		ERROR_ENTRY_NODEF(115),
 		ERROR_ENTRY_NODEF(116),
@@ -67,7 +66,7 @@ namespace Error
 		ERROR_ENTRY(200,"maximum number of lexem"),	//lex
 		ERROR_ENTRY(201,"maximum number of id"),	//lex
 		ERROR_ENTRY(202,"incorrect id's declaration syntax"),	//id
-		ERROR_ENTRY(203,"id must be declarated"),	//id
+		ERROR_ENTRY(203,"id must be declarated, or wrong declaration was appeard"),	//id
 		ERROR_ENTRY(204,"lexic error"),	//lex
 		ERROR_ENTRY(205,"must be closing bracket"),	//poland
 		ERROR_ENTRY(206,"incorrect lexem in expression"),	//lex
@@ -75,6 +74,10 @@ namespace Error
 		ERROR_ENTRY(208,"wrong type of literal"),	//id
 		ERROR_ENTRY(209,"double declaration"),	//id
 		ERROR_ENTRY(210,"unexpected bracket"),	//generation
+		ERROR_ENTRY(211,"using of addres, instead of a value"),	//semnt
+		ERROR_ENTRY(212,"there must be opening bracket"),	//semnt
+		ERROR_ENTRY(213,"invalid array declaration"),	//semnt, id
+		ERROR_ENTRY(214,"empty string"),	// id
 		ERROR_ENTRY_NODEF100(300),
 		ERROR_ENTRY_NODEF100(400),
 		ERROR_ENTRY_NODEF100(500),
@@ -158,6 +161,7 @@ namespace Error
 			return geterror(0);
 		}
 	}
+
 
 
 }

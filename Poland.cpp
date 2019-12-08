@@ -80,7 +80,7 @@ namespace Poland {
 				int oper = GetPriorityOfOperation(*str.begin());
 				if (oper == -1) {
 					//throw (Error::geterror(108));
-					throw(Error::geterrortext(207, text, lexTable->table[*lexTable_pos + positionOfLexem].sn));
+					throw(Error::geterrorin(207, lexTable->table[*lexTable_pos + positionOfLexem].line, lexTable->table[*lexTable_pos + positionOfLexem].col));
 					//throw(Error::geterrortext(108, text, *lexTable_pos + positionOfLexem));
 				}
 				else {
@@ -100,7 +100,7 @@ namespace Poland {
 							steck.pop();
 						}
 						if (steck.empty()) {
-							throw Error::geterror(205);
+							throw Error::geterrorin(205, lexTable->table[*lexTable_pos + positionOfLexem].line, lexTable->table[*lexTable_pos + positionOfLexem].col);
 						}
 						if (steck.top().lexema[0] == '(') {
 							steck.pop();
@@ -122,7 +122,7 @@ namespace Poland {
 							steck.pop();
 						}
 						if (steck.empty()==true) {
-							throw Error::geterror(205);
+							throw Error::geterrorin(205, lexTable->table[*lexTable_pos + positionOfLexem].line, lexTable->table[*lexTable_pos + positionOfLexem].col);
 						}
 						steck.pop();
 						steck.push(*new LT::Entry(SPEC_ARR_SUMBOL));
@@ -147,7 +147,7 @@ namespace Poland {
 				return false;
 			}
 			else {
-				throw(Error::geterrortext(206, text, lexTable->table[*lexTable_pos + positionOfLexem].sn));
+				throw(Error::geterrorin(206, lexTable->table[*lexTable_pos + positionOfLexem].line, lexTable->table[*lexTable_pos + positionOfLexem].col));
 			}
 			str.pop_front();
 			positionOfLexem++;

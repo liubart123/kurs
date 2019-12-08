@@ -6,6 +6,7 @@
 #include <string>
 #include <iomanip>
 
+Log::LOG logger;
 namespace MFST {
 	//крок
 	Mfst::ENUM_STEP Mfst::step() {
@@ -103,7 +104,8 @@ namespace MFST {
 	}
 
 	//пачаць работу аўтамата
-	bool Mfst::start() {
+	bool Mfst::start(Log::LOG &log) {
+		logger =log;
 		bool cycle = true;
 		//statesStack.push(*new MFST::MfstState(0,st,0));
 		Mfst::ENUM_STEP result;
@@ -181,14 +183,16 @@ namespace MFST {
 	
 	//вывесці радок аб правіле
 	void printRule(GRB::Rule rule , GRB::Rule::Chain nchain) {
-		std::cout << "\n-------------------------------------" << GRB::Rule::Chain::alphabet_to_char(rule.nn);
-		std::cout << " -> ";
-		std::cout << nchain.getCChain();
+		PrintMessage("\n-------------------------------------"); 
+		PrintMessage(GRB::Rule::Chain::alphabet_to_char(rule.nn));
+		PrintMessage(" -> ");
+		PrintMessage(nchain.getCChain());
 	}
 	void printRule(GRBHALPHABET nt, GRB::Rule::Chain nchain){
-		std::cout << "\n-------------------------------------" << GRB::Rule::Chain::alphabet_to_char(nt);
-		std::cout << " -> ";
-		std::cout << nchain.getCChain();
+		PrintMessage("\n-------------------------------------");
+		PrintMessage(GRB::Rule::Chain::alphabet_to_char(nt));
+		PrintMessage(" -> ");
+		PrintMessage(nchain.getCChain());
 	}
 	std::string getStrRule(GRB::Rule rule, GRB::Rule::Chain nchain) {
 		std::string str;
@@ -231,26 +235,33 @@ namespace MFST {
 
 	void PrintMessage(char* str) {
 		std::cout << str;
+		Log::WriteLine(logger, (str), (char*)("\0"));
+	}
+	void PrintMessage(char str) {
+		std::cout << str;
+		Log::WriteLine(logger, (str));
 	}
 	void PrintMessage(string str) {
 		std::cout << str;
+		Log::WriteLine(logger,(char*)((&str[0])), (char*)("\0"));
 	}
 
 		//вывесці у кансоль памылку
 	void printError(Mfst::ENUM_STEP e){
 		if (e == Mfst::ENUM_STEP::NS_NORULE) {
-			std::cout << "\n-------------------------------------" << "No rule";
+			PrintMessage("\n-------------------------------------");
+			PrintMessage("No rule");
 		} else if (e == Mfst::ENUM_STEP::NS_NORULECHAIN) {
-			std::cout << "\n-------------------------------------" << "No chain";
+			PrintMessage("\n-------------------------------------");PrintMessage( "No chain");
 		}
 		else if (e == Mfst::ENUM_STEP::TS_NOK) {
-			std::cout << "\n-------------------------------------" << "incorrect symbol";
+			PrintMessage("\n-------------------------------------");PrintMessage( "incorrect symbol");
 		}
 		else if (e == Mfst::ENUM_STEP::NS_NORULE) {
-			std::cout << "\n-------------------------------------" << "No rule";
+			PrintMessage("\n-------------------------------------");PrintMessage( "No rule");
 		}
 		else if (e == Mfst::ENUM_STEP::NS_NORULE) {
-			std::cout << "\n-------------------------------------" << "No rule";
+			PrintMessage("\n-------------------------------------");PrintMessage( "No rule");
 		}
 	}
 

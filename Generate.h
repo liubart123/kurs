@@ -66,7 +66,7 @@ mov	[ebx], al\n"		//=
 #define EXPR_IMUL "pop	eax\npop	ebx\nimul	ax, bx\npush	eax\n"	//*
 #define EXPR_SUB "pop	eax\npop	ebx\nsub	bx, ax\npush	ebx\n"	// -
 #define EXPR_DIV "pop	ebx\npop	eax\ncwd			\nidiv	bx\npush	eax\n"	// /
-#define EXPR_MOD "pop	ebx\npop	eax\ncwd			\nidiv	bx\npush	edx\n"	// %
+#define EXPR_MOD "pop	ebx\npop	eax\ncwd			\nidiv	bx\nmovsx	edx, dx\npush	edx\n"	// %
 #define EXPR_CLEAR_STACK "pop	ebx"
 #define EXPR_RETURN "pop	eax\n\
 ret	"	//return
@@ -154,7 +154,7 @@ push	eax\n\
 #define ARRAY1 "["		//пачатак дыкларацыі масіва
 #define ARRAY2 "]"		//канец дэкларацыі масіва
 #define ARRAY_NAME  "arr"	//радок, які пішацца пасля назвы масіва
-#define PTR	"ptr"	//указальнік у асэмблеры
+#define PTR	"ptr "	//указальнік у асэмблеры
 #define LEA "lea	eax,"	//ў еах адрас зменнай
 #define ADDR_TO_PTR "mov	"	//прысвоіць адрас масіва ўказальніку
 #define PUSH_ADDR "push	"

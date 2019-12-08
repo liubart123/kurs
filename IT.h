@@ -10,6 +10,7 @@
 #include "LT.h"
 #include <string>
 #include <stack>
+#include <list>
 
 namespace IT
 {
@@ -42,7 +43,7 @@ namespace IT
 	struct Entry {
 		int idxfirstLE;		//індэкс у табліцы лексем
 		char id[ID_MAXSIZE];	//значэнне
-		LT::COUNTSYSTEM countSystem;
+		LT::COUNTSYSTEM countSystem = LT::DEC;
 		IDDATATYPE iddatatype;	//тып дадзеных	
 		IDTYPE idtype;		//тып ідэнтыфікатара
 		FuncDefenition *funcId;//функцыя, у якой вызначаны ід

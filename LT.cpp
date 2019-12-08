@@ -15,7 +15,7 @@ namespace LT {
 	}
 
 	//дадацт радок у табліцу
-	void Add(LexTable& lextable, char *lexema,int sn, int line){
+	void Add(LexTable& lextable, char *lexema,int sn, int line, int col){
 		if (lextable.size >= lextable.maxsize) {
 			throw(Error::geterror(200));
 		}
@@ -30,6 +30,7 @@ namespace LT {
 		}
 		entry->sn = sn;
 		entry->line = line;
+		entry->col = col;
 		lextable.table[lextable.size++]=*entry;
 		delete entry;
 	}

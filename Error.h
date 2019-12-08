@@ -1,4 +1,6 @@
 #pragma once
+
+#include "LT.h";
 #define ERROR_THROW(id) Error::geterror(id);
 #define ERROR_THROW_IN(id, l, c) Error::geterrorin(id,l,c);
 #define ERROR_ENTRY(id, m) {id, m, {-1, -1}}
@@ -34,4 +36,5 @@ namespace Error
 	ERROR geterror(int id);
 	ERROR geterrorin(int id, int line, int col);
 	ERROR geterrortext(int id, char* text, int index);
+	ERROR geterrortext(int id, LT::Entry);
 }

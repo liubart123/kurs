@@ -20,6 +20,7 @@ namespace Log
 	static const LOG INITLOG;
 	LOG getlog(wchar_t logfile[], wchar_t outfile[]);
 	void WriteLine(LOG log, char* c, ...);
+	void WriteLine(LOG log, char c);
 	//void WriteLine(LOG log, wchar_t* c, ...);
 	char* IdKA(char* word);
 	void WriteLog(LOG log);

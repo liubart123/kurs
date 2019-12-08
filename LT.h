@@ -1,6 +1,6 @@
 #pragma once
 #define LEXEMA_FIXSIZE	1		//памер лексемы	
-#define LT_MAXSIZE		200	//максім колькасць радкоў у табліцы
+#define LT_MAXSIZE		800	//максім колькасць радкоў у табліцы
 #define LT_TI_NULLIDX	0xffffffff	//няма элемента ід-а
 #define	LEX_INTEGER		't'
 #define	LEX_STRING		't'
@@ -63,12 +63,14 @@ namespace LT
 	enum COUNTSYSTEM { DEC=10, HEX=16, OCT=8, BIN=2 };
 	struct Entry	//запіс у ьабліцы
 	{
-		COUNTSYSTEM countSys;
+		COUNTSYSTEM countSys = DEC;
 		char lexema[LEXEMA_FIXSIZE];	//лексема
 		int sn;							//нумар радка у зыходным кодзі
 		int idxTI;						//індэкс у табліцы ід
 		int line;						//радок у зыходным тэксце
+		int col;						//нумар колнкі ў зыходным тэксце
 		Entry(char lex) {
+			countSys = DEC;
 			lexema[0]=lex;
 			sn=-1;
 			idxTI=-1;
@@ -85,7 +87,7 @@ namespace LT
 		//IT::IdTable *tableID;	//табліца ід-аў
 	};
 	LexTable CreateTable(int size);		//стварыць табліцу
-	void Add(LexTable& lextable, char *lexema, int sn, int line);		//дадацт радок у табліцу
+	void Add(LexTable& lextable, char *lexema, int sn, int line, int col);		//дадацт радок у табліцу
 	Entry *GetEntry(LexTable& lextable,int n);		//атрымаць радок з табліцы
 	void DeleteTable(LexTable& lextable);
 	char* PrintTable(LexTable& lexTable);

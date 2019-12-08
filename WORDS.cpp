@@ -63,6 +63,7 @@ namespace WORDS {
 			res[position + i] != '|' &&
 			res[position + i] != '?' &&
 			res[position + i] != '%' &&
+			res[position + i] != '\n' &&
 			res[position + i] != '\0') || (kavichka==true && res[position + i] != '\"') 
 			|| (kavichka2 == true && res[position + i] != '\'')) {
 			if (res[position + i] == '\"') {

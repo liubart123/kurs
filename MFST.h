@@ -4,6 +4,7 @@
 #include "GRB.h"
 #include "LT.h"
 #include <list>
+#include "Log.h"
 #define MFST_SHOW_DETAILS false
 #define MFST_DAIGN_NUMBER 10	//колькасць ды€гностык
 typedef std::stack<short> MFSTSTACK;
@@ -47,7 +48,7 @@ namespace MFST {
 		bool saveState();	//захаваь стан аҐтамата
 		bool resState();	//аднав≥ць станов≥шча 
 		bool pushChain(GRB::Rule::Chain chain);	//пакласц≥ у стэк ланцужок
-		bool start();	//пачаць работу аҐтамата
+		bool start(Log::LOG &log);	//пачаць работу аҐтамата
 		void StateInfo();	//≥нфармацы€ аб стане аҐтамата
 		bool isTopStateEqual();	//ц≥ аднолькавы€ в€ршын€ стэка ≥ ц€перашн≥ стан аҐтамата
 
@@ -86,9 +87,9 @@ namespace MFST {
 	void printRule(GRB::Rule rule, GRB::Rule::Chain chain);
 	void printRule(GRBHALPHABET nt, GRB::Rule::Chain chain);
 	std::string getStrRule(GRB::Rule rule, GRB::Rule::Chain nchain);
-
 	void PrintMessage(std::string str);
 	void PrintMessage(char* str);
+	void PrintMessage(char str);
 
 	void printError(Mfst::ENUM_STEP e);	//вывесц≥ у кансоль памылку
 }

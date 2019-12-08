@@ -11,6 +11,7 @@
 #include <string>
 #include <list>
 #include "Generate.h"
+#include "SMN.h"
 namespace Log
 {
 	bool CheckSepSymb(char c);
@@ -44,7 +45,7 @@ namespace Log
 
 		char** ptr = &c;
 
-		while (*ptr != "")
+		while (*ptr[0] != '\0')
 		{
 			//mbstowcs_s(&outSize, string, *ptr, strlen(*ptr));
 			char tempString[PARM_MAX_SIZE];
@@ -54,10 +55,14 @@ namespace Log
 		}
 
 		//wcstombs_s(&outSize, output, log.logfile, wcslen(log.logfile));
-		cout << output;
+		//cout << output;
 
 		*log.stream << output;
 		//*log.stream << "asd";
+	}
+	void WriteLine(LOG log, char c)
+	{
+		*log.stream << c;
 	}
 
 
@@ -98,7 +103,7 @@ namespace Log
 
 	void WriteIn(LOG log, In::IN in)
 	{
-		*log.stream << "-----Исходные данные-----" << endl;
+		*log.stream << "-----Input data-----" << endl;
 		*log.stream << "Amount of symbols: " << in.size << endl;
 		*log.stream << "Amount of ignored symbols: " << in.ignor << endl;
 		*log.stream << "Amount of lines: " << in.lines << endl;
@@ -112,6 +117,8 @@ namespace Log
 		bool kavichka = false;	//ці ёсць адкрываючая кавычка
 		bool kavichka2 = false;	//ці ёсць адкрываючая кавычка адзінарная
 		list<Error::ERROR> errorList;
+		*log.stream << "\nLexic analys is performing...\n" << endl;
+		*log.stream << "\nLexic analys is performing...\n" << endl;
 		//стварэнне табліцы лексем
 		while (startPos + pos < in.size) {
 			if (in.text[pos + startPos] == '\"') {
@@ -136,6 +143,7 @@ namespace Log
 					string numOfLine = "";
 					numOfLine = to_string((int)NumberOfLine);
 					WriteLine(log, &(numOfLine[0]), ": ", "");
+					cout << numOfLine << ": ";
 					positionInLine=0;
 				}
 				if (pos != 0) {		//калі цякучае слова не сімвал пропуска
@@ -171,26 +179,23 @@ namespace Log
 							}
 						}
 					}
-					LT::Add(lexTable, result, startPos, NumberOfLine);
+					LT::Add(lexTable, result, startPos, NumberOfLine, positionInLine);
 					LT::GetEntry(lexTable, lexTable.size - 1)->countSys = countSystem;
-					//positionInLine++;
 					WriteLine(log, result, "");
+					cout << result;
 				}
 				char* sepSymbol = GetSepSymb(in.text[pos + startPos]);
-				if (sepSymbol[0] != '\n' || newLine == false || IsNewLinePossible(lastChar) == true || sepSymbol[0] == '\n'){
-					WriteLine(log, sepSymbol, "");
-					//positionInLine++;
-				}
-				LT::Add(lexTable, sepSymbol, pos + startPos, NumberOfLine);
+				LT::Add(lexTable, sepSymbol, pos + startPos, NumberOfLine, positionInLine+pos);
+				WriteLine(log, sepSymbol, "");
+				cout << sepSymbol;
 				//раздзяляльны сімвал == аперацыя
 				if (sepSymbol[0] == 'v') {
 					lexTable.table[lexTable.size-1].idxTI = int (in.text[pos + startPos]);
 				}
 				//есць пераход на новы радок
-				if ((sepSymbol[0] == '\n' || sepSymbol[1] == '\n') && newLine == false || sepSymbol[0] == '\n'){
+				if ((sepSymbol[0] == '\n')){
 					newLine = true;
-				}
-				else {
+				}else {
 					newLine = false;
 				}
 				positionInLine+=pos+1;
@@ -204,21 +209,41 @@ namespace Log
 		if (errorList.empty() == false) {
 			throw(errorList);
 		}
+
+
+		*log.stream << "\nIDs analys is performing...\n" << endl;
+		*log.stream << "\nIDs analys is performing...\n" << endl;
 		CheckStrForId((char*)in.text, idTable,lexTable);
+		//*log.stream << "\nIDs table:\n" << endl;
 		std::string str = IT::PrintTable(idTable);
 		*log.stream << "\n" << str << endl;
 		std::cout << "\n" << str << endl;
 		std::cout << "\n" << LT::PrintTable(lexTable) << endl;
-		
+
 		lexTable.table[lexTable.size++]='$';
 		MFST::Mfst *automatos = new MFST::Mfst(lexTable, GRB::getGreibach());
-		//automatos->start();
+		*log.stream << "\nSyntax analys is performing...\n" << endl;
+		cout << "\nSyntax analys is performing...\n" << endl;
+		automatos->start(log);
 
+		*log.stream << "\nnSyntax analys was completed successfull\n" << endl;
+		cout << "\nnSyntax analys was completed successfull\n" << endl;
+
+		*log.stream << "\nSemantic's analys is performing...\n" << endl;
+		cout << "\nSemantic's analys is performing...\n" << endl;
+		SMN::SmnTest(idTable, lexTable);
+
+		*log.stream << "\nSemantic's analys was completed suucessfull\n" << endl;
+		cout << "\nSemantic's analys was completed suucessfull\n" << endl;
 		GEN::Generator generator;
+		*log.stream << "\nCode generating is performing...\n" << endl;
+		cout << "\nCode generating is performing...\n" << endl;
 		string gen = generator.Generate(idTable,lexTable, (char*)in.text);
+		*log.stream << "\nCode generating was completed suucessfull\n" << endl;
+		cout << "\nCode generating was completed suucessfull\n" << endl;
 
 		//*log.stream << "\n" << gen << endl;
-		std::cout << "\n" << gen << endl;
+		//std::cout << "\n" << gen << endl;
 		*log.source_stream << gen;
 
 		//cout << LT::PrintTable(lexTable);
@@ -375,13 +400,12 @@ namespace Log
 			str[1] = '\0';
 			return str;
 		}
-		else if (c != ' ' /*&& c != ';'*/ && c != '\n' && c != '\t'/* && c != '{' && c != '}'*/) {
+		else if (c != ' '&& c != '\n' && c != '\t') {
 			str = new char[2];
 			str[0] = c;
 			str[1] = '\0';
 			return str;
 		}
-		
 		else if (c == '\n') {
 			str = new char[2];
 			str[0] = '\n';
@@ -551,11 +575,15 @@ namespace Log
 	char *IntLiKABin(char* word) {
 		FSTN::FST fst1(
 			word,
-			2,
+			3,
+			FSTN::NODE(2,
+				FSTN::RELATION('1', 1),
+				FSTN::RELATION('0', 1)
+			),
 			FSTN::NODE(3,
-				FSTN::RELATION('1', 0),
-				FSTN::RELATION('0', 0),
-				FSTN::RELATION('b', 1)
+				FSTN::RELATION('1', 1),
+				FSTN::RELATION('0', 1),
+				FSTN::RELATION('b', 2)
 			)
 		);
 
@@ -576,16 +604,26 @@ namespace Log
 	char *IntLiKAOct(char* word) {
 		FSTN::FST fst1(
 			word,
-			2,
+			3,
+			FSTN::NODE(8,
+				FSTN::RELATION('1', 1),
+				FSTN::RELATION('2', 1),
+				FSTN::RELATION('3', 1),
+				FSTN::RELATION('4', 1),
+				FSTN::RELATION('5', 1),
+				FSTN::RELATION('6', 1),
+				FSTN::RELATION('7', 1),
+				FSTN::RELATION('0', 1)
+			),
 			FSTN::NODE(9,
-				FSTN::RELATION('1', 0),
-				FSTN::RELATION('2', 0),
-				FSTN::RELATION('3', 0),
-				FSTN::RELATION('4', 0),
-				FSTN::RELATION('5', 0),
-				FSTN::RELATION('6', 0),
-				FSTN::RELATION('7', 0),
-				FSTN::RELATION('0', 0),
+				FSTN::RELATION('1', 1),
+				FSTN::RELATION('2', 1),
+				FSTN::RELATION('3', 1),
+				FSTN::RELATION('4', 1),
+				FSTN::RELATION('5', 1),
+				FSTN::RELATION('6', 1),
+				FSTN::RELATION('7', 1),
+				FSTN::RELATION('0', 1),
 				FSTN::RELATION('o', 1)
 			)
 		);
@@ -607,25 +645,43 @@ namespace Log
 	char *IntLiKAHex(char* word) {
 		FSTN::FST fst1(
 			word,
-			2,
+			3,
+			FSTN::NODE(16,
+				FSTN::RELATION('0', 1),
+				FSTN::RELATION('1', 1),
+				FSTN::RELATION('2', 1),
+				FSTN::RELATION('3', 1),
+				FSTN::RELATION('4', 1),
+				FSTN::RELATION('5', 1),
+				FSTN::RELATION('6', 1),
+				FSTN::RELATION('7', 1),
+				FSTN::RELATION('8', 1),
+				FSTN::RELATION('9', 1),
+				FSTN::RELATION('a', 1),
+				FSTN::RELATION('b', 1),
+				FSTN::RELATION('c', 1),
+				FSTN::RELATION('d', 1),
+				FSTN::RELATION('e', 1),
+				FSTN::RELATION('f', 1)
+			),
 			FSTN::NODE(17,
-				FSTN::RELATION('0', 0),
-				FSTN::RELATION('1', 0),
-				FSTN::RELATION('2', 0),
-				FSTN::RELATION('3', 0),
-				FSTN::RELATION('4', 0),
-				FSTN::RELATION('5', 0),
-				FSTN::RELATION('6', 0),
-				FSTN::RELATION('7', 0),
-				FSTN::RELATION('8', 0),
-				FSTN::RELATION('9', 0),
-				FSTN::RELATION('a', 0),
-				FSTN::RELATION('b', 0),
-				FSTN::RELATION('c', 0),
-				FSTN::RELATION('d', 0),
-				FSTN::RELATION('e', 0),
-				FSTN::RELATION('f', 0),
-				FSTN::RELATION('h', 1)
+				FSTN::RELATION('0', 1),
+				FSTN::RELATION('1', 1),
+				FSTN::RELATION('2', 1),
+				FSTN::RELATION('3', 1),
+				FSTN::RELATION('4', 1),
+				FSTN::RELATION('5', 1),
+				FSTN::RELATION('6', 1),
+				FSTN::RELATION('7', 1),
+				FSTN::RELATION('8', 1),
+				FSTN::RELATION('9', 1),
+				FSTN::RELATION('a', 1),
+				FSTN::RELATION('b', 1),
+				FSTN::RELATION('c', 1),
+				FSTN::RELATION('d', 1),
+				FSTN::RELATION('e', 1),
+				FSTN::RELATION('f', 1),
+				FSTN::RELATION('h', 2)
 			)
 		);
 
@@ -650,60 +706,189 @@ namespace Log
 			word,
 			3,
 			FSTN::NODE(1, FSTN::RELATION('"', 1)),
-			FSTN::NODE(53,
-				FSTN::RELATION('1', 1),
-				FSTN::RELATION('2', 1),
-				FSTN::RELATION('3', 1),
-				FSTN::RELATION('4', 1),
-				FSTN::RELATION('5', 1),
-				FSTN::RELATION('6', 1),
-				FSTN::RELATION('7', 1),
-				FSTN::RELATION('8', 1),
-				FSTN::RELATION('9', 1),
-				FSTN::RELATION('0', 1),
-				FSTN::RELATION('a', 1),
-				FSTN::RELATION('b', 1),
-				FSTN::RELATION('c', 1),
-				FSTN::RELATION('d', 1),
-				FSTN::RELATION('e', 1),
-				FSTN::RELATION('f', 1),
-				FSTN::RELATION('g', 1),
-				FSTN::RELATION('h', 1),
-				FSTN::RELATION('i', 1),
-				FSTN::RELATION('j', 1),
-				FSTN::RELATION('k', 1),
-				FSTN::RELATION('l', 1),
-				FSTN::RELATION('m', 1),
-				FSTN::RELATION('n', 1),
-				FSTN::RELATION('o', 1),
-				FSTN::RELATION('p', 1),
-				FSTN::RELATION('q', 1),
-				FSTN::RELATION('r', 1),
-				FSTN::RELATION('s', 1),
-				FSTN::RELATION('t', 1),
-				FSTN::RELATION('u', 1),
-				FSTN::RELATION('v', 1),
-				FSTN::RELATION('w', 1),
-				FSTN::RELATION('x', 1),
-				FSTN::RELATION('y', 1),
-				FSTN::RELATION('z', 1),
-				FSTN::RELATION(' ', 1),
-				FSTN::RELATION(',', 1),
-				FSTN::RELATION('\\', 1),
-				FSTN::RELATION('\n', 1),
-				FSTN::RELATION('\t', 1),
-				FSTN::RELATION(';', 1),
-				FSTN::RELATION(':', 1),
-				FSTN::RELATION('.', 1),
-				FSTN::RELATION('*', 1),
-				FSTN::RELATION('/', 1),
-				FSTN::RELATION('+', 1),
-				FSTN::RELATION('-', 1),
-				FSTN::RELATION('!', 1),
-				FSTN::RELATION('@', 1),
-				FSTN::RELATION('$', 1),
-				FSTN::RELATION('%', 1),
-				FSTN::RELATION('"', 2)
+			FSTN::NODE(182,
+			FSTN::RELATION(' ', 1),
+			FSTN::RELATION('!', 1),
+			FSTN::RELATION('#', 1),
+			FSTN::RELATION('$', 1),
+			FSTN::RELATION('%', 1),
+			FSTN::RELATION('&', 1),
+			FSTN::RELATION('(', 1),
+			FSTN::RELATION(')', 1),
+			FSTN::RELATION('*', 1),
+			FSTN::RELATION('+', 1),
+			FSTN::RELATION(',', 1),
+			FSTN::RELATION('-', 1),
+			FSTN::RELATION('.', 1),
+			FSTN::RELATION('/', 1),
+			FSTN::RELATION('0', 1),
+			FSTN::RELATION('1', 1),
+			FSTN::RELATION('2', 1),
+			FSTN::RELATION('3', 1),
+			FSTN::RELATION('4', 1),
+			FSTN::RELATION('5', 1),
+			FSTN::RELATION('6', 1),
+			FSTN::RELATION('7', 1),
+			FSTN::RELATION('8', 1),
+			FSTN::RELATION('9', 1),
+			FSTN::RELATION(':', 1),
+			FSTN::RELATION(';', 1),
+			FSTN::RELATION('<', 1),
+			FSTN::RELATION('=', 1),
+			FSTN::RELATION('>', 1),
+			FSTN::RELATION('?', 1),
+			FSTN::RELATION('@', 1),
+			FSTN::RELATION('A', 1),
+			FSTN::RELATION('B', 1),
+			FSTN::RELATION('C', 1),
+			FSTN::RELATION('D', 1),
+			FSTN::RELATION('E', 1),
+			FSTN::RELATION('F', 1),
+			FSTN::RELATION('G', 1),
+			FSTN::RELATION('H', 1),
+			FSTN::RELATION('I', 1),
+			FSTN::RELATION('J', 1),
+			FSTN::RELATION('K', 1),
+			FSTN::RELATION('L', 1),
+			FSTN::RELATION('M', 1),
+			FSTN::RELATION('N', 1),
+			FSTN::RELATION('O', 1),
+			FSTN::RELATION('P', 1),
+			FSTN::RELATION('Q', 1),
+			FSTN::RELATION('R', 1),
+			FSTN::RELATION('S', 1),
+			FSTN::RELATION('T', 1),
+			FSTN::RELATION('U', 1),
+			FSTN::RELATION('V', 1),
+			FSTN::RELATION('W', 1),
+			FSTN::RELATION('X', 1),
+			FSTN::RELATION('Y', 1),
+			FSTN::RELATION('Z', 1),
+			FSTN::RELATION('[', 1),
+			FSTN::RELATION('\\', 1),
+			FSTN::RELATION(']', 1),
+			FSTN::RELATION('^', 1),
+			FSTN::RELATION('_', 1),
+			FSTN::RELATION('`', 1),
+			FSTN::RELATION('a', 1),
+			FSTN::RELATION('b', 1),
+			FSTN::RELATION('c', 1),
+			FSTN::RELATION('d', 1),
+			FSTN::RELATION('e', 1),
+			FSTN::RELATION('f', 1),
+			FSTN::RELATION('g', 1),
+			FSTN::RELATION('h', 1),
+			FSTN::RELATION('i', 1),
+			FSTN::RELATION('j', 1),
+			FSTN::RELATION('k', 1),
+			FSTN::RELATION('l', 1),
+			FSTN::RELATION('m', 1),
+			FSTN::RELATION('n', 1),
+			FSTN::RELATION('o', 1),
+			FSTN::RELATION('p', 1),
+			FSTN::RELATION('q', 1),
+			FSTN::RELATION('r', 1),
+			FSTN::RELATION('s', 1),
+			FSTN::RELATION('t', 1),
+			FSTN::RELATION('u', 1),
+			FSTN::RELATION('v', 1),
+			FSTN::RELATION('w', 1),
+			FSTN::RELATION('x', 1),
+			FSTN::RELATION('y', 1),
+			FSTN::RELATION('z', 1),
+			FSTN::RELATION('{', 1),
+			FSTN::RELATION('|', 1),
+			FSTN::RELATION('}', 1),
+			FSTN::RELATION('~', 1),
+			FSTN::RELATION('?', 1),
+			FSTN::RELATION('\'', 1),
+			FSTN::RELATION('?', 1),
+			FSTN::RELATION(':', 1),
+			FSTN::RELATION('%', 1),
+			FSTN::RELATION('<', 1),
+			FSTN::RELATION('>', 1),
+			FSTN::RELATION('Ў', 1),
+			FSTN::RELATION('ў', 1),
+			FSTN::RELATION('?', 1),
+			FSTN::RELATION(' ', 1),
+			FSTN::RELATION('Ё', 1),
+			FSTN::RELATION('c', 1),
+			FSTN::RELATION('Є', 1),
+			FSTN::RELATION('<', 1),
+			FSTN::RELATION('?', 1),
+			FSTN::RELATION('-', 1),
+			FSTN::RELATION('R', 1),
+			FSTN::RELATION('+', 1),
+			FSTN::RELATION('ч', 1),
+			FSTN::RELATION('ё', 1),
+			FSTN::RELATION('№', 1),
+			FSTN::RELATION('є', 1),
+			FSTN::RELATION('>', 1),
+			FSTN::RELATION('А', 1),
+			FSTN::RELATION('Б', 1),
+			FSTN::RELATION('В', 1),
+			FSTN::RELATION('Г', 1),
+			FSTN::RELATION('Д', 1),
+			FSTN::RELATION('Е', 1),
+			FSTN::RELATION('Ж', 1),
+			FSTN::RELATION('З', 1),
+			FSTN::RELATION('И', 1),
+			FSTN::RELATION('Й', 1),
+			FSTN::RELATION('К', 1),
+			FSTN::RELATION('Л', 1),
+			FSTN::RELATION('М', 1),
+			FSTN::RELATION('Н', 1),
+			FSTN::RELATION('О', 1),
+			FSTN::RELATION('П', 1),
+			FSTN::RELATION('Р', 1),
+			FSTN::RELATION('С', 1),
+			FSTN::RELATION('Т', 1),
+			FSTN::RELATION('У', 1),
+			FSTN::RELATION('Ф', 1),
+			FSTN::RELATION('Х', 1),
+			FSTN::RELATION('Ц', 1),
+			FSTN::RELATION('Ч', 1),
+			FSTN::RELATION('Ш', 1),
+			FSTN::RELATION('Щ', 1),
+			FSTN::RELATION('Ъ', 1),
+			FSTN::RELATION('Ы', 1),
+			FSTN::RELATION('Ь', 1),
+			FSTN::RELATION('Э', 1),
+			FSTN::RELATION('Ю', 1),
+			FSTN::RELATION('Я', 1),
+			FSTN::RELATION('а', 1),
+			FSTN::RELATION('б', 1),
+			FSTN::RELATION('в', 1),
+			FSTN::RELATION('г', 1),
+			FSTN::RELATION('д', 1),
+			FSTN::RELATION('е', 1),
+			FSTN::RELATION('ж', 1),
+			FSTN::RELATION('з', 1),
+			FSTN::RELATION('и', 1),
+			FSTN::RELATION('й', 1),
+			FSTN::RELATION('к', 1),
+			FSTN::RELATION('л', 1),
+			FSTN::RELATION('м', 1),
+			FSTN::RELATION('н', 1),
+			FSTN::RELATION('о', 1),
+			FSTN::RELATION('п', 1),
+			FSTN::RELATION('р', 1),
+			FSTN::RELATION('с', 1),
+			FSTN::RELATION('т', 1),
+			FSTN::RELATION('у', 1),
+			FSTN::RELATION('ф', 1),
+			FSTN::RELATION('х', 1),
+			FSTN::RELATION('ц', 1),
+			FSTN::RELATION('ч', 1),
+			FSTN::RELATION('ш', 1),
+			FSTN::RELATION('щ', 1),
+			FSTN::RELATION('ъ', 1),
+			FSTN::RELATION('ы', 1),
+			FSTN::RELATION('ь', 1),
+			FSTN::RELATION('э', 1),
+			FSTN::RELATION('ю', 1),
+			FSTN::RELATION('я', 1),
+			FSTN::RELATION('"', 2)
 			)
 		);
 

@@ -219,7 +219,7 @@ namespace GEN {
 				//дыкл€рацы€ мас≥ва
 				str += ARRAY_NAME;
 				str += ARRAY1;
-				str += to_string(it->value.vint);
+				str += to_string(it->value.vint*(TI_STR_MAXSIZE+1));
 				str += ARRAY2;
 				str += " : ";
 				str += STR_TYPE;
@@ -253,6 +253,13 @@ namespace GEN {
 				str+= it->AssemblerName;
 				str+=", eax";
 				str += "\n";
+				//мас≥Ґ ≥н≥цы€л≥з≥руецца нулЄм
+				str+="xor	eax, eax\n";
+				str+="lea	ebx, ";
+				str += it->AssemblerName;
+				str += ARRAY_NAME;
+				str+="\n";
+				str+="mov	[ebx], eax\n";
 			}
 		}
 
@@ -433,6 +440,9 @@ namespace GEN {
 							else if (lastAssigned->iddatatype == IT::IDDATATYPE::STR) {
 								translatedText += EXPR_EQU_STR;
 							}
+							else if (lastAssigned->iddatatype == IT::IDDATATYPE::ARRAY_STR) {
+								translatedText += EXPR_EQU_STR;
+							}
 							else if (lastAssigned->iddatatype == IT::IDDATATYPE::CHAR) {
 								translatedText += EXPR_EQU_STR;
 							}
@@ -443,6 +453,9 @@ namespace GEN {
 							}
 							else if (lastArrays.top()->iddatatype == IT::IDDATATYPE::ARRAY) {
 								translatedText += EXPR_EQU;
+							}
+							else if (lastArrays.top()->iddatatype == IT::IDDATATYPE::ARRAY_STR) {
+								translatedText += EXPR_EQU_STR;
 							}
 							else if (lastArrays.top()->iddatatype == IT::IDDATATYPE::STR) {
 								translatedText += EXPR_EQU_STR;
@@ -483,7 +496,7 @@ namespace GEN {
 								break;
 							}
 							case IT::IDDATATYPE::ARRAY_STR: {
-								translatedText += "256";
+								translatedText += "1";
 								break;
 							}
 							case IT::IDDATATYPE::STR: {

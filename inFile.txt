@@ -1,23 +1,34 @@
 main
 {
-	declare integer res = 2;
-	func(11,res);
+	declare integer num= 101b;
+	declare sarray strings= 3;
+	declare string res;
+	strCopy("random number was even",strings[0]);
+	strings[22]=0ah;
+	strCopy("random number was positive",strings[1*256]);
+	strings[26+256]=0ah;
+	strCopy("random number was negative",strings[2*256]);
+	strings[26+256*2]=0ah;
+	printStr(func(num, strings[0], res[0]));
 	return;
 };
-void function func (integer res,integer i){
-	while(i<12){
-		if(i<10|i?10){
-			res=10;
-			break;
-		}
-		else if (i>10){
-			res=11;
-			break;
+string function func(string res, sarray strings, integer num){	
+	declare integer i = 0;
+	declare integer rand;
+
+	while(i<num|i&num){
+		rand = rnd()%20-10;
+		if (rand%2?0){
+			strConcat(strings[0],res[0]);
+			strConcat(intToChar(rand),res[0]);
+		}else if (rand > 0 ){
+			strConcat(strings[1*256],res[0]);
+			strConcat(intToChar(rand),res[0]);
 		}else {
-			res = 12;
-			break;
+			strConcat(strings[2*256],res[0]);
+			strConcat(intToChar(rand),res[0]);
 		}
 		i=i+1;
 	}
-	return ;
+	return res[0];
 };
