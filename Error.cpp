@@ -28,7 +28,7 @@ namespace Error
 		ERROR_ENTRY_NODEF10(80),
 		ERROR_ENTRY_NODEF10(90),
 		ERROR_ENTRY(100,"parametr -in must be zadan"),
-		ERROR_ENTRY_NODEF(101),
+		ERROR_ENTRY(101,"parametr -er must be positive"),
 		//ERROR_ENTRY(101,"lexic error"),	//lex
 		ERROR_ENTRY_NODEF(102),
 		//ERROR_ENTRY(102,"id must be declarated"),	//id
@@ -76,8 +76,14 @@ namespace Error
 		ERROR_ENTRY(210,"unexpected bracket"),	//generation
 		ERROR_ENTRY(211,"using of addres, instead of a value"),	//semnt
 		ERROR_ENTRY(212,"there must be opening bracket"),	//semnt
-		ERROR_ENTRY(213,"invalid array declaration"),	//semnt, id
+		ERROR_ENTRY(213,"invalid array using"),	//semnt, id
 		ERROR_ENTRY(214,"empty string"),	// id
+		ERROR_ENTRY(215,"errors count reached the limit"),	// lex, id
+		ERROR_ENTRY(216,"global identificators and literals are forbidden"),	// id
+		ERROR_ENTRY(217,"parametrs count reached the limit"),	// id
+		ERROR_ENTRY(218,"functions count reached the limit"),	// id
+		ERROR_ENTRY(219,"literal size reached the limit"),	// lex
+		ERROR_ENTRY(220,"user's function cannot return array type"),	// id
 		ERROR_ENTRY_NODEF100(300),
 		ERROR_ENTRY_NODEF100(400),
 		ERROR_ENTRY_NODEF100(500),

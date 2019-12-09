@@ -44,7 +44,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		wcout << L"out: " << parm.out << L'\n';
 		wcout << L"log: " << parm.log << L'\n';
 		In::IN in = In::getin(parm.in);
-		Log::WriteIn(log,in);
+		Log::WriteIn(log,in, parm.ErrorsMaxCount);
 		Log::Close(log);
 	}
 	catch (Error::ERROR e)

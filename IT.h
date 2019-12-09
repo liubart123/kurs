@@ -6,7 +6,9 @@
 #define TI_NULLIDX		0xffffffff
 #define TI_STR_MAXSIZE	255
 #define PARMS_MAX_COUNT 10	//колькасць параметраў
-#define FUNCS_COUNT		10	//колькасць функцый
+#define FUNCS_COUNT		20	//колькасць функцый
+#define LITERAL_STR_MAX_SIZE 255	//максімальны памер літэрала радка
+#define LITERAL_INT_MAX_SIZE 65535	//максімальны лік літэрала лікавага
 #include "LT.h"
 #include <string>
 #include <stack>
@@ -36,8 +38,8 @@ namespace IT
 		short curLocals=0;	//індэкс апошняй пераменнай
 		short curParams=0;	//індэкс апошняга параметра
 		short startOfFunc = -1;	//лексема, з якой пачынаецца апісанне функцыі
-		std::stack<BlockDefenition*> Blocks;	//часовая зменная для падліка блёкаў у функцыі
-		std::stack<BlockDefenition*> BlocksP;	//стэк з блёкамі ў функцыі
+		//std::stack<BlockDefenition*> Blocks;	//часовая зменная для падліка блёкаў у функцыі
+		//std::stack<BlockDefenition*> BlocksP;	//стэк з блёкамі ў функцыі
 	};		//структура для захоўвання функцый
 
 	struct Entry {
@@ -76,7 +78,7 @@ namespace IT
 	int IsId(IdTable& idtable, int id);	//індэкс лексема з дадзеным значэннем
 	void DEleteEntry(IdTable& idTable, int id);	//выдалць запіс
 	std::string PrintTable(IdTable& idTable);
-	void CheckStrForId(char* text, IdTable& idTable, LT::LexTable& lexTable);	//праверыць тэкст на ід-ы
+	void CheckStrForId(char* text, IdTable& idTable, LT::LexTable& lexTable, int MaxErrors);	//праверыць тэкст на ід-ы
 
 	FuncDefenition *AddFuncDef(IdTable& idTable,Entry& lex);//дабавціь вызначэнне функцыі
 	FuncDefenition *AddFuncDefMain(IdTable& idTable,int index);//дабавціь вызначэнне функцыі

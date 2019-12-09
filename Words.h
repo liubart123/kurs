@@ -8,5 +8,6 @@ namespace WORDS{
 	void CutWord(char* str1, int size);
 	int LengthWord(char *res);
 	void StringCopy(char *dest, std::string res);
+	int LengthString(char *res);
 	//bool StringCompare(char* str1, char str2);
 }

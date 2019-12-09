@@ -84,7 +84,6 @@ namespace LT
 		int maxsize;
 		int size;
 		Entry* table;
-		//IT::IdTable *tableID;	//табліца ід-аў
 	};
 	LexTable CreateTable(int size);		//стварыць табліцу
 	void Add(LexTable& lextable, char *lexema, int sn, int line, int col);		//дадацт радок у табліцу

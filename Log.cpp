@@ -101,7 +101,7 @@ namespace Log
 		*log.stream << "Log file: " << output << endl;
 	}
 
-	void WriteIn(LOG log, In::IN in)
+	void WriteIn(LOG log, In::IN in, int maxErrors)
 	{
 		*log.stream << "-----Input data-----" << endl;
 		*log.stream << "Amount of symbols: " << in.size << endl;
@@ -169,6 +169,10 @@ namespace Log
 												result = IdKA(tempString);//праверка на ідынтыфікатар
 												if (result[0] == LEX_ERROR) {
 													//throw(Error::geterrorin(101, NumberOfLine, positionInLine));
+													if (errorList.size() >= maxErrors) {
+														errorList.push_back(Error::geterror(215));
+														throw errorList;
+													}
 													errorList.push_back(Error::geterrorin(204, NumberOfLine, positionInLine));
 													//WriteError(log,Error::geterrorin(101,NumberOfLine,positionInLine));
 												}
@@ -213,7 +217,7 @@ namespace Log
 
 		*log.stream << "\nIDs analys is performing...\n" << endl;
 		*log.stream << "\nIDs analys is performing...\n" << endl;
-		CheckStrForId((char*)in.text, idTable,lexTable);
+		CheckStrForId((char*)in.text, idTable,lexTable, maxErrors);
 		//*log.stream << "\nIDs table:\n" << endl;
 		std::string str = IT::PrintTable(idTable);
 		*log.stream << "\n" << str << endl;
@@ -221,10 +225,13 @@ namespace Log
 		std::cout << "\n" << LT::PrintTable(lexTable) << endl;
 
 		lexTable.table[lexTable.size++]='$';
-		MFST::Mfst *automatos = new MFST::Mfst(lexTable, GRB::getGreibach());
+		MFST::Mfst *automatos = new MFST::Mfst(lexTable, GRB::getGreibach(), maxErrors);
 		*log.stream << "\nSyntax analys is performing...\n" << endl;
 		cout << "\nSyntax analys is performing...\n" << endl;
-		automatos->start(log);
+		if (!automatos->start(log)) {
+			cout << "\nSyntax error...\n" << endl;
+			return;
+		}
 
 		*log.stream << "\nnSyntax analys was completed successfull\n" << endl;
 		cout << "\nnSyntax analys was completed successfull\n" << endl;

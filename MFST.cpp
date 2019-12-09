@@ -165,7 +165,7 @@ namespace MFST {
 				PrintMessage(to_string(countOfCycles));
 			}
 		}
-		if (Syntax == true) {
+		if (Syntax == true && (result == MFST::Mfst::NS_OK || result == MFST::Mfst::LENTA_END || result == MFST::Mfst::TS_OK)) {
 			PrintMessage((char*)"\nYes!!! Count of cycles:");
 			PrintMessage(to_string(countOfCycles));
 			while (statesStack.empty() == false) {
@@ -174,6 +174,10 @@ namespace MFST {
 			}
 			return true;
 		}
+		/*else if (Syntax == true && result != MFST::Mfst::NS_OK) {
+			PrintMessage((char*)"\nIncorrect start of code");
+			return false;
+		}*/
 		else {
 			//printLastDiagnosis();
 			throwLastDiagnosis();
@@ -277,12 +281,12 @@ namespace MFST {
 		if (MFST_SHOW_DETAILS)
 			PrintMessage("\n-------------------------------------diagnosesWasSaved");
 		int k=0;
-		while (k < MFST_DAIGN_NUMBER && lenta_position <= diagnosis[k].lenta_position) {
+		while (k < DiagnosMaxCount && lenta_position <= diagnosis[k].lenta_position) {
 			k++;
 		}
-		if (k < MFST_DAIGN_NUMBER) {
+		if (k < DiagnosMaxCount) {
 			diagnosis[k] = MfstDiagnosis(lenta_position,step,rule, chain);
-			for (int j = k + 1; j < MFST_DAIGN_NUMBER; j++) {
+			for (int j = k + 1; j < DiagnosMaxCount; j++) {
 				diagnosis[j].lenta_position=-1;
 			}
 		}
@@ -291,7 +295,7 @@ namespace MFST {
 	//вывесц≥ апошн≥€ ды€гностык≥
 	void Mfst::printLastDiagnosis() {
 		int k=0;
-		while (k < MFST_DAIGN_NUMBER && diagnosis[k].lenta_position != -1) {
+		while (k < DiagnosMaxCount && diagnosis[k].lenta_position != -1) {
 			if (diagnosis[k].nrule < 0 || diagnosis[k].nrulechain < -1) {
 				return;
 			}
@@ -313,8 +317,16 @@ namespace MFST {
 	void Mfst::throwLastDiagnosis() {
 		int k = 0;
 		list<Error::ERROR> e;
-		while (k < MFST_DAIGN_NUMBER && diagnosis[k].lenta_position != -1) {
+		PrintMessage((char*)"Syntax error. Last state:");
+		while (k < DiagnosMaxCount && diagnosis[k].lenta_position != -1) {
 			if (diagnosis[k].nrule < 0 || diagnosis[k].nrulechain < -1) {
+				if (k==0){
+					Error::ERROR ee = Error::geterror(greibach.getRule(0).idError);
+
+					ee.inext.line = 0;
+					e.push_front(ee);
+					throw e;
+				}
 				return;
 			}
 			if (diagnosis[k].nrulechain == -1) {

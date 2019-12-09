@@ -23,6 +23,7 @@ namespace MFST {
 	};
 
 	struct Mfst {
+		int DiagnosMaxCount = 10;
 		enum ENUM_STEP {
 			NS_OK,		//знойдзена прав≥ла ≥ ланужок зап≥саны Ґ стэк
 			NS_NORULE,	//не знойдзена прав≥ла, памылка граматык≥
@@ -52,7 +53,7 @@ namespace MFST {
 		void StateInfo();	//≥нфармацы€ аб стане аҐтамата
 		bool isTopStateEqual();	//ц≥ аднолькавы€ в€ршын€ стэка ≥ ц€перашн≥ стан аҐтамата
 
-		Mfst(LT::LexTable table, GRB::Greibach gr) {
+		Mfst(LT::LexTable table, GRB::Greibach gr, int maxErrors) {
 			lexTable=table;
 			greibach=gr;
 			st.push(gr.stbottomT);
@@ -66,6 +67,7 @@ namespace MFST {
 			lenta_size = table.size;
 			lenta=plenta;
 			lenta_position=0;
+			DiagnosMaxCount=maxErrors;
 		}
 
 		struct MfstDiagnosis {

@@ -116,6 +116,14 @@ namespace WORDS {
 		return i;
 	}
 
+	int LengthString(char *res) {
+		int i = 0;
+		while (res[i] != '\0') {
+			i++;
+		}
+		return i;
+	}
+
 	//параўнаць радкі
 	bool StringCompare(char* str1, char *str2) {
 		int i=0;

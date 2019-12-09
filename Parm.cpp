@@ -39,7 +39,7 @@ namespace Parm
 					}
 					wchar_t s[PARM_MAX_SIZE];
 					int cas = 0;
-					for (cas = 0; cas < PARM_MAX_SIZE - 6 && (wchar_t*)(argv[i])[cas + 4] != L'\0'; cas++) {
+					for (cas = 0; cas < PARM_MAX_SIZE - 6 && (wchar_t*)(argv[i])[cas + 5] != L'\0'; cas++) {
 						s[cas] = (argv[i])[cas + 5];
 					}
 					s[cas] = L'\0';
@@ -56,12 +56,28 @@ namespace Parm
 					}
 					wchar_t s[PARM_MAX_SIZE];
 					int cas = 0;
-					for (cas = 0; cas < PARM_MAX_SIZE - 6 && (wchar_t*)(argv[i])[cas + 4] != L'\0'; cas++) {
+					for (cas = 0; cas < PARM_MAX_SIZE - 6 && (wchar_t*)(argv[i])[cas + 5] != L'\0'; cas++) {
 						s[cas] = (argv[i])[cas + 5];
 					}
 					s[cas] = L'\0';
 					wcscpy_s(p.log, s);
 				}
+			}
+			else if (wcsstr((wchar_t*)(argv[i]), PARM_ERR) == (argv[i])) {
+				if (wcslen((wchar_t*)(argv[i])) >= PARM_MAX_SIZE) {
+					throw ERROR_THROW(104);
+				}
+				wchar_t s[PARM_MAX_SIZE];
+				int cas = 0;
+				for (cas = 0; cas < PARM_MAX_SIZE - 5 && (wchar_t*)(argv[i])[cas + 4] != L'\0'; cas++) {
+					s[cas] = (argv[i])[cas + 4];
+				}
+				s[cas] = L'\0';
+				int count = _wtoi(s);
+				if (count <= 0) {
+					throw ERROR_THROW(101);
+				}
+				p.ErrorsMaxCount = count;
 			}
 			i++;
 		}
