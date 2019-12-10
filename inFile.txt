@@ -1,15 +1,84 @@
 main
 {
-	declare integer a = '2';
-	declare sarray strs = 2;
-	declare string str;
-	if (^strs [^strs[2]] > 3){
-		strs [2]=func();
+	
+	declare string s1;
+	declare integer num1;
+	declare integer num2;
+	strConcat("Your name is ", s1[0]);
+	printStr("Enter your name:");
+	printLine();
+	strConcat(readLine(), s1[0]);
+	printStr(s1[0]);
+	strCopy("Enter 2 numbers:", s1[0]);
+	printLine();
+	printStr(s1[0]);
+	num1 = readNum();
+	num2 = readNum();
+	
+	printLine();
+	if (num2!0){
+		strCopy("num1 / num2 = ", s1[0]);
+		strConcat(intToChar(num1/num2),s1[0]);
+		printStr(s1[0]);
+	} else {
+		strCopy("error: num2 wath zero", s1[0]);
+		printStr(s1[0]);
 	}
+
+	printLine();
+	strCopy("num1 % num2 = ", s1[0]);
+	strConcat(intToChar(num1%num2),s1[0]);
+	printStr(s1[0]);
+
+	printLine();
+	strCopy("num1 * num2 = ", s1[0]);
+	strConcat(intToChar(num1*num2),s1[0]);
+	printStr(s1[0]);
+
+	printLine();
+	strCopy("num1 - num2 = ", s1[0]);
+	strConcat(intToChar(num1-num2),s1[0]);
+	printStr(s1[0]);
+
+	printLine();
+	strCopy("num1^num2 = ", s1[0]);
+	strConcat(intToChar(_pow(num1,num2)),s1[0]);
+	printStr(s1[0]);
+
+	declare array s2 = 16;
+	func(s2[0]);
+	
 	return;
 };
+void function func(array arr){
+	declare sarray s2 = 2;
+	
+	strCopy("there are",s2[0]);
+	strCopy("4x4 array",s2[256*1]);
+	printLine();
+	s2[0+9]=ah;
+	s2[0+10]=0;
+	printStr(s2[0]);
+	printStr(s2[256]);
+	printLine();
 
-integer function func(){
-	declare string str;
-	return ^str[0];
+	declare string temps;
+	declare string tabulation;
+	tabulation[0]=1001b;
+	tabulation[1]=0;
+	declare integer i = 0;
+	declare integer j = 0;
+	while(i<4){
+		j=0;
+		while(j<4){
+			arr[i*4+j]=rnd()%20-10;
+			strCopy(intToChar(^arr[i*4+j]),temps[0]);
+			strConcat(tabulation[0],temps[0]);
+			printStr(temps[0]);
+			j=j+1;
+		}
+		printLine();
+		i=i+1;
+	}
+	return 0;
 };

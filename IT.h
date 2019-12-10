@@ -16,59 +16,51 @@
 
 namespace IT
 {
-	enum IDDATATYPE{INT=1,STR=2,VOID=3,ARRAY,ARRAY_STR, CHAR};
+	enum IDDATATYPE{INT=1,
+		STR=2,		//радок
+		VOID=3,		//функцыя не вяртая значэння
+		ARRAY,		//масіў лікаў
+		ARRAY_STR,	//масіў радкоў
+		CHAR		//сімвал
+	};	//тып дадзеных
 	enum IDTYPE	{V=1,F=2,P=3,L=4};		//пераменная, функцыя, параметр, літэрал
-	enum BLOCK_TYPE
-	{
-		_if = 1,
-		_else_if,
-		_else,
-		cycle
-	};	//тыпы блёкаў: цыкл, ўмова
-	struct BlockDefenition {
-		BLOCK_TYPE type;	//тып блёка
-		int startIndex;		//індэкс лексемы, з якой блёк пачынаецца
-		int countOfElseIf = 0;
-	};	//структура, для захавання блёка
 	struct FuncDefenition {
 		IDDATATYPE returnType;
-		int params[PARMS_MAX_COUNT];
-		int locals[TI_MAXSIZE];
-		std::string name;
+		int params[PARMS_MAX_COUNT];	//індэксы ў табліцы ідэнтыфікатараў параметраў
+		int locals[TI_MAXSIZE];	//індэксы ў табліцы ідэнтыфікатараў лакальных зменных
+		std::string name;	//імя функцыі
 		short curLocals=0;	//індэкс апошняй пераменнай
 		short curParams=0;	//індэкс апошняга параметра
 		short startOfFunc = -1;	//лексема, з якой пачынаецца апісанне функцыі
-		//std::stack<BlockDefenition*> Blocks;	//часовая зменная для падліка блёкаў у функцыі
-		//std::stack<BlockDefenition*> BlocksP;	//стэк з блёкамі ў функцыі
 	};		//структура для захоўвання функцый
 
 	struct Entry {
 		int idxfirstLE;		//індэкс у табліцы лексем
 		char id[ID_MAXSIZE];	//значэнне
-		LT::COUNTSYSTEM countSystem = LT::DEC;
+		LT::COUNTSYSTEM countSystem = LT::DEC;	//сістэма злічэння
 		IDDATATYPE iddatatype;	//тып дадзеных	
 		IDTYPE idtype;		//тып ідэнтыфікатара
 		FuncDefenition *funcId;//функцыя, у якой вызначаны ід
-		std::string AssemblerName;
+		std::string AssemblerName;	//імя якое просвоена ідэнтыфікатару ў асэмблеры
 		union
 		{
-			int vint;
-			char cint;
+			int vint;	//лікавае значэнне
+			char cint;	//сімвальнае значэнне
 			struct
 			{
-				char len;
-				char str[TI_STR_MAXSIZE-1];
+				char len;		//даўжыня радка
+				char str[TI_STR_MAXSIZE-1];	//значэнне радка
 			} vstr;
-		} value;
+		} value;	//значэнне ідэнтыфікатара
 	};
 	struct IdTable	//табліца
 	{
-		int maxsize;
-		int size;
-		Entry* table;
-		int countOfStandartFuncs = 9;
-		FuncDefenition **funcs;
-		int funcCount=0;
+		int maxsize;	//максімальны памер табліцы
+		int size;		//цякучы памер табліцы
+		Entry* table;	//указальнік на масіў элеметнаў
+		int countOfStandartFuncs = 9;	//колькасць стандартных функцый 
+		FuncDefenition **funcs;			//масіў функцый
+		int funcCount=0;	//колькасць карыстальніцкіх функцый
 	};
 	IdTable CreateTable(int size);		//стварыць табліцу
 	void Add(IdTable& idtable, int idxfirstLE, char *id);		//дадацт радок у табліцу

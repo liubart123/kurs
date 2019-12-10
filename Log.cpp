@@ -101,7 +101,7 @@ namespace Log
 		*log.stream << "Log file: " << output << endl;
 	}
 
-	void WriteIn(LOG log, In::IN in, int maxErrors)
+	void WriteIn(LOG log, In::IN in, int maxErrors, bool ShowDetails)
 	{
 		*log.stream << "-----Input data-----" << endl;
 		*log.stream << "Amount of symbols: " << in.size << endl;
@@ -118,7 +118,7 @@ namespace Log
 		bool kavichka2 = false;	//ці ёсць адкрываючая кавычка адзінарная
 		list<Error::ERROR> errorList;
 		*log.stream << "\nLexic analys is performing...\n" << endl;
-		*log.stream << "\nLexic analys is performing...\n" << endl;
+		std::cout << "\nLexic analys is performing...\n" << endl;
 		//стварэнне табліцы лексем
 		while (startPos + pos < in.size) {
 			if (in.text[pos + startPos] == '\"') {
@@ -214,10 +214,14 @@ namespace Log
 			throw(errorList);
 		}
 
+		*log.stream << "\nLexic analys was successfull\n" << endl;
+		std::cout << "\nLexic analys was successfull\n" << endl;
 
 		*log.stream << "\nIDs analys is performing...\n" << endl;
-		*log.stream << "\nIDs analys is performing...\n" << endl;
+		std::cout << "\nIDs analys is performing...\n" << endl;
 		CheckStrForId((char*)in.text, idTable,lexTable, maxErrors);
+		*log.stream << "\nIDs analys was successfull\n" << endl;
+		std::cout << "\nIDs analys was successfull\n" << endl;
 		//*log.stream << "\nIDs table:\n" << endl;
 		std::string str = IT::PrintTable(idTable);
 		*log.stream << "\n" << str << endl;
@@ -228,10 +232,12 @@ namespace Log
 		MFST::Mfst *automatos = new MFST::Mfst(lexTable, GRB::getGreibach(), maxErrors);
 		*log.stream << "\nSyntax analys is performing...\n" << endl;
 		cout << "\nSyntax analys is performing...\n" << endl;
-		if (!automatos->start(log)) {
+		WriteLog(log);
+		if (!automatos->start(log, ShowDetails)) {
 			cout << "\nSyntax error...\n" << endl;
 			return;
 		}
+		WriteLog(log);
 
 		*log.stream << "\nnSyntax analys was completed successfull\n" << endl;
 		cout << "\nnSyntax analys was completed successfull\n" << endl;

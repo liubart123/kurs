@@ -63,7 +63,7 @@ namespace LT
 	enum COUNTSYSTEM { DEC=10, HEX=16, OCT=8, BIN=2 };
 	struct Entry	//зап≥с у ьабл≥цы
 	{
-		COUNTSYSTEM countSys = DEC;
+		COUNTSYSTEM countSys = DEC;		//с≥стэма зл≥чэнн€
 		char lexema[LEXEMA_FIXSIZE];	//лексема
 		int sn;							//нумар радка у зыходным кодз≥
 		int idxTI;						//≥ндэкс у табл≥цы ≥д
@@ -77,13 +77,13 @@ namespace LT
 		}
 		Entry() {
 		}
-		bool isAssignedId = false;
+		bool isAssignedId = false;		//ц≥ ста≥ць лексема злева ад "="
 	};
 	struct LexTable	//табл≥ца
 	{
-		int maxsize;
-		int size;
-		Entry* table;
+		int maxsize;	//макс≥мальны памер табл≥цы
+		int size;		//ц€кучы памер табл≥цы
+		Entry* table;	//мас≥Ґ з лексем
 	};
 	LexTable CreateTable(int size);		//стварыць табл≥цу
 	void Add(LexTable& lextable, char *lexema, int sn, int line, int col);		//дадацт радок у табл≥цу

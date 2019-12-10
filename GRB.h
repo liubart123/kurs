@@ -29,7 +29,7 @@ namespace GRB {
 		Rule(GRBHALPHABET pnn, int idError, short psize, Chain c, ...);
 		char *getCRule(short nchain);	//атрымаць правіла ў выглядзе радка
 		short getNextChain(
-			GRBHALPHABET t, Rule::Chain& pchain, short j
+			GRBHALPHABET* lenta, short pos, Rule::Chain& pchain, short j
 		);	//атрымаць наступны за j ланцуг або -1 
 	};
 	struct Greibach {

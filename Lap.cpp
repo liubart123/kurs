@@ -34,7 +34,9 @@ int _tmain(int argc, _TCHAR* argv[])
 		//		cout << "\n";
 		//	}
 		//}
-
+		char asd = ' ';
+		asd = '\n';
+		asd='\t';
 		Parm::PARM parm = Parm::getparm(argc, argv);
 		log = Log::getlog(parm.log, parm.source);
 		//Log::WriteLine(log, (char*)"³ô³ûâo¢", "asd","");
@@ -44,7 +46,8 @@ int _tmain(int argc, _TCHAR* argv[])
 		wcout << L"out: " << parm.out << L'\n';
 		wcout << L"log: " << parm.log << L'\n';
 		In::IN in = In::getin(parm.in);
-		Log::WriteIn(log,in, parm.ErrorsMaxCount);
+		
+		Log::WriteIn(log,in, parm.ErrorsMaxCount, parm.showDetailsSyntax);
 		Log::Close(log);
 	}
 	catch (Error::ERROR e)

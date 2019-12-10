@@ -137,7 +137,7 @@ namespace IT {
 			LT::Entry *entry = LT::GetEntry(lexTable, i);	//радок лексемы
 			char lex = entry->lexema[0];	//лексема
 			char* id = WORDS::GetWord(text, entry->sn);
-			WORDS::CutWord(id, ID_MAXSIZE);
+			WORDS::CutWord(id, ID_MAXSIZE-1);
 			if (lex == LEX_ID) {
 				if (i > 1) {
 					//дыклярацыя функцыі
@@ -169,23 +169,11 @@ namespace IT {
 							//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
 						}
 						else if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 2)->sn)[0] == 'a') {
-							if (errors.size() >= MaxErrors) {
-								errors.push_back(Error::geterror(215));
-								throw errors;
-							}
-							errors.push_back(Error::geterrorin(220, LT::GetEntry(lexTable, i)->line, LT::GetEntry(lexTable, i)->col));
-
 							GetEntry(idTable, idTable.size - 1)->iddatatype = ARRAY;
 							//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
 						}
 						else if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 2)->sn)[0] == 's' &&
 							WORDS::GetWord(text, LT::GetEntry(lexTable, i - 2)->sn)[1] == 'a') {
-							if (errors.size() >= MaxErrors) {
-								errors.push_back(Error::geterror(215));
-								throw errors;
-							}
-							errors.push_back(Error::geterrorin(220, LT::GetEntry(lexTable, i)->line, LT::GetEntry(lexTable, i)->col));
-
 							GetEntry(idTable, idTable.size - 1)->iddatatype = ARRAY_STR;
 							//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
 						}
@@ -198,12 +186,6 @@ namespace IT {
 							//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
 						}
 						else {
-							if (errors.size() >= MaxErrors) {
-								errors.push_back(Error::geterror(215));
-								throw errors;
-							}
-							errors.push_back(Error::geterrorin(220, LT::GetEntry(lexTable, i)->line, LT::GetEntry(lexTable, i)->col));
-
 							GetEntry(idTable, idTable.size - 1)->iddatatype = STR;
 							//*(GetEntry(idTable, idTable.size - 1)->value.vstr.str) = TI_STR_DEFAULT;
 						}
@@ -233,18 +215,18 @@ namespace IT {
 			LT::Entry *entry = LT::GetEntry(lexTable, i);	//радок лексемы
 			char lex = entry->lexema[0];	//лексема
 			if (lex == LEX_ID) {
-				if (curFunc == NULL) {
-					//ідэнтыфікатар пазамежамі функцыі
-					if (errors.size() >= MaxErrors) {
-						errors.push_back(Error::geterror(215));
-						throw errors;
-					}
-					errors.push_back(Error::geterrorin(216, LT::GetEntry(lexTable, i)->line, LT::GetEntry(lexTable, i)->col));
-					continue;
-				}
 				char* id = WORDS::GetWord(text, entry->sn);
-				WORDS::CutWord(id, ID_MAXSIZE);
+				WORDS::CutWord(id, ID_MAXSIZE-1);
 				if (IsId(idTable, id, curFunc) == TI_NULLIDX) {
+					if (curFunc == NULL) {
+						//ідэнтыфікатар пазамежамі функцыі
+						if (errors.size() >= MaxErrors) {
+							errors.push_back(Error::geterror(215));
+							throw errors;
+						}
+						errors.push_back(Error::geterrorin(216, LT::GetEntry(lexTable, i)->line, LT::GetEntry(lexTable, i)->col));
+						continue;
+					}
 					if (i > 1) {
 						//дыклярацыя пераменнай/параметра
 						if (LT::GetEntry(lexTable, i - 1)->lexema[0] == 't') {
@@ -255,7 +237,7 @@ namespace IT {
 								GetEntry(idTable, idTable.size - 1)->idtype = IT::IDTYPE::V;
 								AddVal(idTable,*curFunc,idTable.size-1);
 							} 
-							else if ((LT::GetEntry(lexTable, i - 2)->lexema[0] == ',' && LT::GetEntry(lexTable, i - 3)->lexema[0] == 'i') || LT::GetEntry(lexTable, i - 2)->lexema[0] == '(') {
+							else if ((LT::GetEntry(lexTable, i - 2)->lexema[0] == ',' && LT::GetEntry(lexTable, i - 3)->lexema[0] == 'i') || (LT::GetEntry(lexTable, i - 2)->lexema[0] == '(' && LT::GetEntry(lexTable, i - 3)->lexema[0] == 'i')) {
 								if (curFunc->curParams >= PARMS_MAX_COUNT - 1) {
 									if (errors.size() >= MaxErrors) {
 										errors.push_back(Error::geterror(215));
@@ -293,9 +275,17 @@ namespace IT {
 								GetEntry(idTable, idTable.size - 1)->iddatatype = CHAR;
 								//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
 							}
-							else {
+							else if (WORDS::GetWord(text, LT::GetEntry(lexTable, i - 1)->sn)[0] == 's') {
 								GetEntry(idTable, idTable.size - 1)->iddatatype = STR;
-								//*(GetEntry(idTable, idTable.size - 1)->value.vstr.str) = TI_STR_DEFAULT;
+								//GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
+							}
+							else {
+								if (errors.size() >= MaxErrors) {
+									errors.push_back(Error::geterror(215));
+									throw errors;
+								}
+								GetEntry(idTable, idTable.size - 1)->iddatatype = VOID;
+								errors.push_back(Error::geterrorin(220, LT::GetEntry(lexTable, i)->line, LT::GetEntry(lexTable, i)->col));
 							}
 
 							//наданне значэння ід-ру
@@ -325,8 +315,8 @@ namespace IT {
 										errors.push_back(Error::geterrorin(213, entry->line, entry->col));
 									}
 								}
-								else if (GetEntry(idTable, idTable.size - 1)->iddatatype == IT::IDDATATYPE::ARRAY
-									|| GetEntry(idTable, idTable.size - 1)->iddatatype == IT::IDDATATYPE::ARRAY_STR
+								else if ((GetEntry(idTable, idTable.size - 1)->iddatatype == IT::IDDATATYPE::ARRAY
+									|| GetEntry(idTable, idTable.size - 1)->iddatatype == IT::IDDATATYPE::ARRAY_STR)
 									&& GetEntry(idTable, idTable.size - 1)->idtype != IT::IDTYPE::P) {
 									if (errors.size() >= MaxErrors) {
 										errors.push_back(Error::geterror(215));
@@ -368,37 +358,18 @@ namespace IT {
 					}
 				}
 			}
-			else if (lex == LEX_CONDITION && LT::GetEntry(lexTable, i - 1)->lexema[0] != LEX_ELSE) {
-				BlockDefenition *bl = new BlockDefenition();
-				//curFunc->Blocks.push(bl);
-				//curFunc->BlocksP.push(bl);
-			}
-			else if (lex == LEX_ELSE) {
-				//curFunc->Blocks.top()->countOfElseIf++;
-			}
-			else if (lex == LEX_BRACELET) {
-				if (i < lexTable.size - 1 && LT::GetEntry(lexTable, i+1)->lexema[0] == LEX_ELSE) 
-				{
-					//curFunc->Blocks.top().countOfElseIf++;
-				}
-				else {
-					/*if (!curFunc->Blocks.empty()){
-						curFunc->Blocks.pop();
-					}*/
-				}
-			}
 			else if (lex == LEX_MAIN) {
 				curFunc = GetEntry(idTable,entry->idxTI)->funcId;
 			}
-			else if ( lex== LEX_LITERAL){
+			else if ( lex == LEX_LITERAL){
 				if (curFunc == NULL) {
-				//ідэнтыфікатар пазамежамі функцыі
-				if (errors.size() >= MaxErrors) {
-					errors.push_back(Error::geterror(215));
-					throw errors;
+					//ідэнтыфікатар пазамежамі функцыі
+					if (errors.size() >= MaxErrors) {
+						errors.push_back(Error::geterror(215));
+						throw errors;
+					}
+					errors.push_back(Error::geterrorin(216, LT::GetEntry(lexTable, i)->line, LT::GetEntry(lexTable, i)->col));
 				}
-				errors.push_back(Error::geterrorin(216, LT::GetEntry(lexTable, i)->line, LT::GetEntry(lexTable, i)->col));
-			}
 			}
 		}
 
@@ -494,10 +465,12 @@ namespace IT {
 			}
 			str.append(",\t");
 			if (entry->funcId!=NULL){
+				str.append("in function: ");
 				str.append(entry->funcId->name);
 				str.append(",\t");
 			}
 
+			str.append("type: ");
 			if (entry->iddatatype == INT) {
 				str.append("integer");
 				if (entry->idtype == L){
@@ -541,7 +514,7 @@ namespace IT {
 				if (entry->idtype == L)
 					str.append(entry->value.vstr.str);
 			}
-			str.append(",\t");
+			//str.append(",\t");
 			//str.append(entry->funcId);
 			str.append("\n");
 		}

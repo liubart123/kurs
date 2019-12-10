@@ -1,0 +1,15 @@
+integer function fractal(integer num){
+	declare integer res = 1;
+	declare integer cur = 1;
+	while (cur<num|cur?num){
+		res=res*cur;
+		cur=cur+1;
+	}
+	return res;
+};
+main
+{
+	declare integer num = 6;
+	declare integer res;
+	res = fractal(num);
+};

@@ -8,10 +8,9 @@
 
 Log::LOG logger;
 namespace MFST {
+	bool ShowDetails = false;
 	//крок
 	Mfst::ENUM_STEP Mfst::step() {
-		if (MFST_SHOW_DETAILS)
-			StateInfo();
 		//праверка, ц≥ знаходз≥цца у в€ршын≥  стэка тэрм≥нальны с≥мвал
 		if (GRB::Rule::Chain::isT(st.top()) == true) {
 			if (st.top() == lenta[lenta_position]) {
@@ -39,17 +38,17 @@ namespace MFST {
 			//выбар ланцужка
 			int oldChain = nrulechain;
 			if (statesStack.empty()==true || isTopStateEqual()==false) {
-				nrulechain = rule.getNextChain(lenta[lenta_position], chain, -1);
+				nrulechain = rule.getNextChain(lenta, lenta_position, chain, -1);
 			}
 			else {
-				nrulechain = rule.getNextChain(lenta[lenta_position], chain, statesStack.top().nrulechain);	
+				nrulechain = rule.getNextChain(lenta, lenta_position, chain, statesStack.top().nrulechain);
 				//знаходз≥м правую чатску прав≥ла
 				statesStack.pop();
 			}
 			
 			if (nrulechain != -1) {
 
-				if (MFST_SHOW_DETAILS)
+				if (ShowDetails)
 					printRule(rule,chain);
 				saveState();
 				st.pop();
@@ -73,9 +72,10 @@ namespace MFST {
 	//захаваць стан
 	bool Mfst::saveState(){
 		statesStack.push(*new MFST::MfstState(lenta_position, st, nrulechain, nrule));
-
-		if (MFST_SHOW_DETAILS)
-			cout << "\n-------------------------------------State was saved: " << statesStack.size() << "\n";
+		if (ShowDetails){
+			StateInfo();
+			PrintMessage("\n-------------------------------------State was saved: " + to_string(statesStack.size()) + "\n");
+		}
 		return false;	
 	}
 
@@ -90,8 +90,10 @@ namespace MFST {
 		nrule = state.nrule;
 		st = state.st;
 
-		if (MFST_SHOW_DETAILS)
-			cout << "\n-------------------------------------State was reseted: " << statesStack.size() << "\n";
+		if (ShowDetails){
+			StateInfo();
+			PrintMessage("\n-------------------------------------State was reseted: " + to_string(statesStack.size()) + "\n");
+		}
 		return true;
 	}
 
@@ -104,7 +106,8 @@ namespace MFST {
 	}
 
 	//пачаць работу аҐтамата
-	bool Mfst::start(Log::LOG &log) {
+	bool Mfst::start(Log::LOG &log, bool showDetails) {	
+		ShowDetails = showDetails;
 		logger =log;
 		bool cycle = true;
 		//statesStack.push(*new MFST::MfstState(0,st,0));
@@ -118,12 +121,12 @@ namespace MFST {
 				case MFST::Mfst::NS_OK:
 					break;
 				case MFST::Mfst::NS_NORULE:
-					if (MFST_SHOW_DETAILS)
+					if (ShowDetails)
 						printError(result);
 					cycle = false;
 					break;
 				case MFST::Mfst::NS_NORULECHAIN:
-					if (MFST_SHOW_DETAILS)
+					if (ShowDetails)
 						printError(result);
 					if (!resState()) {
 						cycle = false;
@@ -142,7 +145,7 @@ namespace MFST {
 					//cycle = false;
 					break;
 				case MFST::Mfst::TS_NOK:
-					if (MFST_SHOW_DETAILS)
+					if (ShowDetails)
 						printError(result);
 					if (!resState()) {
 						cycle = false;
@@ -159,10 +162,10 @@ namespace MFST {
 				default:
 					break;
 			}
-			if (MFST_SHOW_DETAILS){
-				countOfCycles++;
-				PrintMessage(":");
-				PrintMessage(to_string(countOfCycles));
+			countOfCycles++;
+			if (ShowDetails){
+				//PrintMessage(":");
+				//PrintMessage(to_string(countOfCycles));
 			}
 		}
 		if (Syntax == true && (result == MFST::Mfst::NS_OK || result == MFST::Mfst::LENTA_END || result == MFST::Mfst::TS_OK)) {
@@ -211,19 +214,23 @@ namespace MFST {
 		char *str = new char[length + 1];
 		MFSTSTACK st2 = st;
 		int i;
-		cout << '\n';
+		//cout << '\n';
+		PrintMessage("\n");
 		for (i = 0; i < length && i < lenta_size - lenta_position; i++) {
 			str[i] = GRB::Rule::Chain::alphabet_to_char(lenta[lenta_position+i]);
 		}
 		str[i] = '\0';
-		cout << setw(length) << str;
-		cout << '\t';
+		//cout << setw(length) << str;
+		//cout << '\t';
+		PrintMessage(str);
+		PrintMessage("\t");
 		for (i = 0; st2.empty() == false && i < length; i++) {
 			str[i] = GRB::Rule::Chain::alphabet_to_char(st2.top());
 			st2.pop();
 		}
 		str[i] = '\0';
-		cout << setw(length) << str << '\n';
+		PrintMessage(str);
+		//cout << setw(length) << str << '\n';
 	}	//≥нфармацы€ аб стане аҐтамата
 
 	//ц≥ аднолькавы€ в€ршын€ стэка ≥ ц€перашн≥ стан аҐтамата
@@ -238,15 +245,15 @@ namespace MFST {
 	}
 
 	void PrintMessage(char* str) {
-		std::cout << str;
+		//std::cout << str;
 		Log::WriteLine(logger, (str), (char*)("\0"));
 	}
 	void PrintMessage(char str) {
-		std::cout << str;
+		//std::cout << str;
 		Log::WriteLine(logger, (str));
 	}
 	void PrintMessage(string str) {
-		std::cout << str;
+		//std::cout << str;
 		Log::WriteLine(logger,(char*)((&str[0])), (char*)("\0"));
 	}
 
@@ -278,7 +285,7 @@ namespace MFST {
 
 	//захаваць новую ды€гностыку
 	void Mfst::pushNewDiagnosis(Mfst::ENUM_STEP step, int chain, int rule) {
-		if (MFST_SHOW_DETAILS)
+		if (ShowDetails)
 			PrintMessage("\n-------------------------------------diagnosesWasSaved");
 		int k=0;
 		while (k < DiagnosMaxCount && lenta_position <= diagnosis[k].lenta_position) {

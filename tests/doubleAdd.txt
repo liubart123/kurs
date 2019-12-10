@@ -1,0 +1,17 @@
+main
+{
+	declare char ch = 0;
+	declare array str = 256;
+	declare integer w = 0;
+	declare integer h = 0;
+	while(w<16){
+		h = 0;
+		while(h<16){
+			str[w*16+h]= ch + h + w*16;
+			h=h+1;
+		}
+		w=w+1;
+	} 
+	ch = ^str[254]+10;	
+	return w;
+};

@@ -36,7 +36,7 @@ namespace In
 				}
 			}
 			else if (TABLE[(int)tempChar] == IN::F) {
-				throw ERROR_THROW_IN(111,line,pos);
+				throw ERROR_THROW_IN(111,line+1,pos);
 			}
 			else if (TABLE[(int)(unsigned char)tempChar] == IN::I) {
 				pos++;

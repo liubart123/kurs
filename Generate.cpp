@@ -612,19 +612,19 @@ namespace GEN {
 				Blocks.pop();
 			}
 			else if (LT::GetEntry(lexTable, i)->lexema[0] == LEX_BREAK) {	//break
-			if (Blocks.empty()) {
-				//throw(Error::geterrorin(210, (LT::GetEntry(lexTable, i)->))
-				break;
-			}
-			std::stack<GEN::Block> tempBlocks = Blocks;
-			while (tempBlocks.top().type != GEN::BLOCKTYPE::WHILE) {
-				tempBlocks.pop();
-			}
-			str += MOVE_TO;
-			str += tempBlocks.top().name;
-			str += FINALLY;
-			str += "\n";
-			//Blocks.pop();
+				if (Blocks.empty()) {
+					throw(Error::geterrorin(221, LT::GetEntry(lexTable, i)->line, LT::GetEntry(lexTable, i)->col));
+					break;
+				}
+				std::stack<GEN::Block> tempBlocks = Blocks;
+				while (tempBlocks.top().type != GEN::BLOCKTYPE::WHILE) {
+					tempBlocks.pop();
+				}
+				str += MOVE_TO;
+				str += tempBlocks.top().name;
+				str += FINALLY;
+				str += "\n";
+				//Blocks.pop();
 			}
 			i++;
 		}
