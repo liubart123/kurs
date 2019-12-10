@@ -101,7 +101,7 @@ namespace Log
 		*log.stream << "Log file: " << output << endl;
 	}
 
-	void WriteIn(LOG log, In::IN in, int maxErrors)
+	void WriteIn(LOG log, In::IN in, int maxErrors, bool ShowDetails)
 	{
 		*log.stream << "-----Input data-----" << endl;
 		*log.stream << "Amount of symbols: " << in.size << endl;
@@ -228,10 +228,12 @@ namespace Log
 		MFST::Mfst *automatos = new MFST::Mfst(lexTable, GRB::getGreibach(), maxErrors);
 		*log.stream << "\nSyntax analys is performing...\n" << endl;
 		cout << "\nSyntax analys is performing...\n" << endl;
-		if (!automatos->start(log)) {
+		WriteLog(log);
+		if (!automatos->start(log, ShowDetails)) {
 			cout << "\nSyntax error...\n" << endl;
 			return;
 		}
+		WriteLog(log);
 
 		*log.stream << "\nnSyntax analys was completed successfull\n" << endl;
 		cout << "\nnSyntax analys was completed successfull\n" << endl;

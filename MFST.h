@@ -49,7 +49,7 @@ namespace MFST {
 		bool saveState();	//захаваь стан аҐтамата
 		bool resState();	//аднав≥ць станов≥шча 
 		bool pushChain(GRB::Rule::Chain chain);	//пакласц≥ у стэк ланцужок
-		bool start(Log::LOG &log);	//пачаць работу аҐтамата
+		bool start(Log::LOG &log, bool showDetails);	//пачаць работу аҐтамата
 		void StateInfo();	//≥нфармацы€ аб стане аҐтамата
 		bool isTopStateEqual();	//ц≥ аднолькавы€ в€ршын€ стэка ≥ ц€перашн≥ стан аҐтамата
 

@@ -64,11 +64,26 @@ namespace GRB {
 			i++;
 		}
 	}
-	short Rule::getNextChain(GRBHALPHABET t, Rule::Chain& pchain, short j) {
+	short Rule::getNextChain(GRBHALPHABET* lenta, short pos, Rule::Chain& pchain, short j) {
 		j++;
-		while(j < size && (chains[j].nt[0] != t && chains[j].nt[0] != TS(EMPTY))){
-			j++;
+		for (; j < size; j++) {
+			int i=0;
+			while (i<chains[j].size && chains[j].nt[i] == lenta[pos + i] 
+			&& chains[j].isT(lenta[pos + i])==true
+			&& chains[j].isT(chains[j].nt[i])==true) {
+				i++;
+			}
+			if (i == chains[j].size) {
+				break;
+			}
+			else if ((chains[j].nt[i] == lenta[pos + i] || chains[j].isT(chains[j].nt[i]) == false)) { //ланцужок прав≥ла ≥ стужка супадаюць
+				break;
+			}
 		}
+		/*j++;
+		while(j < size && (chains[j].nt[0] != lenta[pos+j] && chains[j].nt[0] != TS(EMPTY))){
+			j++;
+		}*/
 		short rc = j<size?j:-1;
 		if (rc >= 0) {
 			pchain = chains[rc];
@@ -76,18 +91,14 @@ namespace GRB {
 		return rc;
 	};
 	Greibach greibach(NS('S'),TS('$'),7,
-		Rule(NS('S'),GRB_ERROR_SERIES+0,
-				10,
+		Rule(NS('S'),GRB_ERROR_SERIES+0,	//функцы≥ ≥ кропка Ґваходу
+				6,
 				Rule::Chain(7,TS('m'),TS('{'), NS('N'), TS('r'), TS(';'), TS('}'), TS(';')),
 				Rule::Chain(8, TS('m'), TS('{'), NS('N'), TS('r'), TS(';'), TS('}'), TS(';'), NS('S')),
 				Rule::Chain(14, TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';'), NS('S')),
 				Rule::Chain(13, TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';')),
-				Rule::Chain(13, TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS('{'), NS('N'), TS('r'), TS(';'), TS('}'), TS(';'), NS('S')),
-				Rule::Chain(12, TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS('{'), NS('N'), TS('r'), TS(';'), TS('}'), TS(';')),
 				Rule::Chain(13, TS('t'), TS('f'), TS('i'), TS('('), TS(')'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';'), NS('S')),
-				Rule::Chain(12, TS('t'), TS('f'), TS('i'), TS('('), TS(')'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';')),
-				Rule::Chain(12, TS('t'), TS('f'), TS('i'), TS('('), TS(')'), TS('{'), NS('N'), TS('r'), TS(';'), TS('}'), TS(';'), NS('S')),
-				Rule::Chain(11, TS('t'), TS('f'), TS('i'), TS('('), TS(')'), TS('{'), NS('N'), TS('r'), TS(';'), TS('}'), TS(';'))
+				Rule::Chain(12, TS('t'), TS('f'), TS('i'), TS('('), TS(')'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';'))
 			),
 		Rule(NS('N'), GRB_ERROR_SERIES + 1,		//цела цункцы≥
 				28,
@@ -146,7 +157,7 @@ namespace GRB {
 				Rule::Chain(5, TS('i'), TS('['), NS('E'), TS(']'), NS('M')),	//arr[...]...
 				Rule::Chain(6, TS('v'), TS('i'), TS('['), NS('E'), TS(']'), NS('M'))	//^arr[...]...
 			),
-		Rule(NS('M'), GRB_ERROR_SERIES + 3,		//выраз
+		Rule(NS('M'), GRB_ERROR_SERIES + 3,		//прац€г выраза
 			2,
 			Rule::Chain(2, TS('v'), NS('E')),
 			Rule::Chain(3, TS('v'), NS('E'), NS('M'))

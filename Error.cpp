@@ -83,7 +83,8 @@ namespace Error
 		ERROR_ENTRY(217,"parametrs count reached the limit"),	// id
 		ERROR_ENTRY(218,"functions count reached the limit"),	// id
 		ERROR_ENTRY(219,"literal size reached the limit"),	// lex
-		ERROR_ENTRY(220,"user's function cannot return array type"),	// id
+		ERROR_ENTRY(220,"variable or parametr can't have type void"),	// id
+		ERROR_ENTRY(221,"unexpected break"),	// id
 		ERROR_ENTRY_NODEF100(300),
 		ERROR_ENTRY_NODEF100(400),
 		ERROR_ENTRY_NODEF100(500),
