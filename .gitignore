@@ -2,3 +2,5 @@ Kurs.vcxproj.user
 Kurs.vcxproj.filters
 Kurs.vcxproj
 Debug
+*.obj
+*.vcxproj

@@ -33,6 +33,8 @@ namespace MFST {
 		nrule = greibach.getRule(st.top(), rule);	//знаходзім правіла
 		GRB::Rule::Chain chain;
 
+		if (ShowDetails)
+			//StateInfo();
 		//правіла знойдзена
 		if (nrule != greibach.size && nrule!=-1) {
 			//выбар ланцужка

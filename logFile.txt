@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 -----Date: 11.12.2019 10:45:27-----
+=======
+-----Date: 10.12.2019 23:08:48-----
+>>>>>>> 40a8cbaee94e25ed26e062af12e841091911a772
 -----PARAMETRS-----
 Input file: inFile.txt
 Output file: inFile.txt.out.asm
@@ -7,6 +11,12 @@ Log file: logFile.txt
 Amount of symbols: 1575
 Amount of ignored symbols: 0
 Amount of lines: 84
+<<<<<<< HEAD
+=======
+
+Lexic analys is performing...
+
+>>>>>>> 40a8cbaee94e25ed26e062af12e841091911a772
 
 Lexic analys is performing...
 
@@ -95,7 +105,11 @@ Lexic analys is performing...
 83: rl;
 84: };
 
+<<<<<<< HEAD
 Lexic analys was successfull
+=======
+IDs analys is performing...
+>>>>>>> 40a8cbaee94e25ed26e062af12e841091911a772
 
 
 IDs analys is performing...
@@ -144,6 +158,7 @@ function: func, returning type is: void,	, count of locals is: 5, count of param
 
 Syntax analys is performing...
 
+<<<<<<< HEAD
 -----Date: 11.12.2019 10:45:27-----
 
 Yes!!! Count of cycles:108111
@@ -382,6 +397,12 @@ Yes!!! Count of cycles:108111
 -------------------------------------N -> dti;N
 -------------------------------------S -> m{Nr;};S-----Date: 11.12.2019 10:45:36-----
 
+=======
+-----Date: 10.12.2019 23:08:50-----
+
+Yes!!! Count of cycles:1-----Date: 10.12.2019 23:08:50-----
+
+>>>>>>> 40a8cbaee94e25ed26e062af12e841091911a772
 nSyntax analys was completed successfull
 
 
