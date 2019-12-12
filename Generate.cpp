@@ -4,7 +4,7 @@
 
 using namespace std;
 namespace GEN {
-	string Generator::Generate(IT::IdTable &it, LT::LexTable &lt, char *text) {
+	string Generator::Generate(IT::IdTable &it, LT::LexTable &lt, char *text, bool showePolandDetails, Log::LOG log) {
 		string resultStr = "";//куды запісваецца вынік працы
 		resultStr += START_OF_ASM;
 		resultStr += CONST_SECTION;
@@ -28,26 +28,26 @@ namespace GEN {
 			if (LT::GetEntry(lt, i+1)->lexema[0] == LEX_EQUALS
 				&& (LT::GetEntry(lt, i)->lexema[0] == LEX_ID)
 			) {
-				Poland::PolishNotation(&i, &lt, &it, text);
+				Poland::PolishNotation(&i, &lt, &it, text, showePolandDetails, log);
 			}
 			//@(...)
 			else if (LT::GetEntry(lt, i)->lexema[0] == LEX_ID
 				&& LT::GetEntry(lt, i - 1)->lexema[0] != LEX_FUNCTION
 				&& IT::GetEntry(it, LT::GetEntry(lt, i)->idxTI)->idtype==IT::IDTYPE::F) 
 			{
-				Poland::PolishNotation(&i, &lt, &it, text);
+				Poland::PolishNotation(&i, &lt, &it, text, showePolandDetails, log);
 			}
 			//if(...) or while(...)
 			else if (i>2 && LT::GetEntry(lt, i - 1)->lexema[0] == LEX_RIGHTHESIS
 			&& (LT::GetEntry(lt, i - 2)->lexema[0] == LEX_CONDITION || LT::GetEntry(lt, i - 2)->lexema[0] == LEX_CYCLE)) {
-				Poland::PolishNotation(&i, &lt, &it, text);
+				Poland::PolishNotation(&i, &lt, &it, text, showePolandDetails, log);
 			}
 			//return ...
 			else if (LT::GetEntry(lt, i)->lexema[0] == LEX_RETURN/* && LT::GetEntry(lt, i+1)->lexema[0] != LEX_SEMICOLON2*/) {
-				Poland::PolishNotation(&i, &lt, &it, text);
+				Poland::PolishNotation(&i, &lt, &it, text, showePolandDetails, log);
 			}
 			else if (LT::GetEntry(lt, i+1)->lexema[0] == LEX_RIGHTARR/* && LT::GetEntry(lt, i+1)->lexema[0] != LEX_SEMICOLON2*/) {
-				Poland::PolishNotation(&i, &lt, &it, text);
+				Poland::PolishNotation(&i, &lt, &it, text, showePolandDetails, log);
 			}
 		}
 
@@ -653,6 +653,7 @@ namespace GEN {
 		if (id.idtype != IT::IDTYPE::F) {
 			res += id.funcId->name;
 		}
+		res += LANG_NAME;
 		id.AssemblerName = res;
 		return res;
 	}	//імя пераменнай у асэмблернае імя

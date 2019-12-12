@@ -4,7 +4,9 @@
 #include <string>
 #include "Poland.h"
 #include <stack>
+#include "Log.h"
 
+#define LANG_NAME "LLH"
 #define START_OF_ASM "\
 .586\n\
 .MODEL FLAT, STDCALL;	\n\
@@ -167,7 +169,7 @@ push	ebx\n"	//атрымаць значэнне па адрасе ў стэку і запушыць яго
 
 namespace GEN {
 	struct Generator {
-		std::string Generate(IT::IdTable &it, LT::LexTable &lt, char *text);	//атрымаць асм файл
+		std::string Generate(IT::IdTable &it, LT::LexTable &lt, char *text, bool showePolandDetails, Log::LOG log);	//атрымаць асм файл
 		Generator();
 	};
 

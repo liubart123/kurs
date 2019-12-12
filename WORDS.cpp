@@ -81,8 +81,14 @@ namespace WORDS {
 			}
 			i++;
 		}
-		dest = new char[i];
-		dest[i]='\0';
+		if (i == 0) {
+			dest = new char[i+1];
+			dest[i] = res[position + i];
+			dest[i+1] = '\0';
+		}else {
+			dest = new char[i];
+			dest[i] = '\0';
+		}
 		i--;
 		while (i >= 0) {
 			dest[i]=res[position+i--];

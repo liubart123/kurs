@@ -33,8 +33,9 @@ namespace MFST {
 		nrule = greibach.getRule(st.top(), rule);	//знаходзім правіла
 		GRB::Rule::Chain chain;
 
-		if (ShowDetails)
+		if (ShowDetails){
 			//StateInfo();
+		}
 		//правіла знойдзена
 		if (nrule != greibach.size && nrule!=-1) {
 			//выбар ланцужка
@@ -123,13 +124,15 @@ namespace MFST {
 				case MFST::Mfst::NS_OK:
 					break;
 				case MFST::Mfst::NS_NORULE:
-					if (ShowDetails)
+					if (ShowDetails) {
 						printError(result);
+					}
 					cycle = false;
 					break;
 				case MFST::Mfst::NS_NORULECHAIN:
-					if (ShowDetails)
+					if (ShowDetails) {
 						printError(result);
+					}
 					if (!resState()) {
 						cycle = false;
 						Syntax = false;
@@ -147,8 +150,9 @@ namespace MFST {
 					//cycle = false;
 					break;
 				case MFST::Mfst::TS_NOK:
-					if (ShowDetails)
+					if (ShowDetails){
 						printError(result);
+					}
 					if (!resState()) {
 						cycle = false;
 						Syntax = false;

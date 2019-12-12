@@ -1,8 +1,4 @@
-<<<<<<< HEAD
------Date: 11.12.2019 10:45:27-----
-=======
------Date: 10.12.2019 23:08:48-----
->>>>>>> 40a8cbaee94e25ed26e062af12e841091911a772
+-----Date: 12.12.2019 23:13:11-----
 -----PARAMETRS-----
 Input file: inFile.txt
 Output file: inFile.txt.out.asm
@@ -11,12 +7,6 @@ Log file: logFile.txt
 Amount of symbols: 1575
 Amount of ignored symbols: 0
 Amount of lines: 84
-<<<<<<< HEAD
-=======
-
-Lexic analys is performing...
-
->>>>>>> 40a8cbaee94e25ed26e062af12e841091911a772
 
 Lexic analys is performing...
 
@@ -105,11 +95,7 @@ Lexic analys is performing...
 83: rl;
 84: };
 
-<<<<<<< HEAD
 Lexic analys was successfull
-=======
-IDs analys is performing...
->>>>>>> 40a8cbaee94e25ed26e062af12e841091911a772
 
 
 IDs analys is performing...
@@ -158,10 +144,9 @@ function: func, returning type is: void,	, count of locals is: 5, count of param
 
 Syntax analys is performing...
 
-<<<<<<< HEAD
------Date: 11.12.2019 10:45:27-----
+-----Date: 12.12.2019 23:13:11-----
 
-Yes!!! Count of cycles:108111
+Yes!!! Count of cycles:107991
 -------------------------------------E -> l
 -------------------------------------E -> l
 -------------------------------------M -> vE
@@ -395,14 +380,8 @@ Yes!!! Count of cycles:108111
 -------------------------------------N -> dti;N
 -------------------------------------N -> dti;N
 -------------------------------------N -> dti;N
--------------------------------------S -> m{Nr;};S-----Date: 11.12.2019 10:45:36-----
+-------------------------------------S -> m{Nr;};S-----Date: 12.12.2019 23:13:19-----
 
-=======
------Date: 10.12.2019 23:08:50-----
-
-Yes!!! Count of cycles:1-----Date: 10.12.2019 23:08:50-----
-
->>>>>>> 40a8cbaee94e25ed26e062af12e841091911a772
 nSyntax analys was completed successfull
 
 
@@ -415,5 +394,125 @@ Semantic's analys was completed suucessfull
 Code generating is performing...
 
 
+expression is:
+ strConcat("Your name is ",s1[0])------>"Your name is " 0 s1 strConcat 
+expression is:
+ printStr("Enter your name:")------>"Enter your name:" printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ strConcat(readLine(),s1[0])------>readLine 0 s1 strConcat 
+expression is:
+ printStr(s1[0])------>0 s1 printStr 
+expression is:
+ strCopy("Enter 2 numbers:",s1[0])------>"Enter 2 numbers:" 0 s1 strCopy 
+expression is:
+ printLine()------>printLine 
+expression is:
+ printStr(s1[0])------>0 s1 printStr 
+expression is:
+ num1=readNum()------>num1 readNum = 
+expression is:
+ num2=readNum()------>num2 readNum = 
+expression is:
+ printLine()------>printLine 
+expression is:
+ num2!0------>num2 0 ! 
+expression is:
+ strCopy("num1 / num2 = ",s1[0])------>"num1 / num2 = " 0 s1 strCopy 
+expression is:
+ strConcat(intToChar(num1/num2),s1[0])------>num1 num2 / intToChar 0 s1 strConcat 
+expression is:
+ printStr(s1[0])------>0 s1 printStr 
+expression is:
+ strCopy("error: num2 wath zero",s1[0])------>"error: num2 wath zero" 0 s1 strCopy 
+expression is:
+ printStr(s1[0])------>0 s1 printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ strCopy("num1 % num2 = ",s1[0])------>"num1 % num2 = " 0 s1 strCopy 
+expression is:
+ strConcat(intToChar(num1%num2),s1[0])------>num1 num2 % intToChar 0 s1 strConcat 
+expression is:
+ printStr(s1[0])------>0 s1 printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ strCopy("num1 * num2 = ",s1[0])------>"num1 * num2 = " 0 s1 strCopy 
+expression is:
+ strConcat(intToChar(num1*num2),s1[0])------>num1 num2 * intToChar 0 s1 strConcat 
+expression is:
+ printStr(s1[0])------>0 s1 printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ strCopy("num1 - num2 = ",s1[0])------>"num1 - num2 = " 0 s1 strCopy 
+expression is:
+ strConcat(intToChar(num1-num2),s1[0])------>num1 num2 - intToChar 0 s1 strConcat 
+expression is:
+ printStr(s1[0])------>0 s1 printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ strCopy("num1^num2 = ",s1[0])------>"num1^num2 = " 0 s1 strCopy 
+expression is:
+ strConcat(intToChar(_pow(num1,num2)),s1[0])------>num1 num2 _pow intToChar 0 s1 strConcat 
+expression is:
+ printStr(s1[0])------>0 s1 printStr 
+expression is:
+ s2=16------>s2 16 = 
+expression is:
+ func(s2[0])------>0 s2 func 
+expression is:
+ return------>return 
+expression is:
+ s2=2------>s2 2 = 
+expression is:
+ strCopy("there are",s2[0])------>"there are" 0 s2 strCopy 
+expression is:
+ strCopy("4x4 array",s2[256*1])------>"4x4 array" 256 1 * s2 strCopy 
+expression is:
+ printLine()------>printLine 
+expression is:
+ s2[0+9]=ah------>0 9 + s2 ah = 
+expression is:
+ s2[0+10]=0------>0 10 + s2 0 = 
+expression is:
+ printStr(s2[0])------>0 s2 printStr 
+expression is:
+ printStr(s2[256])------>256 s2 printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ tabulation[0]=1001b------>0 tabulation 1001b = 
+expression is:
+ tabulation[1]=0------>1 tabulation 0 = 
+expression is:
+ i=0------>i 0 = 
+expression is:
+ j=0------>j 0 = 
+expression is:
+ i<4------>i 4 < 
+expression is:
+ j=0------>j 0 = 
+expression is:
+ j<4------>j 4 < 
+expression is:
+ arr[i*4+j]=rnd()%20-10------>i 4 * j + arr rnd 20 % 10 - = 
+expression is:
+ strCopy(intToChar(^arr[i*4+j]),temps[0])------>i 4 * j + arr ^ intToChar 0 temps strCopy 
+expression is:
+ strConcat(tabulation[0],temps[0])------>0 tabulation 0 temps strConcat 
+expression is:
+ printStr(temps[0])------>0 temps printStr 
+expression is:
+ j=j+1------>j j 1 + = 
+expression is:
+ printLine()------>printLine 
+expression is:
+ i=i+1------>i i 1 + = 
+expression is:
+ return0------>0 return 
 Code generating was completed suucessfull
 

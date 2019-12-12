@@ -29,17 +29,24 @@ namespace Poland {
 		return -1;
 	}
 	//польска€ натацы€
-	bool PolishNotation(int *lexTable_pos, LT::LexTable *lexTable, IT::IdTable *idTable, char* text) {
+	bool PolishNotation(int *lexTable_pos, LT::LexTable *lexTable, IT::IdTable *idTable, char* text, bool additionalInfo, Log::LOG log) {
 		std::stack<LT::Entry> steck;	//стэк
 		std::list<LT::Entry> str;//зыходны радок
 		std::list<LT::Entry> polandStr;//радок у ѕольскай Ќатацџ≥
 		int i = 0;
 		do {
 			str.push_back(*LT::GetEntry(*lexTable, *(lexTable_pos)+i));
-		} while (LT::GetEntry(*lexTable, *(lexTable_pos)+(++i))->lexema[0] != ';' && LT::GetEntry(*lexTable, *(lexTable_pos)+(i))->lexema[0] != '{');
+		} while (LT::GetEntry(*lexTable, *(lexTable_pos)+(++i))->lexema[0] != ';' 
+		&& LT::GetEntry(*lexTable, *(lexTable_pos)+(i))->lexema[0] != '{');
 		if (LT::GetEntry(*lexTable, *(lexTable_pos)+(i))->lexema[0] == '{') {
 			str.pop_back();
 			i--;
+		}
+		std::list<LT::Entry> str2 = str;
+		Log::WriteLine(log, (char*)"\nexpression is:\n", (char*)" ", (char*)"\0");
+		while (str2.empty() == false) {
+			Log::WriteLine(log, WORDS::GetWord(text, str2.begin()->sn), (char*)"\0");
+			str2.pop_front();
 		}
 		int positionOfLexem = 0;	//паз≥цы€ ц€кучай лексемы, дл€ памылак
 		//зап≥с натацы≥ у радок
@@ -159,6 +166,7 @@ namespace Poland {
 			steck.pop();
 		}
 
+		str2 = polandStr;
 		//зм€ненне табл≥цы лексем новым≥ дадзеным≥
 		for (int a = 0; a < i; a++) {
 			if (polandStr.empty() == false) {
@@ -168,6 +176,11 @@ namespace Poland {
 			else {
 				LT::GetEntry(*lexTable, *(lexTable_pos)+(a))->lexema[0] = FILL_SYMBOL;
 			}
+		}
+		Log::WriteLine(log, (char*)"------>", (char*)"\0");
+		while (str2.empty() == false && str2.begin()->lexema[0]!=FILL_SYMBOL) {
+			Log::WriteLine(log, WORDS::GetWord(text, str2.begin()->sn),(char*)" ", (char*)"\0");
+			str2.pop_front();
 		}
 
 		if (steck.empty() == true) {

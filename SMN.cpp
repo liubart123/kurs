@@ -24,7 +24,7 @@ bool SMN::SmnTest(IT::IdTable &idTable, LT::LexTable &lexTable)	//праверка семан
 							if (LT::GetEntry(lexTable, i - 1)->lexema[0] == 'v' || LT::GetEntry(lexTable, i - 1)->lexema[0] == '=') {
 								errors.push_back(Error::geterrorin(212, entry->line, entry->col));
 							}
-							if ((LT::GetEntry(lexTable, i + 1)->lexema[0] == LEX_EQUALS || idEntry->iddatatype == IT::STR && LT::GetEntry(lexTable, i - 1)->lexema[0] == 't')
+							if (((LT::GetEntry(lexTable, i + 1)->lexema[0] == LEX_EQUALS || idEntry->iddatatype == IT::STR) && LT::GetEntry(lexTable, i - 1)->lexema[0] == 't')
 								|| (idEntry->idtype == IT::IDTYPE::P && LT::GetEntry(lexTable, i - 1)->lexema[0] == 't')) {
 								continue;
 							}

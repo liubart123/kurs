@@ -25,7 +25,7 @@ namespace Log
 	char* IdKA(char* word);
 	void WriteLog(LOG log);
 	void WriteParm(LOG log, Parm::PARM parm);
-	void WriteIn(LOG log, In::IN in, int maxErrors, bool showeDetails);
+	void WriteIn(LOG log, In::IN in, int maxErrors, bool showeDetails, bool showePolandDetails);
 	void WriteError(LOG log, Error::ERROR error);
 	void Close(LOG log);
 	char* GetSepSymb(char c);

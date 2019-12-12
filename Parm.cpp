@@ -97,6 +97,25 @@ namespace Parm
 					p.showDetailsSyntax = false;
 				} else { p.showDetailsSyntax =true;}
 			}
+			else if (wcsstr((wchar_t*)(argv[i]), PARM_SHOW_POLAND_DETAILS) == (argv[i])) {
+				if (wcslen((wchar_t*)(argv[i])) >= PARM_MAX_SIZE) {
+					throw ERROR_THROW(104);
+				}
+				wchar_t s[PARM_MAX_SIZE];
+				int cas = 0;
+				for (cas = 0; cas < PARM_MAX_SIZE - 6 && (wchar_t*)(argv[i])[cas + 5] != L'\0'; cas++) {
+					s[cas] = (argv[i])[cas + 5];
+				}
+				s[cas] = L'\0';
+				int count = _wtoi(s);
+				if (count < 0) {
+					throw ERROR_THROW(101);
+				}
+				else if (count == 0) {
+					p.polandDetails = false;
+				}
+				else { p.polandDetails = true; }
+			}
 			i++;
 		}
 		if (p.in[0] == '\0') {

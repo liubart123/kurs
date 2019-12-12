@@ -101,7 +101,7 @@ namespace Log
 		*log.stream << "Log file: " << output << endl;
 	}
 
-	void WriteIn(LOG log, In::IN in, int maxErrors, bool ShowDetails)
+	void WriteIn(LOG log, In::IN in, int maxErrors, bool ShowDetails, bool showePolandDetails)
 	{
 		*log.stream << "-----Input data-----" << endl;
 		*log.stream << "Amount of symbols: " << in.size << endl;
@@ -251,7 +251,7 @@ namespace Log
 		GEN::Generator generator;
 		*log.stream << "\nCode generating is performing...\n" << endl;
 		cout << "\nCode generating is performing...\n" << endl;
-		string gen = generator.Generate(idTable,lexTable, (char*)in.text);
+		string gen = generator.Generate(idTable,lexTable, (char*)in.text, showePolandDetails, log);
 		*log.stream << "\nCode generating was completed suucessfull\n" << endl;
 		cout << "\nCode generating was completed suucessfull\n" << endl;
 

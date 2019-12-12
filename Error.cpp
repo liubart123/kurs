@@ -69,7 +69,7 @@ namespace Error
 		ERROR_ENTRY(203,"id must be declarated, or wrong declaration was appeard"),	//id
 		ERROR_ENTRY(204,"lexic error"),	//lex
 		ERROR_ENTRY(205,"must be closing bracket"),	//poland
-		ERROR_ENTRY(206,"incorrect lexem in expression"),	//lex
+		ERROR_ENTRY(206,"incorrect lexem in expression"),	//poland	
 		ERROR_ENTRY(207,"operation wasn't defined"),	//poland
 		ERROR_ENTRY(208,"wrong type of literal"),	//id
 		ERROR_ENTRY(209,"double declaration"),	//id

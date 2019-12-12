@@ -4,6 +4,8 @@
 #include <stack>
 #include "Error.h"
 #include <list>
+#include "Log.h"
+#include "Words.h"
 #define NUM_OF_PRIR_LEVEL 8	//колькасць розных пры€рытэтаҐ
 #define NUM_OF_OPER_IN_LEVEL 5	//колькасць с≥мвалаҐ на кожным ҐзроҐн≥ прф€рытэта
 #define SPEC_SUMBOL '@'	//с≥мвал функцы≥
@@ -14,5 +16,5 @@ namespace Poland {
 	//в€рнуць пры€рытэт аперацы≥, альбо -1, кал≥ аперацы€ не знойдзена
 	int GetPriorityOfOperation(LT::Entry c);
 	//польска€ натацы€
-	bool PolishNotation(int *lexTable_pos, LT::LexTable *lexTable, IT::IdTable *idTable, char* text);
+	bool PolishNotation(int *lexTable_pos, LT::LexTable *lexTable, IT::IdTable *idTable, char* text, bool additionalInfo, Log::LOG log);
 }
