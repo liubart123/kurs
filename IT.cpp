@@ -67,7 +67,7 @@ namespace IT {
 						}
 						id[ind-1]='\0';
 					}
-					int res = strtoll(id, &id, GetEntry(idTable, idTable.size - 1)->countSystem);
+					int res = strtoll(id, NULL, GetEntry(idTable, idTable.size - 1)->countSystem);
 					GetEntry(idTable, idTable.size - 1)->value.vint = TI_INT_DEFAULT;
 					if (abs(res) >= LITERAL_INT_MAX_SIZE) {
 						if (errors.size() >= MaxErrors) {
@@ -76,6 +76,10 @@ namespace IT {
 						}
 						errors.push_back(Error::geterrorin(219, entry->line, entry->col));
 						continue;
+					}
+					else if (res >= LITERAL_INT_MAX_SIZE / 2) {
+						res = LITERAL_INT_MAX_SIZE - res;
+						res=-res;
 					}
 					GetEntry(idTable, idTable.size - 1)->value.vint = res;
 					GetEntry(idTable, idTable.size - 1)->countSystem = LT::COUNTSYSTEM::DEC;
