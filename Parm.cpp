@@ -108,10 +108,7 @@ namespace Parm
 				}
 				s[cas] = L'\0';
 				int count = _wtoi(s);
-				if (count < 0) {
-					throw ERROR_THROW(101);
-				}
-				else if (count == 0) {
+				if (count == 0) {
 					p.polandDetails = false;
 				}
 				else { p.polandDetails = true; }

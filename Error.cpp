@@ -28,7 +28,7 @@ namespace Error
 		ERROR_ENTRY_NODEF10(80),
 		ERROR_ENTRY_NODEF10(90),
 		ERROR_ENTRY(100,"parametr -in must be zadan"),
-		ERROR_ENTRY(101,"parametr -er must be positive"),
+		ERROR_ENTRY_NODEF(101),
 		//ERROR_ENTRY(101,"lexic error"),	//lex
 		ERROR_ENTRY_NODEF(102),
 		//ERROR_ENTRY(102,"id must be declarated"),	//id
@@ -68,23 +68,25 @@ namespace Error
 		ERROR_ENTRY(202,"incorrect id's declaration syntax"),	//id
 		ERROR_ENTRY(203,"id must be declarated, or wrong declaration was appeard"),	//id
 		ERROR_ENTRY(204,"lexic error"),	//lex
-		ERROR_ENTRY(205,"must be closing bracket"),	//poland
-		ERROR_ENTRY(206,"incorrect lexem in expression"),	//poland	
-		ERROR_ENTRY(207,"operation wasn't defined"),	//poland
-		ERROR_ENTRY(208,"wrong type of literal"),	//id
+		ERROR_ENTRY(205,"must be closing bracket"),	//poland useless
+		ERROR_ENTRY(206,"incorrect lexem in expression"),	//poland	 useless
+		ERROR_ENTRY(207,"operation wasn't defined"),	//poland useless
+		ERROR_ENTRY(208,"wrong type of literal"),	//id useless
 		ERROR_ENTRY(209,"double declaration"),	//id
-		ERROR_ENTRY(210,"unexpected bracket"),	//generation
+		ERROR_ENTRY(210,"unexpected bracket"),	//generation useless
 		ERROR_ENTRY(211,"using of addres, instead of a value"),	//semnt
 		ERROR_ENTRY(212,"there must be opening bracket"),	//semnt
 		ERROR_ENTRY(213,"invalid array using"),	//semnt, id
 		ERROR_ENTRY(214,"empty string"),	// id
-		ERROR_ENTRY(215,"errors count reached the limit"),	// lex, id
+		ERROR_ENTRY(215,"errors count reached the limit"),	// lex, id, smn
 		ERROR_ENTRY(216,"global identificators and literals are forbidden"),	// id
 		ERROR_ENTRY(217,"parametrs count reached the limit"),	// id
 		ERROR_ENTRY(218,"functions count reached the limit"),	// id
 		ERROR_ENTRY(219,"literal size reached the limit"),	// lex
 		ERROR_ENTRY(220,"variable or parametr can't have type void"),	// id
-		ERROR_ENTRY(221,"unexpected break"),	// id
+		ERROR_ENTRY(221,"unexpected break"),	// generation
+		ERROR_ENTRY(222,"main can be only one"),	// smn
+		ERROR_ENTRY(223,"main must be declaired"),	// smn
 		ERROR_ENTRY_NODEF100(300),
 		ERROR_ENTRY_NODEF100(400),
 		ERROR_ENTRY_NODEF100(500),

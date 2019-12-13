@@ -244,7 +244,7 @@ namespace Log
 
 		*log.stream << "\nSemantic's analys is performing...\n" << endl;
 		cout << "\nSemantic's analys is performing...\n" << endl;
-		SMN::SmnTest(idTable, lexTable);
+		SMN::SmnTest(idTable, lexTable, maxErrors);
 
 		*log.stream << "\nSemantic's analys was completed suucessfull\n" << endl;
 		cout << "\nSemantic's analys was completed suucessfull\n" << endl;

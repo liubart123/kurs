@@ -7,5 +7,5 @@
 #include "WORDS.h"
 
 namespace SMN {
-	bool SmnTest(IT::IdTable &idTable, LT::LexTable &lexTable);	//праверка семантыкі
+	bool SmnTest(IT::IdTable &idTable, LT::LexTable &lexTable, int maxErrors);	//праверка семантыкі
 }
