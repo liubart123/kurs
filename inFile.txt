@@ -1,4 +1,5 @@
 main{
+<<<<<<< HEAD
 	declare char i = 65534;
 	declare integer c = 0;
 	while(c<20000){
@@ -7,5 +8,16 @@ main{
 		i=i+1;
 		c=c+1;
 	}
+=======
+	func();
+	return;
+};
+void function func(string s1){
+	declare string s2;
+	return 0;
+};
+main{
+	func();
+>>>>>>> 14e5cdb862a8ca1b1b4b5ace734dea5b4714b1ef
 	return;
 };
