@@ -148,6 +148,7 @@ namespace GEN {
 		str += idTable.funcs[index]->name;
 		str += "\n";
 		str += idTable.funcs[index]->name;
+		str += LANG_NAME;
 		str += PROC_START;
 		str += "	";
 		//параметры фукнцыі
@@ -382,12 +383,14 @@ namespace GEN {
 							case (int)('|') : translatedText += IF_OR; break;
 							case (int)('%') : translatedText += EXPR_MOD; break;
 							case (int)('^') :{
-								if (lastArrays.top()->iddatatype == IT::ARRAY) {
-									translatedText += PUSH_VALUE; break;
-								} else if (lastArrays.top()->iddatatype == IT::STR) {
-									translatedText += PUSH_VALUE; break;
+								if (lastArrays.empty() || (lastAssigned != NULL && lastArrays.size()==1 && lastArrays.top()==lastAssigned)) {
+									throw(Error::geterrorin(224, LT::GetEntry(lexTable, i)->line, LT::GetEntry(lexTable, i)->col));
 								}
-								lastArrays.pop();
+								if (lastArrays.top()->iddatatype == IT::ARRAY) {
+									translatedText += PUSH_VALUE; lastArrays.pop(); break;
+								} else if (lastArrays.top()->iddatatype == IT::STR) {
+									translatedText += PUSH_VALUE; lastArrays.pop(); break;
+								}
 							}
 						}
 					}
@@ -470,15 +473,18 @@ namespace GEN {
 						if (func.returnType == IT::IDDATATYPE::VOID) {
 							translatedText += "ret	";
 							translatedText += to_string(func.curParams * 4);
+							translatedText += "\n";
 						}else{
 							translatedText += EXPR_RETURN;
 							translatedText += to_string(func.curParams * 4);
+							translatedText += "\n";
 						}
 						break;
 					}
 					else if (lex->lexema[0] == SPEC_SUMBOL) {
 						translatedText += EXPR_CALL;
 						translatedText += IT::GetEntry(idTable, lex->idxTI)->funcId->name;
+						translatedText += LANG_NAME;
 						translatedText += "\n";
 						translatedText += EXPR_PUSH_EAX;
 					}
@@ -632,6 +638,7 @@ namespace GEN {
 		str += EXPR_END_OF_FUNCTION;
 		str += "\n";
 		str += idTable.funcs[index]->name;
+		str += LANG_NAME;
 
 		str += PROC_END;
 		return str;

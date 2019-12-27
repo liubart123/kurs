@@ -1,23 +1,49 @@
-main{
-<<<<<<< HEAD
-	declare char i = 65534;
-	declare integer c = 0;
-	while(c<20000){
-		printStr(intToChar(i));
+main
+{
+	declare integer int;
+	if (5<7){
+		printStr("5<7");
 		printLine();
-		i=i+1;
-		c=c+1;
 	}
-=======
-	func();
-	return;
-};
-void function func(string s1){
-	declare string s2;
-	return 0;
-};
-main{
-	func();
->>>>>>> 14e5cdb862a8ca1b1b4b5ace734dea5b4714b1ef
+	if (5>7){
+		printStr("5>7");
+		printLine();
+	}
+	if (0-5>0-7){
+		printStr("-5>-7");
+		printLine();
+	}
+	if (0-5<0-7){
+		printStr("-5<-7");
+		printLine();
+	}
+	if (0-5<0){
+		printStr("-5<0");
+		printLine();
+	}
+	if (0-5>0){
+		printStr("-5>0");
+		printLine();
+	}
+	if (0<0-7){
+		printStr("0<-7");
+		printLine();
+	}
+	if (0>0-7){
+		printStr("-5>-7");
+		printLine();
+	}
+	if (5>0-7){
+		printStr("5>-7");
+		printLine();
+	}
+	if (0-5<7){
+		printStr("-5<7");
+		printLine();
+	}
+	if (5<0-7){
+		printStr("5<-7");
+		printLine();
+	}
 	return;
 };

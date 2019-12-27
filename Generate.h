@@ -17,15 +17,15 @@ includelib user32.lib;\n\
 includelib vcruntimed.lib;\n\
 includelib ucrtd.lib;\n\
 includelib ..\\Debug\\CLib.lib\n\
-printStr PROTO : ptr byte\n\
-strCopy PROTO : ptr byte, : ptr byte\n\
-intToChar PROTO : word\n\
-strConcat PROTO : ptr byte, : ptr byte\n\
-readNum PROTO\n\
-readLine PROTO\n\
-printLine PROTO\n\
-rnd PROTO\n\
-_pow PROTO : word, : word\n\
+printStrLLH PROTO : ptr byte\n\
+strCopyLLH PROTO : ptr byte, : ptr byte\n\
+intToCharLLH PROTO : word\n\
+strConcatLLH PROTO : ptr byte, : ptr byte\n\
+readNumLLH PROTO\n\
+readLineLLH PROTO\n\
+printLineLLH PROTO\n\
+rndLLH PROTO\n\
+_powLLH PROTO : word, : word\n\
 "
 
 #define CODE_SECTION "\
@@ -33,7 +33,7 @@ _pow PROTO : word, : word\n\
 "
 #define MAIN_ASM_FUNC "\n\
 start :\n\
-	call main\n\
+	call mainLLH\n\
 	push 0\n\
 	call  ExitProcess\n\
 	end start\n\
@@ -64,9 +64,9 @@ mov	[ebx], ax\n"		//=
 #define EXPR_EQU_STR "pop	eax\n\
 pop	ebx\n\
 mov	[ebx], al\n"		//=
-#define EXPR_SUM "pop	eax\npop	ebx\nadd	ax, bx\npush	eax\n"	//+
-#define EXPR_IMUL "pop	eax\npop	ebx\nimul	ax, bx\npush	eax\n"	//*
-#define EXPR_SUB "pop	eax\npop	ebx\nsub	bx, ax\npush	ebx\n"	// -
+#define EXPR_SUM "pop	eax\npop	ebx\nadd	ax, bx\nmovsx	eax,bx \npush	eax\n"	//+
+#define EXPR_IMUL "pop	eax\npop	ebx\nimul	ax, bx\nmovsx	eax,bx \npush	eax\n"	//*
+#define EXPR_SUB "pop	eax\npop	ebx\nsub	bx, ax\nmovsx	eax,bx \npush	eax\n"	// -
 #define EXPR_DIV "pop	ebx\npop	eax\ncwd			\nidiv	bx\npush	eax\n"	// /
 #define EXPR_MOD "pop	ebx\npop	eax\ncwd			\nidiv	bx\nmovsx	edx, dx\npush	edx\n"	// %
 #define EXPR_CLEAR_STACK "pop	ebx"

@@ -66,31 +66,27 @@ namespace GRB {
 	}
 	short Rule::getNextChain(GRBHALPHABET* lenta, short pos, Rule::Chain& pchain, short j) {
 		j++;
-		for (; j < size; j++) {
+		for (; j < size; j++) {	//падбор правіла пачынаецца з j
 			int i=0;
 			while (i<chains[j].size && chains[j].nt[i] == lenta[pos + i] 
 			&& chains[j].isT(lenta[pos + i])==true
 			&& chains[j].isT(chains[j].nt[i])==true) {
-				i++;
+				i++;	//калі сімвалы стужкі і правіла супадаюць і з'яўлюцца літэраламі
 			}
 			if (i == chains[j].size) {
-				break;
+				break;	//калі ўсё правіла адпавядае стужцы
 			}
-			else if ((chains[j].nt[i] == lenta[pos + i] || chains[j].isT(chains[j].nt[i]) == false)) { //ланцужок правіла і стужка супадаюць
-				break;
+			else if ((chains[j].nt[i] == lenta[pos + i] || chains[j].isT(chains[j].nt[i]) == false)) { 
+				break;		//ланцужок правіла і стужка супадаюць
 			}
 		}
-		/*j++;
-		while(j < size && (chains[j].nt[0] != lenta[pos+j] && chains[j].nt[0] != TS(EMPTY))){
-			j++;
-		}*/
 		short rc = j<size?j:-1;
 		if (rc >= 0) {
 			pchain = chains[rc];
 		}
 		return rc;
 	};
-	Greibach greibach(NS('S'),TS('$'),7,
+	Greibach greibach(NS('S'),TS('$'),7,	//стартавы нетырмінал, маркер дня стэка, колькасць правіл у граматыцы
 		Rule(NS('S'),GRB_ERROR_SERIES+0,	//функцыі і кропка ўваходу
 				6,
 				Rule::Chain(7,TS('m'),TS('{'), NS('N'), TS('r'), TS(';'), TS('}'), TS(';')),
@@ -115,27 +111,18 @@ namespace GRB {
 				Rule::Chain(6, TS('i'), TS('('), NS('E'), NS('W'), TS(')'), TS(';')),
 				Rule::Chain(7, TS('i'), TS('('), NS('E'), NS('W'), TS(')'), TS(';'), NS('N')),
 				Rule::Chain(7, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), NS('N'), TS('}')),	//if(){...}
-				Rule::Chain(8, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), NS('N'), TS('}'), NS('N')),	//if(){...}...
+				Rule::Chain(8, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), NS('N'), TS('}'), NS('N')),	//if(a){...}...
 				Rule::Chain(8, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), NS('N'), TS('}'), NS('C')),	//if(){...}else
 				Rule::Chain(9, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), NS('N'), TS('}'), NS('C'), NS('N')), //if(){...}else...
-				//Rule::Chain(6, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), TS('}')),	//if(){}
-				//Rule::Chain(7, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), TS('}'), NS('N')),	//if(){}...
-				//Rule::Chain(7, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), TS('}'), NS('C')),	//if(){}else...
-				//Rule::Chain(8, TS('k'), TS('('), NS('E'), TS(')'), TS('{'), TS('}'), NS('C'), NS('N')), //if(){}else...
-
-
 				Rule::Chain(2, TS('b'), TS(';')),		//break
 				Rule::Chain(3, TS('b'), TS(';'), NS('N')),	//break
 				Rule::Chain(7, TS('w'), TS('('), NS('E'), TS(')'), TS('{'), NS('N'), TS('}')),	//while(){}
 				Rule::Chain(8, TS('w'), TS('('), NS('E'), TS(')'), TS('{'), NS('N'), TS('}'), NS('N')),	//while(){}...
-
-
 				Rule::Chain(7, TS('i'), TS('['), NS('E'), TS(']'), TS('='), NS('E'), TS(';')),
 				Rule::Chain(8, TS('i'), TS('['), NS('E'), TS(']'), TS('='), NS('E'), TS(';'), NS('N')),
-
 				//return ...
 				Rule::Chain(4, TS('r'), NS('E'), TS(';'), NS('N')),
-				Rule::Chain(3, TS('r'), TS(';'), NS('N'))
+				Rule::Chain(3, TS('r'), NS('E'), TS(';'))
 			),
 		Rule(NS('E'), GRB_ERROR_SERIES + 2,		//выраз
 				16,

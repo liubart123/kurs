@@ -23,7 +23,7 @@ namespace In
 			if (tempChar == EOF)
 				break;
 
-			if (TABLE[(char)tempChar] == IN::T) {
+			if (TABLE[(char)(unsigned char)tempChar] == IN::T) {
 				p[curSize]=tempChar;
 				curSize++;
 				if (tempChar == IN_CODE_ENDL) {
@@ -35,7 +35,7 @@ namespace In
 					pos++;
 				}
 			}
-			else if (TABLE[(int)tempChar] == IN::F) {
+			else if (TABLE[(int)(unsigned char)tempChar] == IN::F) {
 				throw ERROR_THROW_IN(111,line+1,pos);
 			}
 			else if (TABLE[(int)(unsigned char)tempChar] == IN::I) {

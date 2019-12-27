@@ -88,13 +88,13 @@ namespace IT {
 					while (id[ind + 1] != '\0') {
 						ind++;
 					}
-					if (id[ind] == 'b') {
+					/*if (id[ind] == 'b') {
 						GetEntry(idTable, idTable.size - 1)->countSystem= LT::BIN;
 					}else if (id[ind] == 'h') {
 						GetEntry(idTable, idTable.size - 1)->countSystem = LT::HEX;
 					}else if (id[ind] == 'o') {
 						GetEntry(idTable, idTable.size - 1)->countSystem = LT::OCT;
-					}
+					}*/
 				}
 				else if(id[0] == '\'') {
 					GetEntry(idTable, idTable.size - 1)->iddatatype = CHAR;

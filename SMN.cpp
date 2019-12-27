@@ -72,7 +72,13 @@ bool SMN::SmnTest(IT::IdTable &idTable, LT::LexTable &lexTable, int maxErrors)	/
 					}
 				}
 			}
-
+			else if (LT::GetEntry(lexTable, i+1)->lexema[0] == '[') {
+				if (errors.size() >= maxErrors) {
+					errors.push_back(Error::geterrorin(215, entry->line, entry->col));
+					throw errors;
+				}
+				errors.push_back(Error::geterrorin(225, entry->line, entry->col));
+			}
 			//³ä - ôóíêöûÿ
 			if (idEntry->idtype == IT::F) {
 				if (LT::GetEntry(lexTable, i + 1)->lexema[0] != '(') {

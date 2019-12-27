@@ -87,7 +87,8 @@ namespace Error
 		ERROR_ENTRY(221,"unexpected break"),	// generation
 		ERROR_ENTRY(222,"main can be only one"),	// smn
 		ERROR_ENTRY(223,"main must be declaired"),	// smn
-		ERROR_ENTRY_NODEF100(300),
+		ERROR_ENTRY(224,"operation ^ must stay before an array"),	// generation
+		ERROR_ENTRY(225,"operation [] is used only for arrays"),	// generation
 		ERROR_ENTRY_NODEF100(400),
 		ERROR_ENTRY_NODEF100(500),
 		ERROR_ENTRY(600,"incorrect structure of programm"),

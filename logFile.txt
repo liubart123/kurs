@@ -1,50 +1,65 @@
-<<<<<<< HEAD
------Date: 13.12.2019 21:31:06-----
-=======
------Date: 13.12.2019 20:31:38-----
->>>>>>> 14e5cdb862a8ca1b1b4b5ace734dea5b4714b1ef
+-----Date: 20.12.2019 20:27:54-----
 -----PARAMETRS-----
 Input file: inFile.txt
-Output file: inFile.txt.out.asm
+Output file: out.asm
 Log file: logFile.txt
 -----Input data-----
-<<<<<<< HEAD
-Amount of symbols: 145
+Amount of symbols: 603
 Amount of ignored symbols: 0
-Amount of lines: 9
-=======
-Amount of symbols: 118
-Amount of ignored symbols: 0
-Amount of lines: 10
->>>>>>> 14e5cdb862a8ca1b1b4b5ace734dea5b4714b1ef
+Amount of lines: 49
 
 Lexic analys is performing...
 
-1: m{
-<<<<<<< HEAD
-2: dti=l;
-3: dti=l;
-4: w(ivl){
-5: i(i(i));
+1: m
+2: {
+3: dti;
+4: k(lvl){
+5: i(l);
 6: i();
-7: i=ivl;
-8: i=ivl;
-9: }
-10: r;
-11: };
-=======
-2: i();
-3: r;
-4: };
-5: tfi(ti){
-6: dti;
-7: rl;
-8: };
-9: m{
+7: }
+8: k(lvl){
+9: i(l);
 10: i();
-11: r;
-12: };
->>>>>>> 14e5cdb862a8ca1b1b4b5ace734dea5b4714b1ef
+11: }
+12: k(lvlvlvl){
+13: i(l);
+14: i();
+15: }
+16: k(lvlvlvl){
+17: i(l);
+18: i();
+19: }
+20: k(lvlvl){
+21: i(l);
+22: i();
+23: }
+24: k(lvlvl){
+25: i(l);
+26: i();
+27: }
+28: k(lvlvl){
+29: i(l);
+30: i();
+31: }
+32: k(lvlvl){
+33: i(l);
+34: i();
+35: }
+36: k(lvlvl){
+37: i(l);
+38: i();
+39: }
+40: k(lvlvl){
+41: i(l);
+42: i();
+43: }
+44: k(lvlvl){
+45: i(l);
+46: i();
+47: }
+48: r;
+49: };
+
 Lexic analys was successfull
 
 
@@ -56,69 +71,130 @@ IDs analys was successfull
 
 
 ID Table
-<<<<<<< HEAD
-l:	literal,	type: integer,	-1
+l:	literal,	type: integer,	5
+l:	literal,	type: integer,	7
+l:	literal,	type: string,	5<7
+l:	literal,	type: string,	5>7
 l:	literal,	type: integer,	0
-l:	literal,	type: integer,	20000
-l:	literal,	type: integer,	1
+l:	literal,	type: string,	-5>-7
+l:	literal,	type: string,	-5<-7
+l:	literal,	type: string,	-5<0
+l:	literal,	type: string,	-5>0
+l:	literal,	type: string,	0<-7
+l:	literal,	type: string,	5>-7
+l:	literal,	type: string,	-5<7
+l:	literal,	type: string,	5<-7
 main:	function,	in function: main,	type: string,	
-i:	variable,	in function: main,	type: char,	
-c:	variable,	in function: main,	type: integer
+int:	variable,	in function: main,	type: integer
 
-function: main, returning type is: void,	, count of locals is: 2, count of parametors is: 0
+function: main, returning type is: void,	, count of locals is: 1, count of parametors is: 0
 
 Syntax analys is performing...
 
------Date: 13.12.2019 21:31:06-----
+-----Date: 20.12.2019 20:27:54-----
 
-Yes!!! Count of cycles:202
+Yes!!! Count of cycles:3397
+-------------------------------------N -> i();
 -------------------------------------E -> l
--------------------------------------M -> vE
--------------------------------------E -> iM
--------------------------------------N -> i=E;
--------------------------------------E -> l
--------------------------------------M -> vE
--------------------------------------E -> iM
--------------------------------------N -> i=E;N
--------------------------------------N -> i();N
--------------------------------------E -> i
--------------------------------------E -> i(E)
 -------------------------------------N -> i(E);N
 -------------------------------------E -> l
 -------------------------------------M -> vE
--------------------------------------E -> iM
--------------------------------------N -> w(E){N}
--------------------------------------E -> l
--------------------------------------N -> dti=E;N
--------------------------------------E -> l
--------------------------------------N -> dti=E;N
--------------------------------------S -> m{Nr;};-----Date: 13.12.2019 21:31:06-----
-=======
-l:	literal,	type: integer,	0
-main:	function,	in function: main,	type: string,	
-func:	function,	in function: func,	type: void,	
-main:	function,	in function: main,	type: string,	
-s1:	parametr,	in function: func,	type: string,	
-s2:	variable,	in function: func,	type: string,	
-
-function: main, returning type is: void,	, count of locals is: 0, count of parametors is: 0
-function: func, returning type is: void,	, count of locals is: 1, count of parametors is: 1
-function: main, returning type is: void,	, count of locals is: 0, count of parametors is: 0
-
-Syntax analys is performing...
-
------Date: 13.12.2019 20:31:38-----
-
-Yes!!! Count of cycles:89
+-------------------------------------E -> lM
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------N -> k(E){N}
 -------------------------------------N -> i();
--------------------------------------S -> m{Nr;};
 -------------------------------------E -> l
--------------------------------------N -> dti;
--------------------------------------F -> ti
--------------------------------------S -> tfi(F){NrE;};S
+-------------------------------------N -> i(E);N
+-------------------------------------E -> l
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------N -> k(E){N}N
 -------------------------------------N -> i();
--------------------------------------S -> m{Nr;};S-----Date: 13.12.2019 20:31:38-----
->>>>>>> 14e5cdb862a8ca1b1b4b5ace734dea5b4714b1ef
+-------------------------------------E -> l
+-------------------------------------N -> i(E);N
+-------------------------------------E -> l
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------N -> k(E){N}N
+-------------------------------------N -> i();
+-------------------------------------E -> l
+-------------------------------------N -> i(E);N
+-------------------------------------E -> l
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------N -> k(E){N}N
+-------------------------------------N -> i();
+-------------------------------------E -> l
+-------------------------------------N -> i(E);N
+-------------------------------------E -> l
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------N -> k(E){N}N
+-------------------------------------N -> i();
+-------------------------------------E -> l
+-------------------------------------N -> i(E);N
+-------------------------------------E -> l
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------N -> k(E){N}N
+-------------------------------------N -> i();
+-------------------------------------E -> l
+-------------------------------------N -> i(E);N
+-------------------------------------E -> l
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------N -> k(E){N}N
+-------------------------------------N -> i();
+-------------------------------------E -> l
+-------------------------------------N -> i(E);N
+-------------------------------------E -> l
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------N -> k(E){N}N
+-------------------------------------N -> i();
+-------------------------------------E -> l
+-------------------------------------N -> i(E);N
+-------------------------------------E -> l
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------N -> k(E){N}N
+-------------------------------------N -> i();
+-------------------------------------E -> l
+-------------------------------------N -> i(E);N
+-------------------------------------E -> l
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------N -> k(E){N}N
+-------------------------------------N -> i();
+-------------------------------------E -> l
+-------------------------------------N -> i(E);N
+-------------------------------------E -> l
+-------------------------------------M -> vE
+-------------------------------------E -> lM
+-------------------------------------N -> k(E){N}N
+-------------------------------------N -> dti;N
+-------------------------------------S -> m{Nr;};-----Date: 20.12.2019 20:27:55-----
 
 nSyntax analys was completed successfull
 
@@ -126,7 +202,6 @@ nSyntax analys was completed successfull
 Semantic's analys is performing...
 
 
-<<<<<<< HEAD
 Semantic's analys was completed suucessfull
 
 
@@ -134,24 +209,72 @@ Code generating is performing...
 
 
 expression is:
- i=65534------>i 65534 = 
+ 5<7------>5 7 < 
 expression is:
- c=0------>c 0 = 
-expression is:
- c<20000------>c 20000 < 
-expression is:
- printStr(intToChar(i))------>i intToChar printStr 
+ printStr("5<7")------>"5<7" printStr 
 expression is:
  printLine()------>printLine 
 expression is:
- i=i+1------>i i 1 + = 
+ 5>7------>5 7 > 
 expression is:
- c=c+1------>c c 1 + = 
+ printStr("5>7")------>"5>7" printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ 0-5>0-7------>0 5 - 0 7 - > 
+expression is:
+ printStr("-5>-7")------>"-5>-7" printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ 0-5<0-7------>0 5 - 0 7 - < 
+expression is:
+ printStr("-5<-7")------>"-5<-7" printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ 0-5<0------>0 5 - 0 < 
+expression is:
+ printStr("-5<0")------>"-5<0" printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ 0-5>0------>0 5 - 0 > 
+expression is:
+ printStr("-5>0")------>"-5>0" printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ 0<0-7------>0 0 7 - < 
+expression is:
+ printStr("0<-7")------>"0<-7" printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ 0>0-7------>0 0 7 - > 
+expression is:
+ printStr("-5>-7")------>"-5>-7" printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ 5>0-7------>5 0 7 - > 
+expression is:
+ printStr("5>-7")------>"5>-7" printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ 0-5<7------>0 5 - 7 < 
+expression is:
+ printStr("-5<7")------>"-5<7" printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ 5<0-7------>5 0 7 - < 
+expression is:
+ printStr("5<-7")------>"5<-7" printStr 
+expression is:
+ printLine()------>printLine 
 expression is:
  return------>return 
 Code generating was completed suucessfull
 
-=======
------Error-----
-Error 222: main can be only one (line 9, column 0)
->>>>>>> 14e5cdb862a8ca1b1b4b5ace734dea5b4714b1ef

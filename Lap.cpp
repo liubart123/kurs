@@ -39,7 +39,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		asd = '\"';
 		asd='\t';
 		Parm::PARM parm = Parm::getparm(argc, argv);
-		log = Log::getlog(parm.log, parm.source);
+		log = Log::getlog(parm.log, parm.out);
 		//Log::WriteLine(log, (char*)"³ô³ûâo¢", "asd","");
 		Log::WriteLog(log);
 		Log::WriteParm(log,parm);

@@ -1,40 +1,9 @@
-<<<<<<< HEAD
-﻿  IT.cpp
-d:\univer\jap\kurs\kurs\error.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-d:\univer\jap\kurs\kurs\it.cpp(70): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
-d:\univer\jap\kurs\kurs\it.cpp(73): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(108): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(115): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(150): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(161): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(198): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(227): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(246): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(256): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(287): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(308): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(315): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(325): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(334): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(342): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(353): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\it.cpp(371): warning C4018: '>=': signed/unsigned mismatch
-=======
-﻿  Error.cpp
+﻿  Generate.cpp
 d:\univer\jap\kurs\kurs\error.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   Log.cpp
 d:\univer\jap\kurs\kurs\error.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 d:\univer\jap\kurs\kurs\log.cpp(172): warning C4018: '>=': signed/unsigned mismatch
 d:\univer\jap\kurs\kurs\log.cpp(826): warning C4305: 'argument': truncation from 'int' to 'char'
 d:\univer\jap\kurs\kurs\log.cpp(826): warning C4309: 'argument': truncation of constant value
-  SMN.cpp
-d:\univer\jap\kurs\kurs\error.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-d:\univer\jap\kurs\kurs\smn.cpp(26): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\smn.cpp(36): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\smn.cpp(56): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\smn.cpp(65): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\smn.cpp(79): warning C4018: '>=': signed/unsigned mismatch
-d:\univer\jap\kurs\kurs\smn.cpp(90): warning C4018: '>=': signed/unsigned mismatch
   Generating Code...
->>>>>>> 14e5cdb862a8ca1b1b4b5ace734dea5b4714b1ef
   Kurs.vcxproj -> D:\Univer\jap\Kurs\Debug\Kurs.exe

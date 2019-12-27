@@ -1,36 +1,123 @@
-inFile.txt.log.txttestasd-----Date: 12.10.2019 14:35:53-----
+-----Date: 17.12.2019 10:46:05-----
 -----PARAMETRS-----
-Input file: inFile.txt
-Output file: inFile.txt.out.txt
-Log file: inFile.txt.log.txt
------Исходные данные-----
-Amount of symbols: 234
+Input file: d:\Univer\jap\Kurs\Kurs\inFile.txt
+Output file: d:\Univer\jap\Kurs\Kurs\inFile.txt.out.asm
+Log file: d:\Univer\jap\Kurs\Kurs\inFile.txt.log.txt
+-----Input data-----
+Amount of symbols: 266
 Amount of ignored symbols: 0
-Amount of lines: -1
-inFile.txt.log.txt0: inFile.txt.log.txtminFile.txt.log.txtinFile.txt.log.txtinFile.txt.log.txt
-inFile.txt.log.txt1: inFile.txt.log.txt{inFile.txt.log.txt
-inFile.txt.log.txt2: inFile.txt.log.txtinFile.txt.log.txtdinFile.txt.log.txtinFile.txt.log.txttinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt;inFile.txt.log.txt
-inFile.txt.log.txt3: inFile.txt.log.txtinFile.txt.log.txtdinFile.txt.log.txtinFile.txt.log.txttinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt;inFile.txt.log.txt
-inFile.txt.log.txt4: inFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txtinFile.txt.log.txt=inFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txtinFile.txt.log.txtvinFile.txt.log.txtinFile.txt.log.txtlinFile.txt.log.txt;inFile.txt.log.txt
-inFile.txt.log.txt5: inFile.txt.log.txtinFile.txt.log.txtinFile.txt.log.txtrinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt;inFile.txt.log.txt
-inFile.txt.log.txt6: inFile.txt.log.txt}inFile.txt.log.txt;inFile.txt.log.txt
-inFile.txt.log.txt7: inFile.txt.log.txttinFile.txt.log.txtinFile.txt.log.txtfinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt(inFile.txt.log.txttinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt)inFile.txt.log.txt{inFile.txt.log.txt
-inFile.txt.log.txt8: inFile.txt.log.txtinFile.txt.log.txtdinFile.txt.log.txtinFile.txt.log.txttinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txtinFile.txt.log.txt;inFile.txt.log.txt
-inFile.txt.log.txt9: inFile.txt.log.txtinFile.txt.log.txtdinFile.txt.log.txtinFile.txt.log.txttinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt;inFile.txt.log.txt
-inFile.txt.log.txt10: inFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txtinFile.txt.log.txt=inFile.txt.log.txtinFile.txt.log.txtlinFile.txt.log.txtinFile.txt.log.txtvinFile.txt.log.txtinFile.txt.log.txtlinFile.txt.log.txtinFile.txt.log.txtvinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt;inFile.txt.log.txt;inFile.txt.log.txt
-inFile.txt.log.txt11: inFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txtinFile.txt.log.txt=inFile.txt.log.txtinFile.txt.log.txtlinFile.txt.log.txtinFile.txt.log.txtvinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt(inFile.txt.log.txtiinFile.txt.log.txt)inFile.txt.log.txt;inFile.txt.log.txt
-inFile.txt.log.txt12: inFile.txt.log.txtinFile.txt.log.txtrinFile.txt.log.txtinFile.txt.log.txtiinFile.txt.log.txt;inFile.txt.log.txt
-inFile.txt.log.txt13: inFile.txt.log.txt}inFile.txt.log.txt;inFile.txt.log.txt
+Amount of lines: 15
+
+Lexic analys is performing...
+
+1: m{
+2: dti=l;
+3: i();
+4: i(i(i(i)));
+5: i();
+6: r;
+7: };
+8: tfi(ti){
+9: dti;
+10: k(ivl){
+11: rl;
+12: }
+13: i=i(ivl);
+14: i(i(i));
+15: i();
+16: rivi;
+17: };
+Lexic analys was successfull
+
+
+IDs analys is performing...
+
+
+IDs analys was successfull
+
 
 
 ID Table
-l:	literal,	integer,	123,	
-l:	literal,	integer,	123,	
-l:	literal,	integer,	54,	
-l:	literal,	string,	"ds   asd  a",	
-z:	variable,	integer,	0,	
-s:	variable,	string,	,	
-asd:	function,	string,	,	
-s:	parametr,	integer,	0,	asd
-itegerbval:	variable,	integer,	0,	asd
+l:	literal,	type: integer,	6
+l:	literal,	type: integer,	1
+main:	function,	in function: main,	type: string,	
+fact:	function,	in function: fact,	type: void,	
+int:	variable,	in function: main,	type: integer
+int:	parametr,	in function: fact,	type: integer
+res:	variable,	in function: fact,	type: integer
+
+function: main, returning type is: void,	, count of locals is: 1, count of parametors is: 0
+function: fact, returning type is: void,	, count of locals is: 1, count of parametors is: 1
+
+Syntax analys is performing...
+
+-----Date: 17.12.2019 10:46:06-----
+
+Yes!!! Count of cycles:2415
+-------------------------------------E -> i
+-------------------------------------M -> vE
+-------------------------------------E -> iM
+-------------------------------------N -> i();
+-------------------------------------E -> i
+-------------------------------------E -> i(E)
+-------------------------------------N -> i(E);N
+-------------------------------------E -> l
+-------------------------------------M -> vE
+-------------------------------------E -> iM
+-------------------------------------E -> i(E)
+-------------------------------------N -> i=E;N
+-------------------------------------E -> l
+-------------------------------------N -> rE;
+-------------------------------------E -> l
+-------------------------------------M -> vE
+-------------------------------------E -> iM
+-------------------------------------N -> k(E){N}N
+-------------------------------------N -> dti;N
+-------------------------------------F -> ti
+-------------------------------------S -> tfi(F){NrE;};
+-------------------------------------N -> i();
+-------------------------------------E -> i
+-------------------------------------E -> i(E)
+-------------------------------------E -> i(E)
+-------------------------------------N -> i(E);N
+-------------------------------------N -> i();N
+-------------------------------------E -> l
+-------------------------------------N -> dti=E;N
+-------------------------------------S -> m{Nr;};S-----Date: 17.12.2019 10:46:06-----
+
+nSyntax analys was completed successfull
+
+
+Semantic's analys is performing...
+
+
+Semantic's analys was completed suucessfull
+
+
+Code generating is performing...
+
+
+expression is:
+ int=6------>int 6 = 
+expression is:
+ printLine()------>printLine 
+expression is:
+ printStr(intToChar(fact(int)))------>int fact intToChar printStr 
+expression is:
+ readNum()------>readNum 
+expression is:
+ return------>return 
+expression is:
+ int?1------>int 1 ? 
+expression is:
+ return1------>1 return 
+expression is:
+ res=fact(int-1)------>res int 1 - fact = 
+expression is:
+ printStr(intToChar(res))------>res intToChar printStr 
+expression is:
+ printLine()------>printLine 
+expression is:
+ returnint*res------>int res * return 
+Code generating was completed suucessfull
 
